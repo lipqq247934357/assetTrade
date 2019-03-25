@@ -123,56 +123,5 @@ export default [
             title: "配置管理"
         }
     },
-    {
-        path: '/yhgl',
-        component: layout,
-        children: [
-            {
-                path: 'yhxx',
-                name: 'yhxx',
-                component: () => import('@/views/user/manage/userInfo'),
-                meta: {
-                    title: '用户信息'
-                }
-            },
-            {
-                path: 'xgxx',
-                name: 'xgxx',
-                component: () => import('@/views/user/manage/userInfo'),
-                meta: {
-                    title: '修改用户信息'
-                }
-            }
-
-        ],
-        meta: {
-            title: "用户"
-        }
-    },
-    {
-        path: '/qxgl',
-        component: layout,
-        children: [
-            {
-                path: 'registUser',
-                name: 'registUser',
-                component: () => import('@/views/roles/registInfo'),
-                meta: {
-                    title: '注册用户管理'
-                }
-            },
-            {
-                path: 'qxxg',
-                name: 'qxxg',
-                component: () => import('@/views/roles/registInfo'),
-                meta: {
-                    title: '修改权限'
-                }
-            }
-        ],
-        meta: {
-            title: "权限管理"
-        }
-    },
     {path: '*', redirect: '/404', hidden: true}
 ];
