@@ -1,6 +1,13 @@
 import layout from '../views/layout/Layout';
-import customerInfo from '../views/dashboard';
-import tzcx from '@/views/business/tzcx';
+import dashboard from '../views/dashboard';
+import asset from '@/views/assetM/asset';
+import credit from '@/views/assetM/credit';
+import customer from '@/views/assetM/customer';
+import cashOutput from '@/views/configM/cashOutput';
+import cashProvider from '@/views/configM/cashProvider';
+import channel from '@/views/configM/channel';
+import product from '@/views/configM/product';
+import splitRules from '@/views/configM/splitRules';
 
 
 /**
@@ -39,7 +46,7 @@ export default [
             {
                 path: 'zclb',
                 name: 'zclb',
-                component: tzcx,
+                component: asset,
                 meta: {
                     title: '资产列表'
                 }
@@ -47,7 +54,7 @@ export default [
             {
                 path: 'khxxlb',
                 name: 'khxxlb',
-                component: customerInfo,
+                component: customer,
                 meta: {
                     title: '客户信息列表'
                 }
@@ -55,7 +62,7 @@ export default [
             {
                 path: 'sxxxlb',
                 name: 'sxxxlb',
-                component: customerInfo,
+                component: credit,
                 meta: {
                     title: '授信信息列表'
                 }
@@ -74,7 +81,7 @@ export default [
             {
                 path: 'qdpz',
                 name: 'qdpz',
-                component: customerInfo,
+                component: channel,
                 meta: {
                     title: '渠道配置'
                 }
@@ -82,7 +89,7 @@ export default [
             {
                 path: 'zjfpz',
                 name: 'zjfpz',
-                component: customerInfo,
+                component: cashProvider,
                 meta: {
                     title: '资金方配置'
                 }
@@ -90,7 +97,7 @@ export default [
             {
                 path: 'cfgzpz',
                 name: 'cfgzpz',
-                component: customerInfo,
+                component: splitRules,
                 meta: {
                     title: '拆分规则配置'
                 }
@@ -98,7 +105,7 @@ export default [
             {
                 path: 'jrcppz',
                 name: 'jrcppz',
-                component: customerInfo,
+                component: product,
                 meta: {
                     title: '金融产品配置'
                 }
@@ -106,7 +113,7 @@ export default [
             {
                 path: 'zcscpz',
                 name: 'zcscpz',
-                component: customerInfo,
+                component: cashOutput,
                 meta: {
                     title: '资产输出配置'
                 }

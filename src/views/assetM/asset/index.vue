@@ -1,5 +1,5 @@
 <template>
-    <div class="tzcx-container">
+    <div class="asset">
         <!--搜索-->
         <div class="search">
             <el-input placeholder="借据编号" v-model="params.listId"/>
@@ -7,7 +7,8 @@
             <el-input placeholder="贷款账号" v-model="params.loanAcNo"/>
             <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="search">search
             </el-button>
-            <el-button v-waves class="filter-item" type="primary" icon="el-icon-edit">add</el-button>
+            <el-button v-waves class="filter-item" type="primary" icon="el-icon-edit" @click="handleClick">add
+            </el-button>
         </div>
         <!--表格-->
         <div class="content">
@@ -58,7 +59,6 @@
                 title="收货地址"
                 :visible.sync="dialogTableVisible"
                 custom-class="pop-custom-class"
-                :fullscreen="t"
         >
             <el-table :data="popTableData">
                 <el-table-column property="name" label="姓名" width="150"></el-table-column>
@@ -77,7 +77,7 @@
     import {tzcx, tzcxDt} from '@/api';
 
     export default {
-        name: 'tzcx',
+        name: 'asset',
         components: {pagination},
         directives: {waves},
         data() {
@@ -94,7 +94,6 @@
                 pageData: [],
                 dialogTableVisible: false,
                 popTableData: [],
-                t: true
             }
         },
         methods: {
@@ -147,6 +146,14 @@
     .pagination {
         margin-top: 40px;
         margin-bottom: 50px;
+    }
+
+    /deep/ .pop-custom-class {
+        position: fixed;
+        bottom: 10%;
+        top: 10%;
+        left: 10%;
+        right: 10%;
     }
 
 </style>
