@@ -28,14 +28,14 @@
                     </el-upload>
                 </el-form-item>
                 <!--<el-form-item label="权限" prop="password">-->
-                    <!--<el-select v-model="value" placeholder="请选择">-->
-                        <!--<el-option-->
-                                <!--v-for="item in options"-->
-                                <!--:key="item.value"-->
-                                <!--:label="item.label"-->
-                                <!--:value="item.value">-->
-                        <!--</el-option>-->
-                    <!--</el-select>-->
+                <!--<el-select v-model="value" placeholder="请选择">-->
+                <!--<el-option-->
+                <!--v-for="item in options"-->
+                <!--:key="item.value"-->
+                <!--:label="item.label"-->
+                <!--:value="item.value">-->
+                <!--</el-option>-->
+                <!--</el-select>-->
                 <!--</el-form-item>-->
             </el-form>
         </div>
@@ -65,13 +65,13 @@
                     value: '选项5',
                     label: '北京烤鸭'
                 }],
-                fileList:[]
+                fileList: []
             }
         },
         methods: {
             toLogin() {
 
-            },handleRemove(file, fileList) {
+            }, handleRemove(file, fileList) {
                 console.log(file, fileList);
             },
             handlePreview(file) {
@@ -81,7 +81,7 @@
                 this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
             },
             beforeRemove(file, fileList) {
-                return this.$confirm(`确定移除 ${ file.name }？`);
+                return this.$confirm(`确定移除 ${file.name}？`);
             }
         }
     }

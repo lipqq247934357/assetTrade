@@ -4,9 +4,9 @@ import {Message} from 'element-ui';
 import router from '../router';
 // axios 配置
 axios.defaults.timeout = 6969;
-if(process.env.NODE_ENV === 'development'){// 根据不同的环境使用不同的接口
+if (process.env.NODE_ENV === 'development') {// 根据不同的环境使用不同的接口
     axios.defaults.baseURL = '/mock';
-}else{
+} else {
     axios.defaults.baseURL = '/api';
 }
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';

@@ -24,13 +24,13 @@ import '@/utils/beforeEach' // permission control
  * If you remove `../mock` it will automatically request easy-mock data.
  */
 
-Vue.use(ElementUI, { locale })
+Vue.use(ElementUI, {locale})
 
 Vue.config.productionTip = false
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
+    el: '#app',
+    router,
+    store,
+    render: h => h(App)
 })

@@ -94,7 +94,7 @@
                 pageData: [],
                 dialogTableVisible: false,
                 popTableData: [],
-                t:true
+                t: true
             }
         },
         methods: {

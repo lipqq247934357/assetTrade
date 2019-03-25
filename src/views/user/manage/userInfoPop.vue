@@ -19,7 +19,7 @@
 
     export default {
         name: "userInfoPop",
-        props: ["visibleUI","userInfo"],
+        props: ["visibleUI", "userInfo"],
         methods: {
             logOut() {
                 Cookies.remove('admin-token');
