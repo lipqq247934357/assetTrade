@@ -17,7 +17,7 @@ function mock(app) {
             username: "lipeng",
             name: "lipeng",
             rolesName: "管理员",
-            iconAddress: "/icon/touxiang1.jpg",
+            iconAddress: "/icon/touxiang.jpg",
             desc: "一帆风顺",
             phone: "1xx",
             email: "2xx",
