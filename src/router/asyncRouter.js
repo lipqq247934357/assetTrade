@@ -30,63 +30,39 @@ export default [
     },
 
     {
-        path: '/ywtjcx',
-        name: 'ywtjcx',
+        path: '/zcgl',
+        name: 'zcgl',
         component: layout,
         redirect: 'noredirect',
         children: [
 
             {
-                path: 'tzcx',
-                name: 'tzcx',
+                path: 'zclb',
+                name: 'zclb',
                 component: tzcx,
                 meta: {
-                    title: '台账查询'
+                    title: '资产列表'
                 }
             },
             {
-                path: 'dkhztj',
-                name: 'dkhztj',
+                path: 'khxxlb',
+                name: 'khxxlb',
                 component: customerInfo,
                 meta: {
-                    title: '贷款汇总统计'
+                    title: '客户信息列表'
                 }
             },
             {
-                path: 'kmzzcx',
-                name: 'kmzzcx',
+                path: 'sxxxlb',
+                name: 'sxxxlb',
                 component: customerInfo,
                 meta: {
-                    title: '科目总账查询'
+                    title: '授信信息列表'
                 }
             },
-            {
-                path: 'yqdkcx',
-                name: 'yqdkcx',
-                component: customerInfo,
-                meta: {
-                    title: '逾期贷款查询'
-                }
-            },
-            {
-                path: 'dktqhzxxcx',
-                name: 'dktqhzxxcx',
-                component: customerInfo,
-                meta: {
-                    title: '贷款拖欠汇总信息查询'
-                }
-            },
-            {
-                path: 'yqhkwjflcx',
-                name: 'yqhkwjflcx',
-                component: customerInfo,
-                meta: {
-                    title: '逾期还款五级分类查询'
-                }
-            }
         ],
         meta: {
-            title: "业务统计查询"
+            title: "资产管理"
         }
     },
     {
@@ -96,134 +72,48 @@ export default [
         redirect: 'noredirect',
         children: [
             {
-                path: 'cspz',
-                name: 'cspz',
+                path: 'qdpz',
+                name: 'qdpz',
                 component: customerInfo,
                 meta: {
-                    title: '参数配置'
+                    title: '渠道配置'
                 }
             },
             {
-                path: 'cppz',
-                name: 'cppz',
+                path: 'zjfpz',
+                name: 'zjfpz',
                 component: customerInfo,
                 meta: {
-                    title: '产品配置'
+                    title: '资金方配置'
                 }
             },
             {
-                path: 'jqxxpz',
-                name: 'jqxxpz',
+                path: 'cfgzpz',
+                name: 'cfgzpz',
                 component: customerInfo,
                 meta: {
-                    title: '机器信息配置'
+                    title: '拆分规则配置'
                 }
             },
             {
-                path: 'kjkmpz',
-                name: 'kjkmpz',
+                path: 'jrcppz',
+                name: 'jrcppz',
                 component: customerInfo,
                 meta: {
-                    title: '会计科目配置'
+                    title: '金融产品配置'
                 }
             },
             {
-                path: 'gzkmys',
-                name: 'gzkmys',
+                path: 'zcscpz',
+                name: 'zcscpz',
                 component: customerInfo,
                 meta: {
-                    title: '规则科目映射'
+                    title: '资产输出配置'
                 }
             },
-            {
-                path: 'kjkmcl',
-                name: 'kjkmcl',
-                component: customerInfo,
-                meta: {
-                    title: '会计科目处理'
-                }
-            },
-            {
-                path: 'wjflgzpz',
-                name: 'wjflgzpz',
-                component: customerInfo,
-                meta: {
-                    title: '五级分类规则配置'
-                }
-            }
         ],
         meta: {
             title: "配置管理"
-        }
-    },
-    {
-        path: '/dsrwgl',
-        name: 'dsrwgl',
-        component: layout,
-        redirect: 'noredirect',
-        children: [
-            {
-                path: 'rwgl',
-                name: 'rwgl',
-                component: customerInfo,
-                meta: {
-                    title: '任务管理'
-                }
-            },
-            {
-                path: 'plgl',
-                name: 'plgl',
-                component: customerInfo,
-                meta: {
-                    title: '批量管理'
-                }
-            },
-            {
-                path: 'rwyxjg',
-                name: 'rwyxjg',
-                component: customerInfo,
-                meta: {
-                    title: '任务运行结果'
-                }
-            },
-            {
-                path: 'plyxjg',
-                name: 'plyxjg',
-                component: customerInfo,
-                meta: {
-                    title: '五级分类规则配置'
-                }
-            }
-        ],
-        meta: {
-            title: "定时任务管理"
-        }
-    },
-    {
-        path: '/jkgl',
-        name: 'jkgl',
-        component: layout,
-        redirect: 'noredirect',
-        children: [
-            {
-                path: 'jqzxjk',
-                name: 'jqzxjk',
-                component: customerInfo,
-                meta: {
-                    title: '机器执行监控'
-                }
-            },
-            {
-                path: 'dsrwmrjk',
-                name: 'dsrwmrjk',
-                component: customerInfo,
-                meta: {
-                    title: '定时任务每日监控'
-                }
-            }
-        ],
-        meta: {
-            title: "监控管理"
         }
     },
     {
