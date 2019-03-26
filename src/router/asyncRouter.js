@@ -37,31 +37,31 @@ export default [
     },
 
     {
-        path: '/zcgl',
-        name: 'zcgl',
+        path: '/assetmanage',
+        name: 'assetmanage',
         component: layout,
         redirect: 'noredirect',
         children: [
 
             {
-                path: 'zclb',
-                name: 'zclb',
+                path: 'assetlist',
+                name: 'assetlist',
                 component: asset,
                 meta: {
                     title: '资产列表'
                 }
             },
             {
-                path: 'khxxlb',
-                name: 'khxxlb',
+                path: 'customerinfolist',
+                name: 'customerinfolist',
                 component: customer,
                 meta: {
                     title: '客户信息列表'
                 }
             },
             {
-                path: 'sxxxlb',
-                name: 'sxxxlb',
+                path: 'authorizationinfolist',
+                name: 'authorizationinfolist',
                 component: credit,
                 meta: {
                     title: '授信信息列表'
