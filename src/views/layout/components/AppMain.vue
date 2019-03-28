@@ -25,5 +25,6 @@
         min-height: calc(100vh - 50px);
         position: relative;
         overflow: hidden;
+        background: #eceff4;
     }
 </style>

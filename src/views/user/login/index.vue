@@ -2,7 +2,7 @@
     <div class="login-container">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
                  label-position="left">
-            <h3 class="title">资源管理系统</h3>
+            <h3 class="title">资产交易平台</h3>
             <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user"/>
@@ -30,10 +30,6 @@
                     Sign in
                 </el-button>
             </el-form-item>
-            <div class="tips">
-                <span style="margin-right:20px;">username: admin</span>
-                <span> password: admin</span>
-            </div>
         </el-form>
     </div>
 </template>

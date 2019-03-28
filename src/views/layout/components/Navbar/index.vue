@@ -8,16 +8,15 @@
                 <i class="el-icon-caret-bottom"/>
             </div>
             <el-dropdown-menu slot="dropdown" class="user-dropdown">
-                <router-link class="inlineBlock" to="/yhgl/yhxx">
-                    <el-dropdown-item>
-                        个人信息
-                    </el-dropdown-item>
-                </router-link>
+                <el-dropdown-item>
+                    <div @click="userInfoPop">个人信息</div>
+                </el-dropdown-item>
                 <el-dropdown-item divided>
-                    <span style="display:block;" @click="logout">退出登录</span>
+                    <div style="display:block;" @click="logout">退出登录</div>
                 </el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
+        <userInfoPop :dialogVisible.sync="dialogVisible"></userInfoPop>
     </div>
 </template>
 
@@ -25,11 +24,16 @@
     import {mapGetters} from 'vuex'
     import Breadcrumb from '@/components/Breadcrumb'
     import Hamburger from '@/components/Hamburger'
+    import userInfoPop from './userInfoPop'
 
     export default {
         components: {
             Breadcrumb,
-            Hamburger
+            Hamburger,
+            userInfoPop
+        },
+        data() {
+            return {dialogVisible: false}
         },
         computed: {
             ...mapGetters([
@@ -45,6 +49,9 @@
                 this.$store.dispatch('LogOut').then(() => {
                     location.reload() // 为了重新实例化vue-router对象 避免bug
                 })
+            },
+            userInfoPop() {
+                this.dialogVisible = true;
             }
         }
     }

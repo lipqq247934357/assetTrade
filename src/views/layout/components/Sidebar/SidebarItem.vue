@@ -5,7 +5,8 @@
                 v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
             <router-link :to="resolvePath(onlyOneChild.path)">
                 <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-                    <i class="el-icon-menu svg-icon"></i>
+                    <i v-if="isNest" class="el-icon-tickets svg-icon"></i>
+                    <i v-else class="el-icon-menu svg-icon"></i>
                     <span v-if="onlyOneChild.meta" slot="title">{{onlyOneChild.meta.title}}</span>
                 </el-menu-item>
             </router-link>
