@@ -1,5 +1,4 @@
-let tzcx = require('./ywtjcx/tzcx');
-let tzcxDt = require('./ywtjcx/tzcxDt');
+let channel = require('./configM/channel/channel');
 
 function mock(app) {
     /**
@@ -38,12 +37,12 @@ function mock(app) {
         });
     });
 
-    app.post('/mock/tzcx', function (req, res) {
-        res.json(tzcx);
+    app.post('/mock/channel', function (req, res) {
+        res.json(channel);
     });
 
-    app.post('/mock/tzcxDt', function (req, res) {
-        res.json(tzcxDt);
+    app.post('/mock/addChannel', function (req, res) {
+        res.json({result:"上传成功"});
     });
 }
 
