@@ -8,8 +8,9 @@ import cashProvider from '@/views/configM/cashProvider';
 import channel from '@/views/configM/channel';
 import product from '@/views/configM/product';
 import splitRules from '@/views/configM/splitRules';
-
-
+import assetlistdetails from '@/views/assetM/asset/assetlistdetails'; // 资产列表详情
+import customerdetails from '@/views/assetM/customer/customerdetails'; // 客户详情
+import creditdetails from '@/views/assetM/credit/creditdetails'; // 授信详信息情
 /**
  *
  * 配置说明：
@@ -52,11 +53,38 @@ export default [
                 }
             },
             {
+                path: 'assetlistdetails',
+                name: 'assetlistdetails',
+                hidden:true,
+                component: assetlistdetails,
+                meta: {
+                    title: '资产列表-详情'
+                },
+            },
+            {
                 path: 'customerinfolist',
                 name: 'customerinfolist',
                 component: customer,
                 meta: {
                     title: '客户信息列表'
+                }
+            },
+            {
+                path: 'customerdetails',
+                name: 'customerdetails',
+                hidden: true,
+                component: customerdetails,
+                meta: {
+                    title: '客户信息详情'
+                }
+            },
+            {
+                path: 'creditdetails',
+                name: 'creditdetails',
+                hidden: true,
+                component: creditdetails,
+                meta: {
+                    title: '授权信息详情'
                 }
             },
             {
