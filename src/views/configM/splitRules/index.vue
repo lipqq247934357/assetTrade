@@ -1,13 +1,13 @@
 <template>
     <div class="cashProvider">
-        cashProvider
+        splitRules
     </div>
 </template>
 
 <script>
 
     export default {
-        name: "cashProvider"
+        name: "splitRules"
     }
 </script>
 

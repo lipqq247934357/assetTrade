@@ -14,10 +14,9 @@ export const getRoles = (data) => {
     return post('/getRoles', data);
 };
 
-export const tzcx = (listId, custName, loanAcNo) => {
-    return post('/tzcx', {listId, custName, loanAcNo});
+export const channel = (pdNo, pdName) => {
+    return post('/channel', {pdNo, pdName});
 }
-
-export const tzcxDt = (id) => {
-    return post('/tzcxDt', {id});
+export const addChannel = (pdNo, pdName) => {
+    return post('/addChannel', {pdNo, pdName});
 }

@@ -1,16 +1,26 @@
 import layout from '../views/layout/Layout';
 import dashboard from '../views/dashboard';
+
 import asset from '@/views/assetM/asset';
+import assetlistdetails from '@/views/assetM/asset/assetlistdetails'; // 资产列表详情
+
 import credit from '@/views/assetM/credit';
+import creditdetails from '@/views/assetM/credit/creditdetails'; // 授信详信息情
+
 import customer from '@/views/assetM/customer';
+import customerdetails from '@/views/assetM/customer/customerdetails'; // 客户详情
+
+import channel from '@/views/configM/channel';// 渠道
+import addchannel from '@/views/configM/channel/addChannel';
+import updatechannel from '@/views/configM/channel/updateChannel';
+
 import cashOutput from '@/views/configM/cashOutput';
 import cashProvider from '@/views/configM/cashProvider';
-import channel from '@/views/configM/channel';
 import product from '@/views/configM/product';
 import splitRules from '@/views/configM/splitRules';
-import assetlistdetails from '@/views/assetM/asset/assetlistdetails'; // 资产列表详情
-import customerdetails from '@/views/assetM/customer/customerdetails'; // 客户详情
-import creditdetails from '@/views/assetM/credit/creditdetails'; // 授信详信息情
+
+
+
 /**
  *
  * 配置说明：
@@ -110,6 +120,24 @@ export default [
                 path: 'qdpz',
                 name: 'qdpz',
                 component: channel,
+                meta: {
+                    title: '渠道配置'
+                }
+            },
+            {
+                path: 'addqdpz',
+                name: 'addqdpz',
+                hidden: true,
+                component: addchannel,
+                meta: {
+                    title: '渠道配置'
+                }
+            },
+            {
+                path: 'updateqdpz',
+                name: 'updateqdpz',
+                hidden: true,
+                component: updatechannel,
                 meta: {
                     title: '渠道配置'
                 }
