@@ -2,10 +2,10 @@
     <div class="channel app-container">
         <!--search-->
         <div class="channel-search">
-            <div class="content-top-title">
+            <blockTitle>
                 筛选条件
-            </div>
-            <el-form :model="form" :rules="rules" ref="form" :inline="trueVal">
+            </blockTitle>
+            <el-form :model="form" :rules="rules" ref="form" inline>
                 <el-form-item prop="qdNo" label="渠道编码">
                     <el-input v-model.number="form.qdNo" placeholder="渠道编码"></el-input>
                 </el-form-item>
@@ -20,14 +20,14 @@
         </div>
         <!--table-->
         <div class="channel-content">
-            <div class="content-top-title">
+            <blockTitle>
                 资金方配置
                 <el-button type="primary" v-waves @click="add" size="mini">配置
                 </el-button>
-            </div>
+            </blockTitle>
             <div class="table-content">
                 <el-table
-                        :border="trueVal"
+                        border
                         v-loading="loading"
                         :data="data.pageData"
                         style="width: 100%"
@@ -88,11 +88,12 @@
 
     import waves from '@/directive/waves';
     import pagination from '@/components/Pagination';
+    import blockTitle from '@/components/blockTitle';
     import {channel} from "../../../api";
 
     export default {
         name: 'asset',
-        components: {pagination},
+        components: {pagination, blockTitle},
         directives: {waves},
         data() {
 
@@ -117,8 +118,7 @@
                     ]
                 },
                 loading: false,
-                data: {},
-                trueVal: true
+                data: {}
             };
         },
         created() {
@@ -180,9 +180,8 @@
 
         padding-bottom: 20px;
 
-
         .el-form {
-            margin: 0 20px 50px;
+            margin: 20px 20px 50px;
         }
 
         .el-form-item {
@@ -204,12 +203,19 @@
         margin-top: 50px;
         /*border-top: 1px solid red;*/
 
-        .el-button{
+        /*给配置按钮定位*/
+        .el-button--mini {
             margin-left: 10px;
             position: absolute !important;
             top: 5px;
-            /*padding: 9px 15px 5px 15px;*/
         }
+
+        /*给修改按钮定位*/
+        .el-button--small {
+            position: absolute !important;
+            top: 8px;
+        }
+
     }
 
 
@@ -227,26 +233,9 @@
         border-color: #409EFF !important;
     }
 
-    .content-top-title {
-        position: relative;
-        height: 40px;
-        width: 100%;
-        padding-left: 20px;
-        line-height: 38px;
-        background: #d7ecfe;
-        border-top: 2px solid #83c5fc;
-        border-radius: 2px 2px 5px 5px;
-        margin-bottom: 20px;
-        font-weight: 500;
-    }
-
     .channel-search, .channel-content {
         background: #fff;
         border-radius: 5px;
-    }
-
-    .el-table {
-        width: 95%;
     }
 
     .table-content {
