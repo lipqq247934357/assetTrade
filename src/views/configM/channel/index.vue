@@ -3,7 +3,7 @@
         <!--search-->
         <collapse class="channel-search">
             <template v-slot:title>
-                筛选条件
+                筛选条件 
             </template>
             <template>
                 <div>
@@ -184,6 +184,7 @@
 
     .channel-search {
 
+        color: #fff;
         .el-form {
             margin: 20px 20px 50px;
         }
@@ -208,6 +209,7 @@
 
     .channel-content {
         margin-top: 50px;
+        color: #fff;
         /*border-top: 1px solid red;*/
 
         /*给配置按钮定位*/
