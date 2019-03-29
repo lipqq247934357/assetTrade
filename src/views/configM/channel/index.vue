@@ -1,26 +1,30 @@
 <template>
     <div class="channel app-container">
         <!--search-->
-        <div class="channel-search">
-            <blockTitle>
+        <collapse class="channel-search">
+            <template v-slot:title>
                 筛选条件
-            </blockTitle>
-            <el-form :model="form" :rules="rules" ref="form" inline>
-                <el-form-item prop="qdNo" label="渠道编码">
-                    <el-input v-model.number="form.qdNo" placeholder="渠道编码"></el-input>
-                </el-form-item>
-                <el-form-item prop="qdName" label="渠道名称">
-                    <el-input v-model="form.qdName" placeholder="渠道名称"></el-input>
-                </el-form-item>
-            </el-form>
-            <div class="search-btn-box">
-                <el-button type="primary" v-waves @click="getInfo" icon="el-icon-search" size="medium">查询
-                </el-button>
-            </div>
-        </div>
+            </template>
+            <template>
+                <div>
+                    <el-form :model="form" :rules="rules" ref="form" inline>
+                        <el-form-item prop="qdNo" label="渠道编码">
+                            <el-input v-model.number="form.qdNo" placeholder="渠道编码"></el-input>
+                        </el-form-item>
+                        <el-form-item prop="qdName" label="渠道名称">
+                            <el-input v-model="form.qdName" placeholder="渠道名称"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <div class="search-btn-box">
+                        <el-button type="primary" v-waves @click="getInfo" icon="el-icon-search" size="medium">查询
+                        </el-button>
+                    </div>
+                </div>
+            </template>
+        </collapse>
         <!--table-->
         <div class="channel-content">
-            <blockTitle>
+            <blockTitle :hide="trueVal">
                 资金方配置
                 <el-button type="primary" v-waves @click="add" size="mini">配置
                 </el-button>
@@ -89,11 +93,12 @@
     import waves from '@/directive/waves';
     import pagination from '@/components/Pagination';
     import blockTitle from '@/components/blockTitle';
+    import collapse from '@/components/collapse';
     import {channel} from "../../../api";
 
     export default {
         name: 'asset',
-        components: {pagination, blockTitle},
+        components: {pagination, collapse,blockTitle},
         directives: {waves},
         data() {
 
@@ -118,7 +123,8 @@
                     ]
                 },
                 loading: false,
-                data: {}
+                data: {},
+                trueVal:true
             };
         },
         created() {
@@ -178,8 +184,6 @@
 
     .channel-search {
 
-        padding-bottom: 20px;
-
         .el-form {
             margin: 20px 20px 50px;
         }
@@ -190,13 +194,16 @@
 
         .el-input {
             width: 100%;
-            margin-right: 20px;
         }
 
         .search-btn-box {
             text-align: center;
         }
+    }
 
+    .channel-search, .channel-content {
+        background: #fff;
+        border-radius: 5px;
     }
 
     .channel-content {
@@ -233,10 +240,6 @@
         border-color: #409EFF !important;
     }
 
-    .channel-search, .channel-content {
-        background: #fff;
-        border-radius: 5px;
-    }
 
     .table-content {
         width: 98%;
