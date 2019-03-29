@@ -3,7 +3,7 @@
         <!--search-->
         <collapse class="channel-search">
             <template v-slot:title>
-                筛选条件 
+                筛选条件
             </template>
             <template>
                 <div>
@@ -153,12 +153,12 @@
             //     //使用删除接口，删除成功从list中删除那一段内容，并且重新获取数据
             // },
             add() { // 新增渠道
-                this.$router.push({path: '/pzgl/addqdpz', query: this.backParam()});// 跳转页面的时候将上个页面的默认值传过去
+                this.$router.push({path: '/configm/addchannel', query: this.backParam()});// 跳转页面的时候将上个页面的默认值传过去
             },
             update(item) {
                 let obj = this.backParam();
                 obj.id = item.id;
-                this.$router.push({path: "/pzgl/updateqdpz", query: obj});// 跳转页面将上个页面的默认值传过去
+                this.$router.push({path: "/configm/updatechannel", query: obj});// 跳转页面将上个页面的默认值传过去
             },
             // deleteConfirm(item) { // 删除提示框
             //     this.$confirm('您确定要删除吗？', '提示', {
@@ -184,7 +184,6 @@
 
     .channel-search {
 
-        color: #fff;
         .el-form {
             margin: 20px 20px 50px;
         }
@@ -209,7 +208,6 @@
 
     .channel-content {
         margin-top: 50px;
-        color: #fff;
         /*border-top: 1px solid red;*/
 
         /*给配置按钮定位*/

@@ -86,7 +86,7 @@
         },
         methods: {
             back() {
-                this.$router.push({name: "qdpz", params: urlParse()});
+                this.$router.push({name: "channelconfig", params: urlParse()});
             },
             submit() { //TODO 更新值
 

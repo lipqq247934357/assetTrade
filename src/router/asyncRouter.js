@@ -111,22 +111,22 @@ export default [
         }
     },
     {
-        path: '/pzgl',
-        name: 'pzgl',
+        path: '/configm',
+        name: 'configm',
         component: layout,
         redirect: 'noredirect',
         children: [
             {
-                path: 'qdpz',
-                name: 'qdpz',
+                path: 'channelconfig',
+                name: 'channelconfig',
                 component: channel,
                 meta: {
                     title: '渠道配置'
                 }
             },
             {
-                path: 'addqdpz',
-                name: 'addqdpz',
+                path: 'addchannel',
+                name: 'addchannel',
                 hidden: true,
                 component: addchannel,
                 meta: {
@@ -134,8 +134,8 @@ export default [
                 }
             },
             {
-                path: 'updateqdpz',
-                name: 'updateqdpz',
+                path: 'updatechannel',
+                name: 'updatechannel',
                 hidden: true,
                 component: updatechannel,
                 meta: {
@@ -143,32 +143,32 @@ export default [
                 }
             },
             {
-                path: 'zjfpz',
-                name: 'zjfpz',
+                path: 'cashprovider',
+                name: 'cashprovider',
                 component: cashProvider,
                 meta: {
                     title: '资金方配置'
                 }
             },
             {
-                path: 'cfgzpz',
-                name: 'cfgzpz',
+                path: 'splitrules',
+                name: 'splitrules',
                 component: splitRules,
                 meta: {
                     title: '拆分规则配置'
                 }
             },
             {
-                path: 'jrcppz',
-                name: 'jrcppz',
+                path: 'productconfig',
+                name: 'productconfig',
                 component: product,
                 meta: {
                     title: '金融产品配置'
                 }
             },
             {
-                path: 'zcscpz',
-                name: 'zcscpz',
+                path: 'cashoutput',
+                name: 'cashoutput',
                 component: cashOutput,
                 meta: {
                     title: '资产输出配置'
