@@ -76,3 +76,12 @@ a:hover {
 .app-container {
   padding: 20px;
 }
+
+
+// 必选样式
+
+.must-choose:before {
+  content: "*";
+  color: #f56c6c;
+  margin-right: 4px;
+}
