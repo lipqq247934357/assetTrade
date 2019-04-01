@@ -1,5 +1,5 @@
 <template>
-    <div class="customer">
+    <div class="customer channel app-container">
         <!--搜索-->
         <div class="search">
             <collapse class="channel-search">
@@ -9,7 +9,7 @@
                 <template>
                     <div>
                         <el-form :model="form" ref="form" inline>
-                            <el-form-item prop="qdNo" label="渠道" class="aa">
+                            <el-form-item prop="qdNo" label="渠道">
                                 <el-input placeholder="请输入渠道"></el-input>
                             </el-form-item>
 
@@ -38,7 +38,7 @@
                         <div class="search-btn-box">
                             <el-button type="primary" v-waves @click="getInfo" icon="el-icon-search" size="medium">查询
                             </el-button>
-                            <el-button type="primary" v-waves @click="getInfo" icon="el-icon-warning" size="medium">重置
+                            <el-button type="primary" v-waves @click="getInfo" icon="el-icon-refresh" size="medium">重置
                             </el-button>
                         </div>
                     </div>

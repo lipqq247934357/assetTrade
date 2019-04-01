@@ -1,5 +1,5 @@
 <template>
-    <div class="asset">
+    <div class="asset channel app-container">
         <!--搜索-->
         <div class="search">
             <collapse class="channel-search">
@@ -40,7 +40,7 @@
                         <div class="search-btn-box">
                             <el-button type="primary" v-waves @click="getInfo" icon="el-icon-search" size="medium">查询
                             </el-button>
-                            <el-button type="primary" v-waves @click="getInfo" icon="el-icon-warning" size="medium">重置
+                            <el-button type="primary" v-waves @click="getInfo" icon="el-icon-refresh" size="medium">重置
                             </el-button>
                         </div>
                     </div>
