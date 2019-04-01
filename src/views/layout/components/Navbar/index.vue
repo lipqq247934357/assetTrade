@@ -8,11 +8,11 @@
                 <i class="el-icon-caret-bottom"/>
             </div>
             <el-dropdown-menu slot="dropdown" class="user-dropdown">
-                <el-dropdown-item>
-                    <div @click="userInfoPop">个人信息</div>
+                <el-dropdown-item @click.native="userInfoPop">
+                    <div>个人信息</div>
                 </el-dropdown-item>
-                <el-dropdown-item divided>
-                    <div style="display:block;" @click="logout">退出登录</div>
+                <el-dropdown-item @click.native="logout" divided>
+                    <div style="display:block;">退出登录</div>
                 </el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
