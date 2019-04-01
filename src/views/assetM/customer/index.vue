@@ -2,7 +2,7 @@
     <div class="customer">
         <!--搜索-->
         <div class="search">
-            <h2>筛选条件</h2>
+            <!-- <h2>筛选条件</h2>
             <el-input placeholder="订单号" />
             <el-input placeholder="身份证号" />
             <el-button
@@ -11,7 +11,47 @@
                 type="primary"
                 icon="el-icon-search" @click="search">
                 查询
-            </el-button>
+            </el-button> -->
+            <collapse class="channel-search">
+                <template v-slot:title>
+                    筛选条件
+                </template>
+                <template>
+                    <div>
+                        <el-form :model="form" ref="form" inline>
+                            <el-form-item prop="qdNo" label="渠道" class="aa">
+                                <el-input placeholder="请输入渠道"></el-input>
+                            </el-form-item>
+
+                            <el-form-item prop="qdName" label="借款人姓名">
+                                <el-input placeholder="请输入借款人姓名"></el-input>
+                            </el-form-item>
+                            <el-form-item prop="qdName" label="身份证号">
+                                <el-input placeholder="请输入身份证号"></el-input>
+                            </el-form-item>
+                            <el-form-item prop="qdName" label="申请日期">
+                                <el-date-picker
+                                    v-model="value1"
+                                    class="datetime"
+                                    type="date"
+                                    placeholder="选择日期">
+                               </el-date-picker>
+                               -
+                               <el-date-picker
+                                   v-model="value1"
+                                   class="datetime"
+                                   type="date"
+                                   placeholder="选择日期">
+                              </el-date-picker>
+                          </el-form-item>
+                        </el-form>
+                        <div class="search-btn-box">
+                            <el-button type="primary" v-waves @click="getInfo" icon="el-icon-search" size="medium">查询
+                            </el-button>
+                        </div>
+                    </div>
+                </template>
+            </collapse>
         </div>
 
         <h3>资产列表</h3>
@@ -103,10 +143,17 @@
 import waves from '@/directive/waves';
 import pagination from '@/components/Pagination';
 import {tzcx, tzcxDt} from '@/api';
+
+import blockTitle from '@/components/blockTitle';
+import collapse from '@/components/collapse';
     export default {
-        name: "customer",
+        name: 'asset',
+        components: {
+            pagination,
+            collapse,
+            blockTitle
+        },
         directives: {waves},
-        components: {pagination},
         data() {
             return {
                 loading: false,
@@ -115,14 +162,22 @@ import {tzcx, tzcxDt} from '@/api';
                 total: 0,
                 pageData: [], // 表格数据
                 dialogTableVisible: false,
-                popTableData: []
+                popTableData: [],
+                form: {
+                    qdNo: '',
+                    qdName: '',
+                },
+                value1: '', //日期控件
             }
         },
         created() {
-            this.list();
+            // this.list();
         },
         methods: {
             search() {
+
+            },
+            getInfo() {
 
             },
             pagesearch(val) {
@@ -164,28 +219,37 @@ import {tzcx, tzcxDt} from '@/api';
     background: #409EFF;
     color: #fff;
     padding: 10px;
+    margin-bottom: 0;
 }
-.search {
-    border-top: 2px solid #409EFF;
-    border-bottom: 2px solid #409EFF;
-    padding: 0px 0 10px 0;
-    margin-top: 10px;
-    h2 {
-        background: #409EFF;
-        color: #fff;
-        margin: 0 0 20px 0;
-        padding: 10px;
-        font-size: 18px;
+.channel-search {
+    .el-form {
+        margin: 20px 20px 50px;
+    }
+    .el-form-item {
+        width: 30%;
+        &:last-child {
+            width: 60%;
+        }
+
+    }
+    .el-form--inline .el-form-item__content {
+        width: 250px;
     }
     .el-input {
-        margin: 20px 0 0 35px;
-        width: 20%;
+        width: 100%;
     }
-
-    .el-button {
-        display: block;
-        margin: 50px auto 10px;
+    .search-btn-box {
+        text-align: center;
+    }
+    .el-form-item__content {
+        width: 100%;
+    }
+    .el-date-editor--date {
+        display: inline-block;
+    }
+    .datetime {
+        display: inline-block;
+        width: 180px;
     }
 }
-
 </style>

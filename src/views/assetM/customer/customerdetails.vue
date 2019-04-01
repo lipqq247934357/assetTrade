@@ -2,80 +2,83 @@
     <div class="details">
         <h3>客户详情</h3>
         <!-- 列表详情 -->
-        <ul>
-            <li>
-                <span>渠道</span>
-                <span>{{details.channel}}</span>
-            </li>
-            <li>
-                <span>借款人姓名</span>
-                <span>{{details.code}}</span>
-            </li>
-            <li>
-                <span>借款人编号</span>
-                <span>{{details.number}}</span>
-            </li>
-            <li>
-                <span>证件号码</span>
-                <span>{{details.product}}</span>
-            </li>
-            <li>
-                <span>证件类型</span>
-                <span>{{details.name}}</span>
-            </li>
-            <li>
-                <span>通讯地址</span>
-                <span>{{details.idcode}}</span>
-            </li>
-            <li>
-                <span>联系电话</span>
-                <span>{{details.mode}}</span>
-            </li>
-            <li>
-                <span>婚姻状况</span>
-                <span>{{details.money}}</span>
-            </li>
-            <li>
-                <span>性别</span>
-                <span>{{details.rate}}</span>
-            </li>
-            <li>
-                <span>最高学位</span>
-                <span>{{details.balance}}</span>
-            </li>
-            <li>
-                <span>最高学历</span>
-                <span>{{details.deadline}}</span>
-            </li>
-            <li>
-                <span>单位地址</span>
-                <span>{{details.loanday}}</span>
-            </li>
-            <li>
-                <span>单位名称</span>
-                <span>{{details.expireday}}</span>
-            </li>
-            <li>
-                <span>个人月收入</span>
-                <span>{{details.deadline}}</span>
-            </li>
-            <li>
-                <span>单位电话</span>
-                <span>{{details.beginrate}}</span>
-            </li>
-            <li>
-                <span>配偶姓名</span>
-                <span>{{details.splitproportion}}</span>
-            </li>
-            <li>
-                <span>配偶证件类型</span>
-                <span>{{details.provide}}</span>
-            </li>
-            <li>
-                <span>配偶联系电话</span>
-                <span>{{details.provide}}</span>
-            </li>
-        </ul>
+        <div class="detailslist">
+            <ul>
+                <li>
+                    <span>渠道</span>
+                    <span>{{details.channel}}</span>
+                </li>
+                <li>
+                    <span>借款人姓名</span>
+                    <span>{{details.code}}</span>
+                </li>
+                <li>
+                    <span>借款人编号</span>
+                    <span>{{details.number}}</span>
+                </li>
+                <li>
+                    <span>证件号码</span>
+                    <span>{{details.product}}</span>
+                </li>
+                <li>
+                    <span>证件类型</span>
+                    <span>{{details.name}}</span>
+                </li>
+                <li>
+                    <span>通讯地址</span>
+                    <span>{{details.idcode}}</span>
+                </li>
+                <li>
+                    <span>联系电话</span>
+                    <span>{{details.mode}}</span>
+                </li>
+                <li>
+                    <span>婚姻状况</span>
+                    <span>{{details.money}}</span>
+                </li>
+                <li>
+                    <span>性别</span>
+                    <span>{{details.rate}}</span>
+                </li>
+                <li>
+                    <span>最高学位</span>
+                    <span>{{details.balance}}</span>
+                </li>
+                <li>
+                    <span>最高学历</span>
+                    <span>{{details.deadline}}</span>
+                </li>
+                <li>
+                    <span>单位地址</span>
+                    <span>{{details.loanday}}</span>
+                </li>
+                <li>
+                    <span>单位名称</span>
+                    <span>{{details.expireday}}</span>
+                </li>
+                <li>
+                    <span>个人月收入</span>
+                    <span>{{details.deadline}}</span>
+                </li>
+                <li>
+                    <span>单位电话</span>
+                    <span>{{details.beginrate}}</span>
+                </li>
+                <li>
+                    <span>配偶姓名</span>
+                    <span>{{details.splitproportion}}</span>
+                </li>
+                <li>
+                    <span>配偶证件类型</span>
+                    <span>{{details.provide}}</span>
+                </li>
+                <li>
+                    <span>配偶联系电话</span>
+                    <span>{{details.provide}}</span>
+                </li>
+            </ul>
+        </div>
+
     </div>
 </template>
 
@@ -114,31 +117,41 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-    .details {
-        h3 {
-            font-size: 18px;
-            color: #909399;
-            margin-left: 10px;
-            padding-bottom: 10px;
-        }
+.details {
+    h3 {
+        font-size: 18px;
+        color: #909399;
+        margin-left: 10px;
+        padding-bottom: 10px;
+    }
+    .detailslist {
+        width: 98%;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px 0px;
+        border-radius: 5px;
+        border-top: 2px solid #43b9e2;
         ul {
-            width: 90%;
+            width: 95%;
             margin: 0 auto 20px;
             border: 1px solid #909399;
             padding: 0;
             li {
                 list-style: none;
-                height: 50px;
-                line-height: 50px;
+                height: 30px;
+                line-height: 30px;
                 border-bottom: 1px solid #909399;
+                border-right: 1px solid #909399;
                 color: #909399;
-                width: 100%;
+                width: 50%;
+                display: inline-block;
                 text-align: center;
+                font-size: 14px;
                 &:last-child {
-                    border: 0;
+                    border-bottom: 0;
                 }
                 &:nth-child(even) {
-                    background: #f5f7fa;
+                    border-right: 0;
                 }
                 span {
                     width: 30%;
@@ -152,4 +165,5 @@ export default {
             }
         }
     }
+}
 </style>

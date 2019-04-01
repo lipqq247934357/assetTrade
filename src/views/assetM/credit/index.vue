@@ -1,7 +1,7 @@
 <template>
     <div class="credit">
         <div class="search">
-            <h2>筛选条件</h2>
+            <!-- <h2>筛选条件</h2>
             <el-input placeholder="渠道" v-model="params.listId"/>
             <el-input placeholder="借款人姓名" v-model="params.custName"/>
             <el-input placeholder="身份证号" v-model="params.loanAcNo"/>
@@ -11,9 +11,30 @@
                 type="primary"
                 icon="el-icon-search" @click="search">
                 查询
-            </el-button>
+            </el-button> -->
             <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-edit" @click="handleClick">add
             </el-button> -->
+            <collapse class="channel-search">
+                <template v-slot:title>
+                    筛选条件
+                </template>
+                <template>
+                    <div>
+                        <el-form :model="form" ref="form" inline>
+                            <el-form-item prop="qdNo" label="姓名" class="aa">
+                                <el-input placeholder="请输入姓名"></el-input>
+                            </el-form-item>
+                            <el-form-item prop="qdName" label="身份证号">
+                                <el-input placeholder="请输入身份证号"></el-input>
+                            </el-form-item>
+                        </el-form>
+                        <div class="search-btn-box">
+                            <el-button type="primary" v-waves @click="getInfo" icon="el-icon-search" size="medium">查询
+                            </el-button>
+                        </div>
+                    </div>
+                </template>
+            </collapse>
         </div>
         <h3>资产列表</h3>
         <div class="content">
@@ -106,10 +127,18 @@
     import pagination from '@/components/Pagination';
     import {tzcx, tzcxDt} from '@/api';
 
+    import blockTitle from '@/components/blockTitle';
+    import collapse from '@/components/collapse';
     export default {
         name: 'asset',
-        components: {pagination},
-        directives: {waves},
+        components: {
+            pagination,
+            collapse,
+            blockTitle
+        },
+        directives: {
+            waves
+        },
         data() {
             return {
                 params: {
@@ -124,13 +153,20 @@
                 pageData: [], // 表格数据
                 dialogTableVisible: false,
                 popTableData: [],
+                form: {
+                    qdNo: '',
+                    qdName: '',
+                }
             }
         },
         created() {
-            this.search();
+            // this.search();
         },
         methods: {
             valid() {// 校验用户输入的数据是否满足条件
+
+            },
+            getInfo() {
 
             },
             async search() {
@@ -152,7 +188,7 @@
                 // this.dialogTableVisible = true;
 
                 this.$router.push({
-                name: 'assetlistdetails',
+                name: 'creditdetails',
                     query: { // 数据传递
 
                     }
@@ -172,27 +208,37 @@
     background: #409EFF;
     color: #fff;
     padding: 10px;
+    margin-bottom: 0;
 }
-.search {
-    border-top: 2px solid #409EFF;
-    border-bottom: 2px solid #409EFF;
-    padding: 0px 0 10px 0;
-    margin-top: 10px;
-    h2 {
-        background: #409EFF;
-        color: #fff;
-        margin: 0 0 20px 0;
-        padding: 10px;
-        font-size: 18px;
+.channel-search {
+    .el-form {
+        margin: 20px 20px 50px;
+    }
+    .el-form-item {
+        width: 30%;
+        &:last-child {
+            width: 60%;
+        }
+
+    }
+    .el-form--inline .el-form-item__content {
+        width: 250px;
     }
     .el-input {
-        margin: 20px 0 0 35px;
-        width: 20%;
+        width: 100%;
     }
-
-    .el-button {
-        display: block;
-        margin: 50px auto 10px;
+    .search-btn-box {
+        text-align: center;
+    }
+    .el-form-item__content {
+        width: 100%;
+    }
+    .el-date-editor--date {
+        display: inline-block;
+    }
+    .datetime {
+        display: inline-block;
+        width: 180px;
     }
 }
 </style>

@@ -69,10 +69,16 @@ a:hover {
 }
 
 //main-container全局样式
+.search {
+    background: #fff;
+}
 .app-main {
   min-height: 100%
 }
 
 .app-container {
   padding: 20px;
+}
+.channel-search .el-form-item__label {
+    width: 100px;
 }
