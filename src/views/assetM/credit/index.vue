@@ -247,4 +247,11 @@
         top: 8px;
     }
 }
+.search-btn-box {
+    text-align: center;
+    .el-button {
+        margin:0 25px;
+    }
+}
+
 </style>
