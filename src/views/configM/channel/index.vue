@@ -18,7 +18,7 @@
                     <div class="search-btn-box">
                         <el-button type="primary" v-waves @click="getInfo" icon="el-icon-search" size="medium">查询
                         </el-button>
-                        <el-button type="primary" v-waves @click="resetForm('form')" icon="el-icon-search" size="medium">重置
+`                        <el-button type="primary" v-waves @click="resetForm('form')" icon="el-icon-refresh" size="medium">重置
                         </el-button>
 
                     </div>
