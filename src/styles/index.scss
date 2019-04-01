@@ -69,8 +69,6 @@ a:hover {
 }
 
 //main-container全局样式
-`
-
 .search {
     background: #fff;
 }
@@ -81,6 +79,10 @@ a:hover {
 .app-container {
   padding: 20px;
 }
+.channel-search .el-form-item__label {
+    width: 100px;
+}
+
 
 // 必选样式
 
@@ -88,8 +90,4 @@ a:hover {
   content: "*";
   color: #f56c6c;
   margin-right: 4px;
-}
-
-.channel-search .el-form-item__label {
-  width: 100px;
 }
