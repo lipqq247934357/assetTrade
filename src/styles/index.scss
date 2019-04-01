@@ -82,3 +82,12 @@ a:hover {
 .channel-search .el-form-item__label {
     width: 100px;
 }
+
+
+// 必选样式
+
+.must-choose:before {
+  content: "*";
+  color: #f56c6c;
+  margin-right: 4px;
+}

@@ -1,4 +1,5 @@
-const elTransition = '0.3s height ease-in-out, 0.3s padding-top ease-in-out, 0.3s padding-bottom ease-in-out'
+const elTransition = '0.3s height linear'
+// const elTransition = '0.3s height linear, 0.3s padding-top linear, 0.3s padding-bottom linear'
 const Transition = {
     'before-enter' (el) {
         el.style.transition = elTransition

@@ -3,7 +3,7 @@
         <slot></slot>
         <div v-if="hide !== true">
             <i v-if="isActive" class="el-icon-arrow-down"></i>
-            <i v-else class="el-icon-arrow-right"></i>
+            <i v-else class="el-icon-arrow-down rotate90"></i>
         </div>
     </div>
 </template>
@@ -34,5 +34,14 @@
         right: 10px;
         top: 10px;
     }
+
+    .el-icon-arrow-down {
+        transition: transform .3s;
+    }
+
+    .rotate90 {
+        transform: rotateZ(-90deg);
+    }
+
 
 </style>

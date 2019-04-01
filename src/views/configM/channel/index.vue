@@ -18,6 +18,9 @@
                     <div class="search-btn-box">
                         <el-button type="primary" v-waves @click="getInfo" icon="el-icon-search" size="medium">查询
                         </el-button>
+                        <el-button type="primary" v-waves @click="resetForm('form')" icon="el-icon-search" size="medium">重置
+                        </el-button>
+
                     </div>
                 </div>
             </template>
@@ -98,7 +101,7 @@
 
     export default {
         name: 'asset',
-        components: {pagination, collapse,blockTitle},
+        components: {pagination, collapse, blockTitle},
         directives: {waves},
         data() {
 
@@ -124,7 +127,7 @@
                 },
                 loading: false,
                 data: {},
-                trueVal:true
+                trueVal: true
             };
         },
         created() {
@@ -149,17 +152,24 @@
                     }
                 });
             },
-            // async delete(id) { //删除
-            //     //使用删除接口，删除成功从list中删除那一段内容，并且重新获取数据
-            // },
             add() { // 新增渠道
                 this.$router.push({path: '/configm/addchannel', query: this.backParam()});// 跳转页面的时候将上个页面的默认值传过去
             },
-            update(item) {
+            update(row) {
+                console.log(row);
                 let obj = this.backParam();
-                obj.id = item.id;
-                this.$router.push({path: "/configm/updatechannel", query: obj});// 跳转页面将上个页面的默认值传过去
+                obj.updateId = row.id;
+                this.$router.push({path: "/configm/addchannel", query: obj});// 跳转页面将上个页面的默认值传过去
             },
+            backParam() { // 页面返回的话需要的默认参数
+                let obj = {};
+                if (this.form.qdNo) obj.qdNo = this.form.qdNo;
+                if (this.form.qdName) obj.qdName = this.form.qdName;
+                return obj;
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            }
             // deleteConfirm(item) { // 删除提示框
             //     this.$confirm('您确定要删除吗？', '提示', {
             //         confirmButtonText: '确定',
@@ -170,12 +180,9 @@
             //     }).catch(() => {// 关闭弹框，不删除
             //     });
             // },
-            backParam() { // 页面返回的话需要的默认参数
-                let obj = {};
-                if (this.form.qdNo) obj.qdNo = this.form.qdNo;
-                if (this.form.qdName) obj.qdName = this.form.qdName;
-                return obj;
-            }
+            // async delete(id) { //删除
+            //     //使用删除接口，删除成功从list中删除那一段内容，并且重新获取数据
+            // }
         }
     }
 </script>
@@ -189,7 +196,7 @@
         }
 
         .el-form-item {
-            width: 30%;
+            width: 32%;
         }
 
         .el-input {
@@ -198,6 +205,9 @@
 
         .search-btn-box {
             text-align: center;
+            .el-button {
+                margin:0 25px;
+            }
         }
     }
 
@@ -222,7 +232,6 @@
             position: absolute !important;
             top: 8px;
         }
-
     }
 
 
