@@ -2,20 +2,6 @@
     <div class="asset">
         <!--搜索-->
         <div class="search">
-            <!-- <h2>筛选条件</h2>
-            <el-input placeholder="借据编号" v-model="params.listId"/>
-            <el-input placeholder="借款人姓名" v-model="params.custName"/>
-            <el-input placeholder="贷款账号" v-model="params.loanAcNo"/>
-            <el-button
-                v-waves
-                class="filter-item"
-                type="primary"
-                icon="el-icon-search" @click="search">
-                查询
-            </el-button> -->
-            <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-edit" @click="handleClick">add
-            </el-button> -->
-            <!--search-->
             <collapse class="channel-search">
                 <template v-slot:title>
                     筛选条件
@@ -54,124 +40,127 @@
                         <div class="search-btn-box">
                             <el-button type="primary" v-waves @click="getInfo" icon="el-icon-search" size="medium">查询
                             </el-button>
+                            <el-button type="primary" v-waves @click="getInfo" icon="el-icon-warning" size="medium">重置
+                            </el-button>
                         </div>
                     </div>
                 </template>
             </collapse>
         </div>
         <!--表格-->
-        <h3>资产列表</h3>
-        <div class="content">
-            <el-table
-                v-loading="loading"
-                :data="pageData"
-                size="small"
-                class="listtable"
-                border
-                >
-                <el-table-column
-                    prop="channel"
-                    label="渠道"
-                    >
-                </el-table-column>
-                <el-table-column
-                    prop="code"
-                    label="借据编码"
-                    >
-                </el-table-column>
-                <el-table-column
-                    prop="number"
-                    label="借据人编号"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="name"
-                    label="借款人姓名"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="money"
-                    label="借款金额"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="mode"
-                    label="还款方式"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="rate"
-                    label="日利率"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="balance"
-                    label="贷款余额"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="deadline"
-                    label="还款期限"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="loanday"
-                    label="放款日"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="expireday"
-                    label="到期日"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="beginrate"
-                    label="起息日"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="splitmode"
-                    label="拆分方式"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="splitproportion"
-                    label="拆分比例"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="provide"
-                    label="出资方"
-                >
-                </el-table-column>
-                <el-table-column
-                    label="操作"
-                    >
-                    <template slot-scope="scope">
-                        <el-button
-                            @click="handleClick(scope.row)"
-                            type="text"
-                            size="normal"
-                            style="width: 80px;">
-                            查看详情
-                        </el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
+        <div class="channel-content">
+            <blockTitle :hide="trueVal">
+                资产列表
+                </el-button>
+            </blockTitle>
+            <div class="table-content">
+                <el-table
+                        border
+                        size="small"
+                        v-loading="loading"
+                        :data="data.pageData"
+                        style="width: 100%"
+                        header-cell-class-name="header-cell-class-name">
+                    <el-table-column
+                            prop="qdNo"
+                            label="渠道">
+                    </el-table-column>
+                    <el-table-column
+                            prop="qdName"
+                            label="借据编码">
+                    </el-table-column>
+                    <el-table-column
+                            prop="qdType"
+                            label="金融产品">
+                    </el-table-column>
+                    <el-table-column
+                            prop="creator"
+                            label="借据人编号">
+                    </el-table-column>
+                    <el-table-column
+                            prop="createTime"
+                            label="借据人姓名">
+                    </el-table-column>
+                    <el-table-column
+                            prop="updateUser"
+                            label="身份证号">
+                    </el-table-column>
+                    <el-table-column
+                            prop="updateTime"
+                            label="借款金额">
+                    </el-table-column>
+                    <el-table-column
+                            prop="updateTime"
+                            label="还款方式">
+                    </el-table-column>
+                    <el-table-column
+                            prop="updateTime"
+                            label="日利率">
+                    </el-table-column>
+                    <el-table-column
+                            prop="updateTime"
+                            label="贷款余额">
+                    </el-table-column>
+                    <el-table-column
+                            prop="updateTime"
+                            label="还款期限">
+                    </el-table-column>
+                    <el-table-column
+                            prop="updateTime"
+                            label="放款日">
+                    </el-table-column>
+                    <el-table-column
+                            prop="updateTime"
+                            label="到期日">
+                    </el-table-column>
+                    <el-table-column
+                            prop="updateTime"
+                            label="起息日">
+                    </el-table-column>
+                    <el-table-column
+                            prop="updateTime"
+                            label="拆分方式">
+                    </el-table-column>
+                    <el-table-column
+                            prop="updateTime"
+                            label="拆分比例">
+                    </el-table-column>
+                    <el-table-column
+                            prop="updateTime"
+                            label="出资方">
+                    </el-table-column>
+                    <el-table-column
+                            label="操作">
+                        <template slot-scope="scope">
+                            <el-table-column
+                                label="操作"
+                                >
+                                <template slot-scope="scope">
+                                    <el-button
+                                        @click="handleClick(scope.row)"
+                                        type="text"
+                                        size="normal"
+                                        style="width: 80px;">
+                                        查看详情
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <!--pagination-->
+            <div class="pagination">
+                <pagination v-if="data.total"
+                            :page.sync="data.currentPage"
+                            :page-sizes="[10,20,30,50]"
+                            :limit.sync="data.pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="data.total"
+                            @pagination="getInfo"
+                ></pagination>
+            </div>
         </div>
-        <!--分页-->
-        <div class="pagination">
-            <pagination
-                :page.sync="currentPage"
-                :page-sizes="[10,20,30,50]"
-                :limit.sync="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="total"
-                @pagination="pagesearch"
-            >
-            </pagination>
-        </div>
-        <!-- 分页end -->
     </div>
 </template>
 
@@ -207,6 +196,8 @@
                     qdName: '',
                 },
                 value1: '', //日期控件
+                trueVal: true,
+                data: {},
             }
         },
         created() {
@@ -314,10 +305,12 @@
     //     margin: 20px 0 0 35px;
     //     width: 20%;
     // }
-
+    .search-btn-box {
+        width: 200px;
+        margin: 0 auto;
+    }
     .el-button {
-        display: block;
-        margin: 50px auto 10px;
+        display: inline-block;
     }
 }
 

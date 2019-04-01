@@ -2,16 +2,6 @@
     <div class="customer">
         <!--搜索-->
         <div class="search">
-            <!-- <h2>筛选条件</h2>
-            <el-input placeholder="订单号" />
-            <el-input placeholder="身份证号" />
-            <el-button
-                v-waves
-                class="filter-item"
-                type="primary"
-                icon="el-icon-search" @click="search">
-                查询
-            </el-button> -->
             <collapse class="channel-search">
                 <template v-slot:title>
                     筛选条件
@@ -48,80 +38,87 @@
                         <div class="search-btn-box">
                             <el-button type="primary" v-waves @click="getInfo" icon="el-icon-search" size="medium">查询
                             </el-button>
+                            <el-button type="primary" v-waves @click="getInfo" icon="el-icon-warning" size="medium">重置
+                            </el-button>
                         </div>
                     </div>
                 </template>
             </collapse>
         </div>
 
-        <h3>资产列表</h3>
-        <div class="content">
-            <el-table
-                v-loading="loading"
-                :data="pageData"
-                size="small"
-                class="listtable"
-                border
-                >
-                <el-table-column
-                    prop="channel"
-                    label="渠道"
+        <div class="channel-content">
+            <blockTitle :hide="trueVal">
+                客户信息列表
+                </el-button>
+            </blockTitle>
+            <div class="table-content">
+                <el-table
+                    v-loading="loading"
+                    :data="pageData"
+                    size="small"
+                    class="listtable"
+                    border
                     >
-                </el-table-column>
-                <el-table-column
-                    prop="number"
-                    label="借据人编号"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="name"
-                    label="借款人姓名"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="money"
-                    label="身份证"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="mode"
-                    label="证件号码"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="rate"
-                    label="性别"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="balance"
-                    label="联系电话"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="deadline"
-                    label="通讯地址"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="loanday"
-                    label="创建时间"
-                >
-                </el-table-column>
-                <el-table-column
-                    label="操作"
+                    <el-table-column
+                        prop="channel"
+                        label="渠道"
+                        >
+                    </el-table-column>
+                    <el-table-column
+                        prop="number"
+                        label="借据人编号"
                     >
-                    <template slot-scope="scope">
-                        <el-button
-                            @click="handleClick(scope.row)"
-                            type="text"
-                            size="normal"
-                            style="width: 80px;">
-                            查看详情
-                        </el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
+                    </el-table-column>
+                    <el-table-column
+                        prop="name"
+                        label="借款人姓名"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        prop="money"
+                        label="身份证"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        prop="mode"
+                        label="证件号码"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        prop="rate"
+                        label="性别"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        prop="balance"
+                        label="联系电话"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        prop="deadline"
+                        label="通讯地址"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        prop="loanday"
+                        label="创建时间"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        label="操作"
+                        >
+                        <template slot-scope="scope">
+                            <el-button
+                                @click="handleClick(scope.row)"
+                                type="text"
+                                size="normal"
+                                style="width: 80px;">
+                                查看详情
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
         </div>
         <!--分页-->
         <div class="pagination">
@@ -168,6 +165,7 @@ import collapse from '@/components/collapse';
                     qdName: '',
                 },
                 value1: '', //日期控件
+                trueVal: true,
             }
         },
         created() {

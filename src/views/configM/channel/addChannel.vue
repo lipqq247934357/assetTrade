@@ -81,7 +81,10 @@
         },
         methods: {
             back() {
-                this.$router.push({name: "channelconfig", params: urlParse()});
+                this.$router.push({
+                    name: "channelconfig",
+                    params: urlParse()
+                });
             },
             submit(formName) {
                 this.$refs[formName].validate((valid) => {
