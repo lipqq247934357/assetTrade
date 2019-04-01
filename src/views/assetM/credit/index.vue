@@ -230,4 +230,21 @@
         width: 180px;
     }
 }
+.channel-content {
+    margin-top: 50px;
+    /*border-top: 1px solid red;*/
+
+    /*给配置按钮定位*/
+    .el-button--mini {
+        margin-left: 10px;
+        position: absolute !important;
+        top: 5px;
+    }
+
+    /*给修改按钮定位*/
+    .el-button--small {
+        position: absolute !important;
+        top: 8px;
+    }
+}
 </style>

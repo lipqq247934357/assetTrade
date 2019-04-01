@@ -290,7 +290,6 @@
 }
 .search {
     border-top: 2px solid #409EFF;
-    border-bottom: 2px solid #409EFF;
     padding: 0px 0 10px 0;
     margin-top: 10px;
     background: #fff;
@@ -300,17 +299,6 @@
         margin: 0 0 20px 0;
         padding: 10px;
         font-size: 18px;
-    }
-    // .el-input {
-    //     margin: 20px 0 0 35px;
-    //     width: 20%;
-    // }
-    .search-btn-box {
-        width: 200px;
-        margin: 0 auto;
-    }
-    .el-button {
-        display: inline-block;
     }
 }
 
@@ -332,5 +320,21 @@
     left: 10%;
     right: 10%;
 }
+.channel-content {
+    margin-top: 50px;
+    /*border-top: 1px solid red;*/
 
+    /*给配置按钮定位*/
+    .el-button--mini {
+        margin-left: 10px;
+        position: absolute !important;
+        top: 5px;
+    }
+
+    /*给修改按钮定位*/
+    .el-button--small {
+        position: absolute !important;
+        top: 8px;
+    }
+}
 </style>
