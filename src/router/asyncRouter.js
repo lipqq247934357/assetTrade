@@ -1,23 +1,39 @@
 import layout from '../views/layout/Layout';
 import dashboard from '../views/dashboard';
-
+/**
+ * 资产管理
+ */
+// 资产
 import asset from '@/views/assetM/asset';
-import assetlistdetails from '@/views/assetM/asset/assetlistdetails'; // 资产列表详情
-
-import credit from '@/views/assetM/credit';
-import creditdetails from '@/views/assetM/credit/creditdetails'; // 授信详信息情
-
+import assetlistdetails from '@/views/assetM/asset/assetlistdetails';
+//客户信息
 import customer from '@/views/assetM/customer';
-import customerdetails from '@/views/assetM/customer/customerdetails'; // 客户详情
+import customerdetails from '@/views/assetM/customer/customerdetails';
+//授权信息
+import credit from '@/views/assetM/credit';
+import creditdetails from '@/views/assetM/credit/creditdetails';
 
+/**
+ * 配置管理
+ */
+//渠道配置
 import channel from '@/views/configM/channel';// 渠道
-import addchannel from '@/views/configM/channel/addChannel';
-
-import cashOutput from '@/views/configM/cashOutput';
-import outputDetail from '@/views/configM/cashOutput/outputDetail';
+import editChannel from '@/views/configM/channel/editChannel';
+//资金方配置
 import cashProvider from '@/views/configM/cashProvider';
+import editCashProvider from '@/views/configM/cashProvider/editCashProvider';
+//拆分规则配置
 import product from '@/views/configM/product';
+import editProduct from '@/views/configM/product/editProduct';
+//金融产品配置
 import splitRules from '@/views/configM/splitRules';
+import editSplitRules from '@/views/configM/splitRules/editSplitRules';
+//资产输出配置
+import cashOutput from '@/views/configM/cashOutput';
+import editCashOutput from '@/views/configM/cashOutput/editCashOutput';
+//资产输出明细配置
+import outputDetail from '@/views/configM/cashOutput/outputDetail';
+import editOutputDetail from '@/views/configM/cashOutput/outputDetail/editOutputDetail';
 
 
 /**
@@ -116,8 +132,8 @@ export default [
         redirect: 'noredirect',
         children: [
             {
-                path: 'channelconfig',
-                name: 'channelconfig',
+                path: 'channel',
+                name: 'channel',
                 component: channel,
                 meta: {
                     title: '渠道配置'
@@ -127,7 +143,7 @@ export default [
                 path: 'addchannel',
                 name: 'addchannel',
                 hidden: true,
-                component: addchannel,
+                component: editChannel,
                 meta: {
                     title: '渠道配置'
                 }
@@ -136,7 +152,7 @@ export default [
                 path: 'updatechannel',
                 name: 'updatechannel',
                 hidden: true,
-                component: addchannel,
+                component: editChannel,
                 meta: {
                     title: '渠道配置'
                 }
@@ -150,6 +166,24 @@ export default [
                 }
             },
             {
+                path: 'addprovider',
+                name: 'addprovider',
+                hidden: true,
+                component: editCashProvider,
+                meta: {
+                    title: '资金方配置'
+                }
+            },
+            {
+                path: 'updateprovider',
+                name: 'updateprovider',
+                hidden: true,
+                component: editCashProvider,
+                meta: {
+                    title: '资金方配置'
+                }
+            },
+            {
                 path: 'splitrules',
                 name: 'splitrules',
                 component: splitRules,
@@ -158,9 +192,45 @@ export default [
                 }
             },
             {
-                path: 'productconfig',
-                name: 'productconfig',
+                path: 'addsplitrules',
+                name: 'addsplitrules',
+                hidden: true,
+                component: editSplitRules,
+                meta: {
+                    title: '拆分规则配置'
+                }
+            },
+            {
+                path: 'updatesplitrules',
+                name: 'updatesplitrules',
+                hidden: true,
+                component: editSplitRules,
+                meta: {
+                    title: '拆分规则配置'
+                }
+            },
+            {
+                path: 'product',
+                name: 'product',
                 component: product,
+                meta: {
+                    title: '金融产品配置'
+                }
+            },
+            {
+                path: 'addproduct',
+                name: 'addproduct',
+                hidden: true,
+                component: editProduct,
+                meta: {
+                    title: '金融产品配置'
+                }
+            },
+            {
+                path: 'updateproduct',
+                name: 'updateproduct',
+                hidden: true,
+                component: editProduct,
                 meta: {
                     title: '金融产品配置'
                 }
@@ -174,6 +244,24 @@ export default [
                 }
             },
             {
+                path: 'addcashoutput',
+                name: 'addcashoutput',
+                hidden: true,
+                component: editCashOutput,
+                meta: {
+                    title: '资产输出配置'
+                }
+            },
+            {
+                path: 'updatecashoutput',
+                name: 'updatecashoutput',
+                hidden: true,
+                component: editCashOutput,
+                meta: {
+                    title: '资产输出配置'
+                }
+            },
+            {
                 path: 'outputDetail',
                 name: 'outputDetail',
                 hidden: true,
@@ -182,6 +270,24 @@ export default [
                     title: '模板明细配置'
                 }
             },
+            {
+                path: 'addoutputDetail',
+                name: 'addoutputDetail',
+                hidden: true,
+                component: editOutputDetail,
+                meta: {
+                    title: '模板明细配置'
+                }
+            },
+            {
+                path: 'updateoutputDetail',
+                name: 'updateoutputDetail',
+                hidden: true,
+                component: editOutputDetail,
+                meta: {
+                    title: '模板明细配置'
+                }
+            }
         ],
         meta: {
             title: "配置管理"

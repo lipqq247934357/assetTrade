@@ -100,7 +100,7 @@
     import {channel} from "@/api";
 
     export default {
-        name: 'asset',
+        name: 'channel',
         components: {pagination, blockTitle, collapse},
         directives: {waves},
         data() {

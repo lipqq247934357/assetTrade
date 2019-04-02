@@ -1,5 +1,5 @@
 <template>
-    <div class="add-channel app-container">
+    <div class="edit-rules app-container">
         <div class="edit-content">
             <div class="content-border">
                 <el-form :model="form" :rules="rules" ref="form">
@@ -76,7 +76,7 @@
     import {channel, addChannel} from "@/api";
 
     export default {
-        name: 'addChannel',
+        name: 'editRules',
         data() {
             return {
                 form: {
