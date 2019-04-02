@@ -2,7 +2,7 @@
     <div class="navbar">
         <el-dialog
                 title="个人信息"
-                :visible.sync="visib"
+                :visible.sync="vis"
                 width="20%">
             <div class="cc">
                 <div class="name">
@@ -30,7 +30,7 @@
     export default {
         props: ['dialogVisible'],
         computed: {
-            visib: {
+            vis: {
                 get() {
                     return this.dialogVisible;
                 },
@@ -53,23 +53,32 @@
 
     .name {
         float: left;
-        width: 40%;
+        width: 30%;
         text-align: right;
-        div {
-            height: 25px;
-
-        }
-
     }
+
     .content {
         float: right;
-        width: 57%;
+        width: 67%;
         text-align: left;
+    }
+
+    .name, .content {
         div {
-            height: 25px;
+            height: 28px;
         }
     }
 
+
+    /*修改个人信息标题和x号水平*/
+    /deep/ .el-dialog__header {
+        padding: 5px 20px 10px;
+    }
+
+    /*修改弹框body部分*/
+    /deep/ .el-dialog__body {
+        padding: 30px 20px 10px;
+    }
 
 </style>
 
