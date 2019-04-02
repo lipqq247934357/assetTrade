@@ -12,13 +12,12 @@ import customerdetails from '@/views/assetM/customer/customerdetails'; // 客户
 
 import channel from '@/views/configM/channel';// 渠道
 import addchannel from '@/views/configM/channel/addChannel';
-import updatechannel from '@/views/configM/channel/updateChannel';
 
 import cashOutput from '@/views/configM/cashOutput';
+import outputDetail from '@/views/configM/cashOutput/outputDetail';
 import cashProvider from '@/views/configM/cashProvider';
 import product from '@/views/configM/product';
 import splitRules from '@/views/configM/splitRules';
-
 
 
 /**
@@ -65,7 +64,7 @@ export default [
             {
                 path: 'assetlistdetails',
                 name: 'assetlistdetails',
-                hidden:true,
+                hidden: true,
                 component: assetlistdetails,
                 meta: {
                     title: '资产列表-详情'
@@ -137,7 +136,7 @@ export default [
                 path: 'updatechannel',
                 name: 'updatechannel',
                 hidden: true,
-                component: updatechannel,
+                component: addchannel,
                 meta: {
                     title: '渠道配置'
                 }
@@ -172,6 +171,15 @@ export default [
                 component: cashOutput,
                 meta: {
                     title: '资产输出配置'
+                }
+            },
+            {
+                path: 'outputDetail',
+                name: 'outputDetail',
+                hidden: true,
+                component: outputDetail,
+                meta: {
+                    title: '模板明细配置'
                 }
             },
         ],

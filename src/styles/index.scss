@@ -91,3 +91,9 @@ a:hover {
   color: #f56c6c;
   margin-right: 4px;
 }
+
+// 修改饿了么下拉框距离顶部的距离
+
+.el-popper {
+  margin-top: 2px !important;
+}

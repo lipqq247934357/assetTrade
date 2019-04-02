@@ -1,6 +1,6 @@
 <template>
     <div class="add-channel app-container">
-        <div class="add-channel-content">
+        <div class="edit-content">
             <div class="content-border">
                 <el-form :model="form" :rules="rules" ref="form">
                     <div class="row">
@@ -23,7 +23,7 @@
                             <el-form-item prop="qdType">
                                 <el-select v-model="form.qdType" placeholder="请选择" size="max">
                                     <el-option
-                                            v-for="item in qdTag"
+                                            v-for="item in channelType"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value">
@@ -43,18 +43,16 @@
                     <div class="row">
                         <div class="name must-choose">是否启用</div>
                         <div class="content">
-                            <div class="h32px">
-                                <el-form-item prop="status">
-                                    <el-select v-model="form.status" placeholder="请选择" size="max">
-                                        <el-option
-                                                v-for="item in qdTag"
-                                                :key="item.value"
-                                                :label="item.label"
-                                                :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </div>
+                            <el-form-item prop="status">
+                                <el-select v-model="form.status" placeholder="请选择" size="max">
+                                    <el-option
+                                            v-for="item in useYn"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
                         </div>
                         <div class="name">创建人</div>
                         <div class="content last-box">
@@ -75,7 +73,7 @@
 
 <script>
     import {urlParse} from '@/utils/utils';
-    import {addChannel} from "../../../api";
+    import {channel, addChannel} from "@/api";
 
     export default {
         name: 'addChannel',
@@ -90,35 +88,43 @@
                     "creator": ''
                 },
                 rules: {},
-                "qdTag": [{
-                    value: '选项1',
-                    label: '黄金糕'
+                "channelType": [{
+                    value: 1,
+                    label: '自营'
                 }, {
-                    value: '选项2',
-                    label: '双皮奶'
+                    value: 2,
+                    label: '三方'
+                }],
+                "useYn": [{
+                    value: "Y",
+                    label: '启用'
                 }, {
-                    value: '选项3',
-                    label: '蚵仔煎'
-                }, {
-                    value: '选项4',
-                    label: '龙须面'
-                }, {
-                    value: '选项5',
-                    label: '北京烤鸭'
+                    value: "N",
+                    label: '禁用'
                 }],
                 trueVal: true,
                 updateId: ''
             }
         },
         created() {
-            // 获取是updateId,如果有值，说明是更新操作
+            // 获取updateId,如果有值说明是更新
             let params = urlParse();
-            // 查询id为这个值的一行，如果返回的值不为空，说明确实是修改，将更新id保存下来，否则console.log提示
-            this.query(params.updateId);
+            // 主键查询，有值是修改，将主键保存，否则console.log提示
+            params.channelNo && this.query(params.channelNo);
         },
         methods: {
+            async query(channelNo) { // 查询用户信息
+                //发起ajax请求，更改数据
+                let data = await channel(channelNo);
+                if (data.total > 0) {// 存在
+                    this.updateId = data.data[0].channelNo;
+                    this.form = data.data[0];
+                } else {
+                    console.log('没有找到channelNo为' + channelNo + '的内容');
+                }
+            },
             back() {
-                this.$router.push({
+                this.$router.push({ // 返回上个页面，将参数传过去
                     name: "channelconfig",
                     params: urlParse()
                 });
@@ -126,7 +132,6 @@
             submit(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-
                         //如果updateId不为空，是更新，否则是新增
                         if (this.updateId) {
                             this.update();
@@ -136,9 +141,6 @@
                     } else {
                     }
                 });
-            },
-            async query(id) { // 查询用户信息
-
             },
             async add() {
                 let res = await addChannel();
@@ -150,7 +152,6 @@
                 console.log(res);
                 this.$router.go(-1);
             }
-
         }
     }
 
@@ -159,12 +160,12 @@
 <style rel="stylesheet/scss" lang="scss" scoped>
 
 
-    .add-channel-content {
+    .edit-content {
         min-height: calc(100vh - 90px);
-        background: #fff;
-        padding: 20px 0;
         border-top: 3px solid #83c5fc;
         border-radius: 4px 2px 0 0;
+        background: #fff;
+        padding: 20px 0;
         position: relative;
     }
 
@@ -214,7 +215,6 @@
         div.last-box {
             border-right: 0;
         }
-
     }
 
 
@@ -239,8 +239,5 @@
         font-size: 12px;
     }
 
-    .h32px {
-        height: 32px;
-    }
 
 </style>

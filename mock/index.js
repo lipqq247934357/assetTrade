@@ -44,6 +44,18 @@ function mock(app) {
     app.post('/mock/addChannel', function (req, res) {
         res.json({result:"上传成功"});
     });
+
+    app.post('/mock/asset/pages/config/channel/query', function (req, res) {
+        res.json(channel);
+    });
+
+    app.post('/mock//asset/pages/config/channel/add', function (req, res) {
+        res.json({result:"上传成功"});
+    });
+
+    app.post('/mock//asset/pages/config/channel/update', function (req, res) {
+        res.json({result:"上传成功"});
+    });
 }
 
 module.exports = mock;
