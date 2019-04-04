@@ -9,7 +9,7 @@ import {get, post} from "./getData";
 
 let prefix = '/asset/pages/config';
 
-export const productquery = (prodNo, prodName, channelNo, pageNum, pageSize) => {
+export const productquery = (prodNo, prodName, channelNo, pageNum = 1, pageSize = 10) => {
     return post(prefix + '/finProduct/query', {prodNo, prodName, channelNo, pageNum, pageSize});
 };
 
@@ -22,9 +22,11 @@ export const productupdate = (prodNo, prodName, prodDesc, useYn, updateUser) => 
 };
 
 
-//渠道配置
+/**
+ * 渠道配置
+ */
 
-export const channelquery = (channelNo, channelName, pageNum, pageSize) => {
+export const channelquery = (channelNo, channelName, pageNum = 1, pageSize = 10) => {
     return post(prefix + '/channel/query', {channelNo, channelName, pageNum, pageSize});
 };
 
@@ -32,12 +34,14 @@ export const channeladd = (channelNo, channelName, channelType, useYn, inputUser
     return post(prefix + '/channel/add', {channelNo, channelName, channelType, useYn, inputUser});
 };
 
-export const channelupdate = (channelNo, channelName, channelType, useYn, inputUser) => {
-    return post(prefix + '/channel/update', {channelNo, channelName, channelType, useYn, inputUser});
+export const channelupdate = (channelNo, channelName, channelType, useYn, updateUser) => {
+    return post(prefix + '/channel/update', {channelNo, channelName, channelType, useYn, updateUser});
 };
 
 
-//资金方配置
+/**
+ * 资金方配置
+ */
 
 export const cashproviderquery = (contributiveNo, contributiveName, pageNum, pageSize) => {
     return post(prefix + '/contributive/query', {contributiveNo, contributiveName, pageNum, pageSize});
@@ -63,7 +67,9 @@ export const cashproviderupdate = (contributiveNo, contributiveName, outputTemNo
     });
 };
 
-//拆分规则配置
+/**
+ * 拆分规则配置
+ */
 
 export const splitRulesquery = (assetSplitWay, pageNum, pageSize) => {
     return post(prefix + '/assetSplit/query', {assetSplitWay, pageNum, pageSize});
@@ -90,7 +96,9 @@ export const splitRulesupdate = (assetSplitWay, assetSplitValue, contributiveNo,
 };
 
 
-//资产输出模板配置
+/**
+ * 资产输出模板配置
+ */
 
 export const outputquery = (outputTemName, pageNum, pageSize) => {
     return post(prefix + '/outputTem/query', {outputTemName, pageNum, pageSize});
@@ -105,7 +113,9 @@ export const outputupdate = (outputTemName, useYn, inputUser) => {
 };
 
 
-//资产输出明细配置
+/**
+ * 资产输出明细配置
+ */
 
 export const outdetailquery = (outputTemName, pageNum, pageSize) => {
     return post(prefix + '/outputFile/query', {outputTemName, pageNum, pageSize});

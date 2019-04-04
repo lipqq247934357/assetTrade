@@ -5,13 +5,13 @@ import dashboard from '../views/dashboard';
  */
 // 资产
 import asset from '@/views/assetM/asset';
-import assetlistdetails from '@/views/assetM/asset/assetlistdetails';
+import assetlistdetail from '@/views/assetM/asset/assetlistdetail';
 //客户信息
 import customer from '@/views/assetM/customer';
-import customerdetails from '@/views/assetM/customer/customerdetails';
+import customerdetail from '@/views/assetM/customer/customerdetail';
 //授权信息
 import credit from '@/views/assetM/credit';
-import creditdetails from '@/views/assetM/credit/creditdetails';
+import creditdetail from '@/views/assetM/credit/creditdetail';
 
 /**
  * 配置管理
@@ -78,12 +78,12 @@ export default [
                 }
             },
             {
-                path: 'assetlistdetails',
-                name: 'assetlistdetails',
+                path: 'assetlistdetail',
+                name: 'assetlistdetail',
                 hidden: true,
-                component: assetlistdetails,
+                component: assetlistdetail,
                 meta: {
-                    title: '资产列表-详情'
+                    title: '资产列表详情'
                 },
             },
             {
@@ -95,19 +95,19 @@ export default [
                 }
             },
             {
-                path: 'customerdetails',
-                name: 'customerdetails',
+                path: 'customerdetail',
+                name: 'customerdetail',
                 hidden: true,
-                component: customerdetails,
+                component: customerdetail,
                 meta: {
                     title: '客户信息详情'
                 }
             },
             {
-                path: 'creditdetails',
-                name: 'creditdetails',
+                path: 'creditdetail',
+                name: 'creditdetail',
                 hidden: true,
-                component: creditdetails,
+                component: creditdetail,
                 meta: {
                     title: '授权信息详情'
                 }

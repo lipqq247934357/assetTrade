@@ -107,7 +107,7 @@ export default {
             width: 98%;
             margin: 0 auto;
             background: #fff;
-            padding: 30px 0px;
+            padding: 30px 0;
             border-radius: 5px;
             border-top: 2px solid #43b9e2;
             ul {

@@ -1,62 +1,59 @@
 <template>
-    <div class="asset channel app-container">
-        <!--搜索-->
-        <div class="search">
-            <collapse class="channel-search">
-                <template v-slot:title>
-                    筛选条件
-                </template>
-                <template>
-                    <div>
-                        <el-form :model="form" ref="form" inline>
-                            <el-form-item prop="qdNo" label="渠道" class="aa">
-                                <el-input placeholder="请输入渠道"></el-input>
-                            </el-form-item>
-                            <el-form-item prop="qdName" label="借据编号">
-                                <el-input placeholder="请输入借据编号"></el-input>
-                            </el-form-item>
-                            <el-form-item prop="qdName" label="借款人姓名">
-                                <el-input placeholder="请输入借款人姓名"></el-input>
-                            </el-form-item>
-                            <el-form-item prop="qdName" label="身份证号">
-                                <el-input placeholder="请输入身份证号"></el-input>
-                            </el-form-item>
-                            <el-form-item prop="qdName" label="放款日期">
-                                <el-date-picker
-                                    v-model="value1"
+    <div class="asset app-container">
+        <!--search-->
+        <collapse class="search">
+            <template v-slot:title>
+                筛选条件
+            </template>
+            <template>
+                <div>
+                    <el-form :model="form" ref="form" inline label-width="100px">
+                        <el-form-item prop="qdNo" label="渠道">
+                            <el-input placeholder="请输入渠道" v-model="form.qdNo"></el-input>
+                        </el-form-item>
+                        <el-form-item prop="qdName" label="借据编号">
+                            <el-input placeholder="请输入借据编号" v-model="form.qdName"></el-input>
+                        </el-form-item>
+                        <el-form-item prop="qdName2" label="借款人姓名">
+                            <el-input placeholder="请输入借款人姓名" v-model="form.qdName2"></el-input>
+                        </el-form-item>
+                        <el-form-item prop="qdName3" label="身份证号">
+                            <el-input placeholder="请输入身份证号" v-model="form.qdName3"></el-input>
+                        </el-form-item>
+                        <el-form-item label="放款日期">
+                            <el-date-picker
+                                    v-model="form.startDate"
                                     class="datetime"
                                     type="date"
                                     placeholder="请选择日期">
-                               </el-date-picker>
-                               -
-                               <el-date-picker
-                                   v-model="value1"
-                                   class="datetime"
-                                   type="date"
-                                   placeholder="请选择日期">
-                              </el-date-picker>
-                          </el-form-item>
-                        </el-form>
-                        <div class="search-btn-box">
-                            <el-button type="primary" v-waves @click="getInfo" icon="el-icon-search" size="medium">查询
-                            </el-button>
-                            <el-button type="primary" v-waves @click="getInfo" icon="el-icon-refresh" size="medium">重置
-                            </el-button>
-                        </div>
+                            </el-date-picker>
+                            &nbsp;-&nbsp;
+                            <el-date-picker
+                                    v-model="form.endDate"
+                                    class="datetime"
+                                    type="date"
+                                    placeholder="请选择日期">
+                            </el-date-picker>
+                        </el-form-item>
+                    </el-form>
+                    <div class="search-btn-box">
+                        <el-button v-waves type="primary" icon="el-icon-search" size="medium" @click="getInfo">查询
+                        </el-button>
+                        <el-button v-waves type="primary" icon="el-icon-refresh" size="medium"
+                                   @click="resetForm('form')">重置
+                        </el-button>
                     </div>
-                </template>
-            </collapse>
-        </div>
-        <!--表格-->
-        <div class="channel-content">
+                </div>
+            </template>
+        </collapse>
+        <!--table-->
+        <div class="content">
             <blockTitle :hide="trueVal">
                 资产列表
-                </el-button>
             </blockTitle>
             <div class="table-content">
                 <el-table
                         border
-                        size="small"
                         v-loading="loading"
                         :data="data.pageData"
                         style="width: 100%"
@@ -130,33 +127,22 @@
                             label="出资方">
                     </el-table-column>
                     <el-table-column
+                            class-name="operate"
                             label="操作">
                         <template slot-scope="scope">
-                            <el-table-column
-                                label="操作"
-                                >
-                                <template slot-scope="scope">
-                                    <el-button
-                                        @click="handleClick(scope.row)"
-                                        type="text"
-                                        size="normal"
-                                        style="width: 80px;">
-                                        查看详情
-                                    </el-button>
-                                </template>
-                            </el-table-column>
+                            <el-button @click="detail(scope.row)" size="small" type="primary">详情</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
             </div>
             <!--pagination-->
             <div class="pagination">
-                <pagination v-if="data.total"
-                            :page.sync="data.currentPage"
+                <pagination v-if="pagInfo.total"
+                            :page.sync="pagInfo.currentPage"
                             :page-sizes="[10,20,30,50]"
-                            :limit.sync="data.pageSize"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="data.total"
+                            :limit.sync="pagInfo.pageSize"
+                            layout="sizes, prev, pager, next, jumper"
+                            :total="pagInfo.total"
                             @pagination="getInfo"
                 ></pagination>
             </div>
@@ -168,180 +154,157 @@
 
     import waves from '@/directive/waves';
     import pagination from '@/components/Pagination';
-    import {tzcx, tzcxDt} from '@/api';
-
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
+    import {channelquery} from "@/api/configM";
 
     export default {
         name: 'asset',
-        components: {pagination, collapse,blockTitle},
+        components: {pagination, blockTitle, collapse},
         directives: {waves},
         data() {
+            // 渠道No校验
+            let qdNoValid = function (rule, value, callback) { // 校验渠道编号规则
+                if (value && !Number.isInteger(value)) {
+                    callback(new Error('请输入数字值'));
+                } else {
+                    callback();
+                }
+            };
             return {
-                params: {
-                    listId: "",
-                    custName: "",
-                    loanAcNo: ""
-                },
-                loading: false,
-                currentPage: 1,
-                pageSize: 10,
-                total: 0,
-                pageData: [], // 表格数据
-                dialogTableVisible: false,
-                popTableData: [],
                 form: {
                     qdNo: '',
                     qdName: '',
+                    qdName2: '',
+                    qdName3: '',
+                    startDate: '',
+                    endDate: ''
                 },
-                value1: '', //日期控件
-                trueVal: true,
+                rules: {
+                    channelNo: [
+                        {validator: qdNoValid, trigger: 'blur'}
+                    ]
+                },
+                pagInfo: {
+                    total: '',
+                    currentPage: 1,
+                    pageSize: 10
+                },
+                loading: false,
                 data: {},
-            }
+                trueVal: true
+            };
         },
         created() {
-            // this.search();
         },
         methods: {
-            valid() {// 校验用户输入的数据是否满足条件
-
-            },
-            // 查询按钮
-            getInfo() {
-
-            },
-            async search() {
+            async getChannel() {
+                //发起ajax请求，更改数据
                 this.loading = true;
-                let res = await tzcx(this.currentPage, this.pageSize);
-                console.log(res);
-                this.total = res.data.total;
-                this.currentPage = res.data.currentPage;
-                this.pageSize = res.data.pageSize;
-                this.pageData = res.data.pageData;
+                let data = await channelquery(this.form.qdNo, this.form.qdName);
+                this.data = data.data;
+                this.pagInfo.total = data.totalPage;
                 this.loading = false;
             },
-            async handleClick(row) {
-                // let id = row.id;
-                // // 通过id获取详细信息
-                // let res = await tzcxDt();
-                // console.log(res.data);
-                // this.popTableData = res.data;
-                // this.dialogTableVisible = true;
-
-                this.$router.push({
-                name: 'assetlistdetails',
-                    query: { // 数据传递
-
+            getInfo() {
+                this.$refs.form.validate((valid) => { //1.校验参数是否合法
+                    if (valid) {
+                        this.getChannel();
                     }
                 });
             },
-            pagesearch(val) {
-                console.log(val);
-            }
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+            detail() {
+                let obj = this.remainParam();
+                obj.updateId = 2;
+                this.$router.push({path: '/assetmanage/assetlistdetail',query: obj});                // 新增渠道,跳转存储默认值
+            },
+            remainParam() { // 获取默认参数
+                let obj = {};
+                Object.keys(this.form).forEach((key) => {
+                    if (this.form[key]) obj[key] = this.form[key];
+                });
+                return obj;
+            },
         }
     }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.channel-search {
-    .el-form {
-        margin: 20px 20px 50px;
+
+
+    .search, .content {
+        background: #fff;
+        border-radius: 5px;
     }
-    .el-form-item {
-        width: 30%;
-        &:last-child {
-            width: 60%;
+
+    .search {
+        .el-form {
+            margin: 20px 20px 50px;
+        }
+        .el-form-item {
+            width: 32%;
+
+            &:last-child {
+                width: 60%;
+            }
+        }
+        .el-input {
+            width: 100%;
+        }
+        .datetime {
+            display: inline-block;
+            width: 180px;
+        }
+        .el-date-editor--date {
+            display: inline-block;
+        }
+        .search-btn-box {
+            text-align: center;
+
+            .el-button {
+                margin: 0 25px;
+            }
+        }
+    }
+
+    .content {
+        margin-top: 50px;
+
+        .table-content {
+            width: 98%;
+            margin: 19px auto 0;
+            padding-bottom: 20px;
         }
 
-    }
-    .el-form--inline .el-form-item__content {
-        width: 250px;
-    }
-    .el-input {
-        width: 100%;
-    }
-    .search-btn-box {
-        text-align: center;
-    }
-    .el-form-item__content {
-        width: 100%;
-    }
-    .el-date-editor--date {
-        display: inline-block;
-    }
-    .datetime {
-        display: inline-block;
-        width: 180px;
-    }
-}
-.tzcx {
-    &-container {
-        margin: 30px;
-    }
-}
-.asset h3 {
-    font-size: 18px;
-    color: #909399;
-    background: #409EFF;
-    color: #fff;
-    padding: 10px;
-    margin-bottom: 0;
-}
-.search {
-    border-top: 2px solid #409EFF;
-    padding: 0px 0 10px 0;
-    margin-top: 10px;
-    background: #fff;
-    h2 {
-        background: #409EFF;
-        color: #fff;
-        margin: 0 0 20px 0;
-        padding: 10px;
-        font-size: 18px;
-    }
-}
-
-.content {
-     .listtable {
-
-    }
-}
-
-.pagination {
-    margin-top: 40px;
-    margin-bottom: 50px;
-}
-
-/deep/ .pop-custom-class {
-    position: fixed;
-    bottom: 10%;
-    top: 10%;
-    left: 10%;
-    right: 10%;
-}
-.channel-content {
-    margin-top: 50px;
-    /*border-top: 1px solid red;*/
-
-    /*给配置按钮定位*/
-    .el-button--mini {
-        margin-left: 10px;
-        position: absolute !important;
-        top: 5px;
+        /*给配置按钮定位*/
+        .el-button--mini {
+            margin-left: 10px;
+            position: absolute !important;
+            top: 4px;
+        }
     }
 
-    /*给修改按钮定位*/
-    .el-button--small {
-        position: absolute !important;
-        top: 8px;
+    /*操作的宽度太高*/
+    /deep/ .operate {
+        padding: 6px 0;
     }
-}
-.search-btn-box {
-    text-align: center;
-    .el-button {
-        margin:0 25px;
+
+    /*修改标题默认字体*/
+    /deep/ .header-cell-class-name {
+        background: #f4f4f5;
     }
-}
+
+    // 取消校验成功绿色样式
+    .is-success /deep/ .el-input__inner {
+        border-color: #DCDFE6 !important;
+    }
+
+    // 修改校验成功获取焦点的颜色
+    .is-success /deep/ .el-input__inner:focus {
+        border-color: #409EFF !important;
+    }
 
 </style>
