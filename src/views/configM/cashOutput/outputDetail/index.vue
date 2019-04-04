@@ -1,58 +1,68 @@
 <template>
-    <div class="out-put-detail app-container">
+    <div class="output-detail app-container">
         <!--search-->
-        <collapse class="channel-search">
+        <collapse class="search">
             <template v-slot:title>
                 筛选条件
             </template>
             <template>
                 <div>
                     <el-form :model="form" :rules="rules" ref="form" inline>
-                        <el-form-item prop="qdNo" label="渠道编码">
-                            <el-input v-model.number="form.qdNo" placeholder="渠道编码"></el-input>
+                        <el-form-item prop="channelNo" label="渠道编码">
+                            <el-input v-model.number="form.channelNo" placeholder="渠道编码"></el-input>
                         </el-form-item>
-                        <el-form-item prop="qdName" label="渠道名称">
-                            <el-input v-model="form.qdName" placeholder="渠道名称"></el-input>
+                        <el-form-item prop="channelName" label="渠道名称">
+                            <el-input v-model="form.channelName" placeholder="渠道名称"></el-input>
                         </el-form-item>
                     </el-form>
                     <div class="search-btn-box">
-                        <el-button type="primary" v-waves @click="getInfo" icon="el-icon-search" size="medium">查询
+                        <el-button v-waves type="primary" icon="el-icon-search" size="medium" @click="getInfo">查询
                         </el-button>
-                        <el-button type="primary" v-waves @click="resetForm('form')" icon="el-icon-refresh"
-                                   size="medium">重置
+                        <el-button v-waves type="primary" icon="el-icon-refresh" size="medium"
+                                   @click="resetForm('form')">重置
                         </el-button>
                     </div>
                 </div>
             </template>
         </collapse>
         <!--table-->
-        <div class="channel-content">
+        <div class="content">
             <blockTitle :hide="trueVal">
-                资金方配置
-                <el-button type="primary" v-waves @click="add" size="mini">配置
+                渠道配置列表
+                <el-button type="primary" v-waves @click="add" size="mini">配置明细
+                </el-button>
+                <el-button type="primary" v-waves @click="add" size="mini" class="back-btn">返回
                 </el-button>
             </blockTitle>
             <div class="table-content">
                 <el-table
                         border
                         v-loading="loading"
-                        :data="data.pageData"
+                        :data="data"
                         style="width: 100%"
                         header-cell-class-name="header-cell-class-name">
                     <el-table-column
-                            prop="qdNo"
+                            prop="channelNo"
                             label="渠道编码">
                     </el-table-column>
                     <el-table-column
-                            prop="qdName"
+                            prop="channelName"
                             label="渠道名称">
                     </el-table-column>
                     <el-table-column
-                            prop="qdType"
+                            prop="channelType"
                             label="渠道类型">
                     </el-table-column>
                     <el-table-column
-                            prop="creator"
+                            prop="channelSymbol"
+                            label="渠道标识">
+                    </el-table-column>
+                    <el-table-column
+                            prop="useYn"
+                            label="是否启用">
+                    </el-table-column>
+                    <el-table-column
+                            prop="inputUser"
                             label="创建人">
                     </el-table-column>
                     <el-table-column
@@ -71,20 +81,20 @@
                             class-name="operate"
                             label="操作">
                         <template slot-scope="scope">
+                            <el-button @click="update(scope.row)" size="small" type="primary">查看</el-button>
                             <el-button @click="update(scope.row)" size="small" type="primary">修改</el-button>
-                            <!--<el-button @click="deleteConfirm(scope.row)" type="text" size="small">删除</el-button>-->
                         </template>
                     </el-table-column>
                 </el-table>
             </div>
             <!--pagination-->
             <div class="pagination">
-                <pagination v-if="data.total"
-                            :page.sync="data.currentPage"
+                <pagination v-if="pagInfo.total"
+                            :page.sync="pagInfo.currentPage"
                             :page-sizes="[10,20,30,50]"
-                            :limit.sync="data.pageSize"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="data.total"
+                            :limit.sync="pagInfo.pageSize"
+                            layout="sizes, prev, pager, next, jumper"
+                            :total="pagInfo.total"
                             @pagination="getInfo"
                 ></pagination>
             </div>
@@ -98,52 +108,55 @@
     import pagination from '@/components/Pagination';
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
-    import {channel} from "@/api";
+    import {channelquery} from "@/api/configM";
 
     export default {
         name: 'outputDetail',
-        components: {pagination, collapse, blockTitle},
+        components: {pagination, blockTitle, collapse},
         directives: {waves},
         data() {
-
+            // 渠道No校验
             let qdNoValid = function (rule, value, callback) { // 校验渠道编号规则
-                if (!value) {
-                    callback();
-                }
-                if (!Number.isInteger(value)) {
+                if (value && !Number.isInteger(value)) {
                     callback(new Error('请输入数字值'));
                 } else {
                     callback();
                 }
-            }
+            };
             return {
                 form: {
-                    qdNo: '',
-                    qdName: '',
+                    channelNo: '',
+                    channelName: '',
                 },
                 rules: {
-                    qdNo: [
+                    channelNo: [
                         {validator: qdNoValid, trigger: 'blur'}
                     ]
                 },
+                pagInfo: {
+                    total: '',
+                    currentPage: 1,
+                    pageSize: 10
+                },
                 loading: false,
-                data: {},
+                data: [],
                 trueVal: true
             };
         },
         created() {
-            //如果从别的页面跳过来，填充默认值
-            let qdNo = this.$route.params.qdNo;
-            this.form.qdNo = qdNo ? Number(qdNo) : '';
-            this.form.qdName = this.$route.params.qdName || '';
+            //如果页面从修改和配置跳过来，填充默认值
+            let channelNo = this.$route.params.channelNo;
+            this.form.channelNo = channelNo ? Number(channelNo) : '';
+            this.form.channelName = this.$route.params.channelName || '';
             this.getChannel();// 获取数据
         },
         methods: {
-            async getChannel() {
-                //2.发起ajax请求，更改数据
+            async getChannel() { //发起ajax请求，更改数据
                 this.loading = true;
-                let data = await channel(this.form.qdNo, this.form.qdName);
+                let data = await channelquery(this.form.qdNo, this.form.qdName, this.pagInfo.currentPage, this.pagInfo.pageSize);
+                data = data.data;
                 this.data = data.data;
+                this.pagInfo.total = data.dataCount;
                 this.loading = false;
             },
             getInfo() {
@@ -153,43 +166,39 @@
                     }
                 });
             },
-            add() { // 新增渠道
-                this.$router.push({path: '/configm/addchannel', query: this.backParam()});// 跳转页面的时候将上个页面的默认值传过去
-            },
-            update(row) {
-                let obj = this.backParam();
-                obj.channelNo = row.channelNo;
-                this.$router.push({path: "/configm/addchannel", query: obj});// 跳转页面将上个页面的默认值传过去
-            },
-            backParam() { // 页面返回的话需要的默认参数
-                let obj = {};
-                if (this.form.qdNo) obj.qdNo = this.form.qdNo;
-                if (this.form.qdName) obj.qdName = this.form.qdName;
-                return obj;
-            },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
-            }
-            // deleteConfirm(item) { // 删除提示框
-            //     this.$confirm('您确定要删除吗？', '提示', {
-            //         confirmButtonText: '确定',
-            //         cancelButtonText: '取消',
-            //         type: 'warning'
-            //     }).then(() => {
-            //         this.delete(item.id); //执行删除的逻辑 这个是在删除表格关闭之后执行的
-            //     }).catch(() => {// 关闭弹框，不删除
-            //     });
-            // },
-            // async delete(id) { //删除
-            //     //使用删除接口，删除成功从list中删除那一段内容，并且重新获取数据
-            // }
+            },
+            add() {
+                // 新增渠道,跳转存储默认值
+                this.$router.push({path: '/configm/addchannel', query: this.remainParam()});
+            },
+            update(row) {
+                // 修改渠道,跳转存储默认值
+                let obj = this.remainParam();
+                obj.updateId = row.channelNo;
+                this.$router.push({path: "/configm/addchannel", query: obj});
+            },
+            remainParam() { // 获取默认参数
+                let obj = {};
+                Object.keys(this.form).forEach((key) => {
+                    if (this.form[key]) obj[key] = this.form[key];
+                });
+                return obj;
+            },
         }
     }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 
-    .channel-search {
+
+    .search, .content {
+        background: #fff;
+        border-radius: 5px;
+    }
+
+    .search {
 
         .el-form {
             margin: 20px 20px 50px;
@@ -212,14 +221,14 @@
         }
     }
 
-    .channel-search, .channel-content {
-        background: #fff;
-        border-radius: 5px;
-    }
-
-    .channel-content {
+    .content {
         margin-top: 50px;
-        /*border-top: 1px solid red;*/
+
+        .table-content {
+            width: 98%;
+            margin: 19px auto 0;
+            padding-bottom: 20px;
+        }
 
         /*给配置按钮定位*/
         .el-button--mini {
@@ -227,13 +236,20 @@
             position: absolute !important;
             top: 4px;
         }
+        /*给配置按钮定位*/
+        .el-button--mini.back-btn {
+            margin-left: 120px;
+            position: absolute !important;
+            top: 4px;
+        }
     }
 
+    /*操作的宽度太高*/
     /deep/ .operate {
         padding: 6px 0;
     }
 
-
+    /*修改标题默认字体*/
     /deep/ .header-cell-class-name {
         background: #f4f4f5;
     }
@@ -246,12 +262,6 @@
     // 修改校验成功获取焦点的颜色
     .is-success /deep/ .el-input__inner:focus {
         border-color: #409EFF !important;
-    }
-
-
-    .table-content {
-        width: 98%;
-        margin: 19px auto 0;
     }
 
 </style>

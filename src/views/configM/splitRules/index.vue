@@ -8,11 +8,8 @@
             <template>
                 <div>
                     <el-form :model="form" :rules="rules" ref="form" inline>
-                        <el-form-item prop="qdNo" label="渠道编码">
-                            <el-input v-model.number="form.qdNo" placeholder="渠道编码"></el-input>
-                        </el-form-item>
-                        <el-form-item prop="qdName" label="渠道名称">
-                            <el-input v-model="form.qdName" placeholder="渠道名称"></el-input>
+                        <el-form-item prop="assetSplitWay" label="拆分方式">
+                            <el-input v-model.number="form.assetSplitWay" placeholder="拆分方式"></el-input>
                         </el-form-item>
                     </el-form>
                     <div class="search-btn-box">
@@ -28,7 +25,7 @@
         <!--table-->
         <div class="content">
             <blockTitle :hide="trueVal">
-                资金方配置
+                拆分规则配置列表
                 <el-button type="primary" v-waves @click="add" size="mini">配置
                 </el-button>
             </blockTitle>
@@ -40,19 +37,27 @@
                         style="width: 100%"
                         header-cell-class-name="header-cell-class-name">
                     <el-table-column
-                            prop="qdNo"
-                            label="渠道编码">
+                            prop="assetSplitNo"
+                            label="拆分规则编码">
                     </el-table-column>
                     <el-table-column
-                            prop="qdName"
-                            label="渠道名称">
+                            prop="assetSplitWay"
+                            label="拆分方式">
                     </el-table-column>
                     <el-table-column
-                            prop="qdType"
-                            label="渠道类型">
+                            prop="contributiveNo"
+                            label="资金方">
                     </el-table-column>
                     <el-table-column
-                            prop="creator"
+                            prop="assetSplitValue"
+                            label="拆分值">
+                    </el-table-column>
+                    <el-table-column
+                            prop="useYn"
+                            label="尾差归属资金方(还没prop)">
+                    </el-table-column>
+                    <el-table-column
+                            prop="inputUser"
                             label="创建人">
                     </el-table-column>
                     <el-table-column
@@ -68,6 +73,10 @@
                             label="更新时间">
                     </el-table-column>
                     <el-table-column
+                            prop="useYn"
+                            label="是否启用">
+                    </el-table-column>
+                    <el-table-column
                             class-name="operate"
                             label="操作">
                         <template slot-scope="scope">
@@ -78,12 +87,12 @@
             </div>
             <!--pagination-->
             <div class="pagination">
-                <pagination v-if="data.total"
-                            :page.sync="data.currentPage"
+                <pagination v-if="pagInfo.total"
+                            :page.sync="pagInfo.currentPage"
                             :page-sizes="[10,20,30,50]"
-                            :limit.sync="data.pageSize"
+                            :limit.sync="pagInfo.pageSize"
                             layout="sizes, prev, pager, next, jumper"
-                            :total="data.total"
+                            :total="pagInfo.total"
                             @pagination="getInfo"
                 ></pagination>
             </div>
@@ -97,7 +106,7 @@
     import pagination from '@/components/Pagination';
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
-    import {channel} from "@/api";
+    import {channelquery} from "@/api/configM";
 
     export default {
         name: 'splitRules',
@@ -114,13 +123,17 @@
             };
             return {
                 form: {
-                    qdNo: '',
-                    qdName: '',
+                    assetSplitWay: ''
                 },
                 rules: {
-                    qdNo: [
+                    channelNo: [
                         {validator: qdNoValid, trigger: 'blur'}
                     ]
+                },
+                pagInfo: {
+                    total: '',
+                    currentPage: 1,
+                    pageSize: 10
                 },
                 loading: false,
                 data: {},
@@ -128,18 +141,19 @@
             };
         },
         created() {
-            //1.如果页面从修改和配置跳过来，填充默认值
-            let qdNo = this.$route.params.qdNo;
-            this.form.qdNo = qdNo ? Number(qdNo) : '';
-            this.form.qdName = this.$route.params.qdName || '';
-            this.getChannel();// 2.获取数据
+            //如果页面从修改和配置跳过来，填充默认值
+            let channelNo = this.$route.params.channelNo;
+            this.form.channelNo = channelNo ? Number(channelNo) : '';
+            this.form.channelName = this.$route.params.channelName || '';
+            this.getChannel();// 获取数据
         },
         methods: {
             async getChannel() {
                 //发起ajax请求，更改数据
                 this.loading = true;
-                let data = await channel(this.form.qdNo, this.form.qdName);
+                let data = await channelquery(this.form.qdNo, this.form.qdName);
                 this.data = data.data;
+                this.pagInfo.total = data.totalPage;
                 this.loading = false;
             },
             getInfo() {
@@ -159,13 +173,14 @@
             update(row) {
                 // 修改渠道,跳转存储默认值
                 let obj = this.remainParam();
-                obj.channelNo = row.channelNo;
+                obj.updateId = row.channelNo;
                 this.$router.push({path: "/configm/addchannel", query: obj});
             },
             remainParam() { // 获取默认参数
                 let obj = {};
-                if (this.form.qdNo) obj.qdNo = this.form.qdNo;
-                if (this.form.qdName) obj.qdName = this.form.qdName;
+                Object.keys(this.form).forEach((key) => {
+                    if (this.form[key]) obj[key] = this.form[key];
+                });
                 return obj;
             },
         }
@@ -209,6 +224,7 @@
         .table-content {
             width: 98%;
             margin: 19px auto 0;
+            padding-bottom: 20px;
         }
 
         /*给配置按钮定位*/

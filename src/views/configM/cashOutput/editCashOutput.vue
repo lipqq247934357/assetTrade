@@ -125,7 +125,7 @@
             },
             back() {
                 this.$router.push({ // 返回上个页面，将参数传过去
-                    name: "channelconfig",
+                    name: "cashoutput",
                     params: urlParse()
                 });
             },

@@ -1,12 +1,12 @@
 <template>
-    <div class="edit-out-detail app-container">
+    <div v-show="show" class="edit-out-detail app-container">
         <div class="edit-content">
             <div class="content-border">
                 <el-form :model="form" :rules="rules" ref="form">
                     <div class="row">
                         <div class="name must-choose">渠道编码</div>
                         <div class="content">
-                            <el-form-item prop="qdNo">
+                            <el-form-item prop="fileNo">
                                 <el-input v-model="form.qdNo"></el-input>
                             </el-form-item>
                         </div>
@@ -106,6 +106,8 @@
                 updateId: ''
             }
         },
+        props: ['show']
+        ,
         created() {
             // 获取updateId,如果有值说明是更新
             let params = urlParse();
@@ -124,10 +126,7 @@
                 }
             },
             back() {
-                this.$router.push({ // 返回上个页面，将参数传过去
-                    name: "channelconfig",
-                    params: urlParse()
-                });
+                alert(1);
             },
             submit(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -159,6 +158,15 @@
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 
+
+    .edit-out-detail {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+
+    }
 
     .edit-content {
         min-height: calc(100vh - 90px);

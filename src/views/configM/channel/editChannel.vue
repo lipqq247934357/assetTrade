@@ -6,14 +6,14 @@
                     <div class="row">
                         <div class="name must-choose">渠道编码</div>
                         <div class="content">
-                            <el-form-item prop="qdNo">
-                                <el-input v-model="form.qdNo"></el-input>
+                            <el-form-item prop="channelNo">
+                                <el-input v-model="form.channelNo"></el-input>
                             </el-form-item>
                         </div>
                         <div class="name must-choose">渠道名称</div>
                         <div class="content last-box">
-                            <el-form-item prop="qdName">
-                                <el-input v-model="form.qdName"></el-input>
+                            <el-form-item prop="channelName">
+                                <el-input v-model="form.channelName"></el-input>
                             </el-form-item>
                         </div>
                     </div>
@@ -21,9 +21,9 @@
                         <div class="name must-choose">渠道类型</div>
                         <div class="content">
                             <el-form-item prop="qdType">
-                                <el-select v-model="form.qdType" placeholder="请选择" size="max">
+                                <el-select v-model="form.channelType" placeholder="请选择" size="max">
                                     <el-option
-                                            v-for="item in channelType"
+                                            v-for="item in channelTypeList"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value">
@@ -34,8 +34,8 @@
                         </div>
                         <div class="name must-choose">渠道标识</div>
                         <div class="content last-box">
-                            <el-form-item prop="qdTag">
-                                <el-input v-model="form.qdTag"></el-input>
+                            <el-form-item prop="channelSymbol">
+                                <el-input v-model="form.channelSymbol"></el-input>
                             </el-form-item>
 
                         </div>
@@ -44,9 +44,9 @@
                         <div class="name must-choose">是否启用</div>
                         <div class="content">
                             <el-form-item prop="status">
-                                <el-select v-model="form.status" placeholder="请选择" size="max">
+                                <el-select v-model="form.useYn" placeholder="请选择" size="max">
                                     <el-option
-                                            v-for="item in useYn"
+                                            v-for="item in useYnList"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value">
@@ -57,7 +57,7 @@
                         <div class="name">创建人</div>
                         <div class="content last-box">
                             <el-form-item prop="creator">
-                                <el-input v-model="form.creator" :disabled="trueVal"></el-input>
+                                <el-input v-model="form.inputUser" :disabled="trueVal"></el-input>
                             </el-form-item>
                         </div>
                     </div>
@@ -73,29 +73,31 @@
 
 <script>
     import {urlParse} from '@/utils/utils';
-    import {channel, addChannel} from "@/api";
+    import {channelquery, channeladd, channelupdate} from "@/api/configM";
+    import {mapGetters} from 'vuex'
 
     export default {
         name: 'editChannel',
         data() {
             return {
                 form: {
-                    "qdNo": '',
-                    "qdName": '',
-                    "qdType": '',
-                    "qdTag": '',
-                    "status": '',
-                    "creator": ''
+                    channelNo: '',
+                    channelName: '',
+                    channelType: '',
+                    channelSymbol: '',
+                    useYn: '',
+                    inputUser: '',
+                    updateUser: ''
                 },
                 rules: {},
-                "channelType": [{
+                "channelTypeList": [{
                     value: 1,
                     label: '自营'
                 }, {
                     value: 2,
                     label: '三方'
                 }],
-                "useYn": [{
+                "useYnList": [{
                     value: "Y",
                     label: '启用'
                 }, {
@@ -106,16 +108,26 @@
                 updateId: ''
             }
         },
+        computed: {
+            ...mapGetters({
+                    inputUser: 'name'
+                }
+            )
+        },
         created() {
             // 获取updateId,如果有值说明是更新
             let params = urlParse();
             // 主键查询，有值是修改，将主键保存，否则console.log提示
-            params.channelNo && this.query(params.channelNo);
+            if (params.updateId) {
+                this.query(params.updateId);
+            } else {
+                this.form.inputUser = this.inputUser;
+            }
         },
         methods: {
             async query(channelNo) { // 查询用户信息
                 //发起ajax请求，更改数据
-                let data = await channel(channelNo);
+                let data = await channelquery(channelNo);
                 if (data.total > 0) {// 存在
                     this.updateId = data.data[0].channelNo;
                     this.form = data.data[0];
@@ -125,7 +137,7 @@
             },
             back() {
                 this.$router.push({ // 返回上个页面，将参数传过去
-                    name: "channelconfig",
+                    name: "channel",
                     params: urlParse()
                 });
             },
@@ -143,14 +155,12 @@
                 });
             },
             async add() {
-                let res = await addChannel();
-                console.log(res);
-                this.$router.go(-1);
+                let form = this.form;
+                let res = await channeladd(form.channelNo, form.channelName, form.channelType, form.channelSymbol, form.useYn, this.inputUser);
             },
             async udpate() {
-                let res = await addChannel();
-                console.log(res);
-                this.$router.go(-1);
+                let form = this.form;
+                let res = await channelupdate(form.channelNo, form.channelName, form.channelType, form.channelSymbol, form.useYn, this.inputUser);
             }
         }
     }

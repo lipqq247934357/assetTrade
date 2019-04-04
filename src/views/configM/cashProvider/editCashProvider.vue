@@ -4,49 +4,39 @@
             <div class="content-border">
                 <el-form :model="form" :rules="rules" ref="form">
                     <div class="row">
-                        <div class="name must-choose">渠道编码</div>
+                        <div class="name must-choose">资金方编码</div>
                         <div class="content">
-                            <el-form-item prop="qdNo">
-                                <el-input v-model="form.qdNo"></el-input>
+                            <el-form-item prop="contributiveNo">
+                                <el-input v-model="form.contributiveNo"></el-input>
                             </el-form-item>
                         </div>
-                        <div class="name must-choose">渠道名称</div>
+                        <div class="name must-choose">资金方名称</div>
                         <div class="content last-box">
-                            <el-form-item prop="qdName">
-                                <el-input v-model="form.qdName"></el-input>
+                            <el-form-item prop="contributiveName">
+                                <el-input v-model="form.contributiveName"></el-input>
                             </el-form-item>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="name must-choose">渠道类型</div>
+                        <div class="name must-choose">资产输出模板</div>
                         <div class="content">
-                            <el-form-item prop="qdType">
-                                <el-select v-model="form.qdType" placeholder="请选择" size="max">
+                            <el-form-item prop="outputTemNo">
+                                <el-select v-model="form.outputTemNo" placeholder="请选择" size="max">
                                     <el-option
-                                            v-for="item in channelType"
+                                            v-for="item in useYnList"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-
                         </div>
-                        <div class="name must-choose">渠道标识</div>
-                        <div class="content last-box">
-                            <el-form-item prop="qdTag">
-                                <el-input v-model="form.qdTag"></el-input>
-                            </el-form-item>
-
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="name must-choose">是否启用</div>
-                        <div class="content">
-                            <el-form-item prop="status">
-                                <el-select v-model="form.status" placeholder="请选择" size="max">
+                        <div class="content last-box">
+                            <el-form-item prop="useYn">
+                                <el-select v-model="form.useYn" placeholder="请选择" size="max">
                                     <el-option
-                                            v-for="item in useYn"
+                                            v-for="item in useYnList"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value">
@@ -54,10 +44,12 @@
                                 </el-select>
                             </el-form-item>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="name">创建人</div>
-                        <div class="content last-box">
+                        <div class="content">
                             <el-form-item prop="creator">
-                                <el-input v-model="form.creator" :disabled="trueVal"></el-input>
+                                <el-input v-model="form.inputUser" :disabled="trueVal"></el-input>
                             </el-form-item>
                         </div>
                     </div>
@@ -73,29 +65,30 @@
 
 <script>
     import {urlParse} from '@/utils/utils';
-    import {channel, addChannel} from "@/api";
+    import {channelquery, channeladd, channelupdate} from "@/api/configM";
 
     export default {
         name: 'editProvider',
         data() {
             return {
                 form: {
-                    "qdNo": '',
-                    "qdName": '',
-                    "qdType": '',
-                    "qdTag": '',
-                    "status": '',
-                    "creator": ''
+                    channelNo: '',
+                    channelName: '',
+                    channelType: '',
+                    channelSymbol: '',
+                    useYn: '',
+                    inputUser: '',
+                    updateUser: ''
                 },
                 rules: {},
-                "channelType": [{
+                "channelTypeList": [{
                     value: 1,
                     label: '自营'
                 }, {
                     value: 2,
                     label: '三方'
                 }],
-                "useYn": [{
+                "useYnList": [{
                     value: "Y",
                     label: '启用'
                 }, {
@@ -110,12 +103,12 @@
             // 获取updateId,如果有值说明是更新
             let params = urlParse();
             // 主键查询，有值是修改，将主键保存，否则console.log提示
-            params.channelNo && this.query(params.channelNo);
+            params.updateId && this.query(params.updateId);
         },
         methods: {
             async query(channelNo) { // 查询用户信息
                 //发起ajax请求，更改数据
-                let data = await channel(channelNo);
+                let data = await channelquery(channelNo);
                 if (data.total > 0) {// 存在
                     this.updateId = data.data[0].channelNo;
                     this.form = data.data[0];
@@ -125,7 +118,7 @@
             },
             back() {
                 this.$router.push({ // 返回上个页面，将参数传过去
-                    name: "channelconfig",
+                    name: "channel",
                     params: urlParse()
                 });
             },
@@ -143,14 +136,10 @@
                 });
             },
             async add() {
-                let res = await addChannel();
-                console.log(res);
-                this.$router.go(-1);
+                let res = await channeladd();
             },
             async udpate() {
-                let res = await addChannel();
-                console.log(res);
-                this.$router.go(-1);
+                let res = await channelupdate();
             }
         }
     }

@@ -14,9 +14,7 @@ export const getRoles = (data) => {
     return post('/getRoles', data);
 };
 
-export const channel = (pdNo, pdName) => {
-    return post('/channel', {pdNo, pdName});
-}
-export const addChannel = (pdNo, pdName) => {
-    return post('/addChannel', {pdNo, pdName});
-}
+// 获取用户所有权限和用户个人信息
+// export const getRoles = (data) => {
+//     return post('/service/validate/ticket', data);
+// };

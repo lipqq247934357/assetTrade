@@ -109,7 +109,7 @@ export const outputadd = (outputTemName, useYn, inputUser) => {
 };
 
 export const outputupdate = (outputTemName, useYn, inputUser) => {
-    return post(prefix + '/outputTem/query', {outputTemName, useYn, inputUser});
+    return post(prefix + '/outputTem/update', {outputTemName, useYn, inputUser});
 };
 
 
