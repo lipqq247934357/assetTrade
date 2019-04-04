@@ -1,80 +1,78 @@
 <template>
-    <div class="details">
-        <h3>客户详情</h3>
-        <!-- 列表详情 -->
-        <div class="detailslist">
+    <div class="detail app-container">
+        <div class="detail-list">
             <ul>
                 <li>
                     <span>渠道</span>
-                    <span>{{details.channel}}</span>
+                    <span>{{info.channel}}</span>
                 </li>
                 <li>
                     <span>借款人姓名</span>
-                    <span>{{details.code}}</span>
+                    <span>{{info.code}}</span>
                 </li>
                 <li>
                     <span>借款人编号</span>
-                    <span>{{details.number}}</span>
+                    <span>{{info.number}}</span>
                 </li>
                 <li>
                     <span>证件号码</span>
-                    <span>{{details.product}}</span>
+                    <span>{{info.product}}</span>
                 </li>
                 <li>
                     <span>证件类型</span>
-                    <span>{{details.name}}</span>
+                    <span>{{info.name}}</span>
                 </li>
                 <li>
                     <span>通讯地址</span>
-                    <span>{{details.idcode}}</span>
+                    <span>{{info.idcode}}</span>
                 </li>
                 <li>
                     <span>联系电话</span>
-                    <span>{{details.mode}}</span>
+                    <span>{{info.mode}}</span>
                 </li>
                 <li>
                     <span>婚姻状况</span>
-                    <span>{{details.money}}</span>
+                    <span>{{info.money}}</span>
                 </li>
                 <li>
                     <span>性别</span>
-                    <span>{{details.rate}}</span>
+                    <span>{{info.rate}}</span>
                 </li>
                 <li>
                     <span>最高学位</span>
-                    <span>{{details.balance}}</span>
+                    <span>{{info.balance}}</span>
                 </li>
                 <li>
                     <span>最高学历</span>
-                    <span>{{details.deadline}}</span>
+                    <span>{{info.deadline}}</span>
                 </li>
                 <li>
                     <span>单位地址</span>
-                    <span>{{details.loanday}}</span>
+                    <span>{{info.loanday}}</span>
                 </li>
                 <li>
                     <span>单位名称</span>
-                    <span>{{details.expireday}}</span>
+                    <span>{{info.expireday}}</span>
                 </li>
                 <li>
                     <span>个人月收入</span>
-                    <span>{{details.deadline}}</span>
+                    <span>{{info.deadline}}</span>
                 </li>
                 <li>
                     <span>单位电话</span>
-                    <span>{{details.beginrate}}</span>
+                    <span>{{info.beginrate}}</span>
                 </li>
                 <li>
                     <span>配偶姓名</span>
-                    <span>{{details.splitproportion}}</span>
+                    <span>{{info.splitproportion}}</span>
                 </li>
                 <li>
                     <span>配偶证件类型</span>
-                    <span>{{details.provide}}</span>
+                    <span>{{info.provide}}</span>
                 </li>
                 <li>
                     <span>配偶联系电话</span>
-                    <span>{{details.provide}}</span>
+                    <span>{{info.provide}}</span>
                 </li>
             </ul>
         </div>
@@ -83,87 +81,40 @@
 </template>
 
 <script>
-export default {
-    data() {
-        return {
-            details: { // 列表详情数据模拟
-              "id": 1,
-              "channel": "百度",
-              "code": "BD001",
-              "number": "JKR001",
-              "name": "张三",
-              "money": "10000.00",
-              "mode": "等额本息",
-              "rate": "0.06%",
-              "balance": "190000",
-              "deadline": "12",
-              "loanday": "2018-5-02",
-              "expireday": "2019-5-01",
-              "beginrate": "2018-5-02",
-              "splitmode": "按比例",
-              "splitproportion": "3：7",
-              "provide": "消金，哈银",
-              "idcode": "123123123123123",
-              "product": "贷款"
+    export default {
+        name: 'customerDetail',
+        data() {
+            return {
+                info: { // 列表详情数据模拟
+                    "id": 1,
+                    "channel": "百度",
+                    "code": "BD001",
+                    "number": "JKR001",
+                    "name": "张三",
+                    "money": "10000.00",
+                    "mode": "等额本息",
+                    "rate": "0.06%",
+                    "balance": "190000",
+                    "deadline": "12",
+                    "loanday": "2018-5-02",
+                    "expireday": "2019-5-01",
+                    "beginrate": "2018-5-02",
+                    "splitmode": "按比例",
+                    "splitproportion": "3：7",
+                    "provide": "消金，哈银",
+                    "idcode": "123123123123123",
+                    "product": "贷款"
+                }
             }
-        }
-    },
-    created() {
+        },
+        created() {
 
+        }
     }
-}
 
 
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.details {
-    h3 {
-        font-size: 18px;
-        color: #909399;
-        margin-left: 10px;
-        padding-bottom: 10px;
-    }
-    .detailslist {
-        width: 98%;
-        margin: 0 auto;
-        background: #fff;
-        padding: 30px 0px;
-        border-radius: 5px;
-        border-top: 2px solid #43b9e2;
-        ul {
-            width: 95%;
-            margin: 0 auto 20px;
-            border: 1px solid #909399;
-            padding: 0;
-            li {
-                list-style: none;
-                height: 30px;
-                line-height: 30px;
-                border-bottom: 1px solid #909399;
-                border-right: 1px solid #909399;
-                color: #909399;
-                width: 50%;
-                display: inline-block;
-                text-align: center;
-                font-size: 14px;
-                &:last-child {
-                    border-bottom: 0;
-                }
-                &:nth-child(even) {
-                    border-right: 0;
-                }
-                span {
-                    width: 30%;
-                    display: inline-block;
-                    border-right: 1px solid #909399;
-                    &:nth-child(even) {
-                        border-right: 0;
-                        width: 70%;
-                    }
-                }
-            }
-        }
-    }
-}
+    @import '../../../styles/asset-detail';
 </style>
