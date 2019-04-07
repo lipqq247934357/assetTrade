@@ -1,13 +1,18 @@
 {
   "resultCode": "0000",
   "resultMsg": "成功",
-  "dataCount": 40,
+  "dataCount": 20,
+  "outputTemDict": [
+    {
+      "outputTemNo": "360",
+      "outputTemName": "360"
+    }
+  ],
   "data": [
     {
-      "channelNo": "QD001",
-      "channelName": "百度",
-      "channelType": "1",
-      "channelSymbol": "baidu",
+      "contributiveNo": "code1",
+      "contributiveName": "百度",
+      "outputTemNo": "bank",
       "useYn": "Y",
       "inputUser": "李四",
       "createTime": "2019-4-1 22:24:43",
@@ -15,10 +20,9 @@
       "updateTime": "2019-4-2 11:24:43"
     },
     {
-      "channelNo": "QD001",
-      "channelName": "百度",
-      "channelType": "1",
-      "channelSymbol": "baidu",
+      "contributiveNo": "code1",
+      "contributiveName": "百度",
+      "outputTemNo": "bank",
       "useYn": "Y",
       "inputUser": "李四",
       "createTime": "2019-4-1 22:24:43",
@@ -26,10 +30,9 @@
       "updateTime": "2019-4-2 11:24:43"
     },
     {
-      "channelNo": "QD001",
-      "channelName": "百度",
-      "channelType": "1",
-      "channelSymbol": "baidu",
+      "contributiveNo": "code1",
+      "contributiveName": "百度",
+      "outputTemNo": "bank",
       "useYn": "Y",
       "inputUser": "李四",
       "createTime": "2019-4-1 22:24:43",

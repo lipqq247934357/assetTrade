@@ -1,0 +1,90 @@
+{
+  "buttonPrivList": [
+    {
+      "buttonIdArr": [
+        "100101001",
+        "100201002"
+      ],
+      "menuId": "100101"
+    },
+    {
+      "buttonIdArr": [
+        "100102001",
+        "100201002"
+      ],
+      "menuId": "100102"
+    }
+  ],
+  "dataColPrivList": [
+    {
+      "buttonId": "100101001",
+      "menuId": "100101",
+      "visibleColsArr": [
+        "listId",
+        "amount"
+      ]
+    },
+    {
+      "buttonId": "100101002",
+      "invisibleColsArr": [
+        "certId",
+        "prodId"
+      ],
+      "menuId": "100101"
+    }
+  ],
+  "dataRowPrivList": [
+    {
+      "buttonId": "100101001",
+      "menuId": "100101",
+      "rowPriv": "prodId in ('1001020370') and overFlag = '1'"
+    },
+    {
+      "buttonId": "all",
+      "menuId": "100101",
+      "rowPriv": "prodId in ('1001020370')"
+    },
+    {
+      "buttonId": "all",
+      "menuId": "all",
+      "rowPriv": "prodId in ('1001020370')"
+    }
+  ],
+  "lowerLevelUsers": [
+    "guanqi.zeng",
+    "wu.wang"
+  ],
+  "menuPrivList": [
+    {
+      "menuId": "100100",
+      "menuLevel": "1",
+      "menuName": "贷款管理",
+      "menuOrder": "1",
+      "menuUrl": "",
+      "parentMenuId": ""
+    },
+    {
+      "menuId": "100101",
+      "menuLevel": "2",
+      "menuName": "借据管理",
+      "menuOrder": "1",
+      "menuUrl": "/loan/creditduebill",
+      "parentMenuId": "100100"
+    },
+    {
+      "menuId": "100102",
+      "menuLevel": "2",
+      "menuName": "台账管理",
+      "menuOrder": "2",
+      "menuUrl": "/loan/loanledger",
+      "parentMenuId": "100100"
+    }
+  ],
+  "userPriv": {
+    "roleNameArr": [
+      "财务人员",
+      "业务查询员"
+    ],
+    "username": "张三"
+  }
+}

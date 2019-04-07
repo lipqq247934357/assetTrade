@@ -1,4 +1,9 @@
+let product = require('./configM/product/product');
 let channel = require('./configM/channel/channel');
+let cashProvider = require('./configM/cashProvider/cashProvider');
+let splitRules = require('./configM/splitRules/splitRules');
+let cashOutput = require('./configM/cashOutput/cashOutput');
+let outputDetail = require('./configM/cashOutput/outputDetail');
 
 function mock(app) {
     /**
@@ -29,6 +34,7 @@ function mock(app) {
             token: '1234'
         });
     });
+
     app.post('/mock/getRoles', function (req, res) {
         res.json({
             roles: "simple",
@@ -37,24 +43,46 @@ function mock(app) {
         });
     });
 
-    app.post('/mock/channel', function (req, res) {
+    app.post('/mock/service/validate/ticket', function (req, res) {
+        res.json({
+            roles: "simple",
+            name: "lipeng",
+            avatar: ""
+        });
+    });
+
+    let prefix = '/mock/asset/pages/config';
+
+    app.post(prefix + '/finProduct/query', function (req, res) {
+        res.json(product);
+    });
+
+    app.post(prefix + '/channel/query', function (req, res) {
         res.json(channel);
     });
 
-    app.post('/mock/addChannel', function (req, res) {
-        res.json({result:"上传成功"});
+    app.post(prefix + '/contributive/query', function (req, res) {
+        res.json(cashProvider);
     });
 
-    app.post('/mock/asset/pages/config/channel/query', function (req, res) {
-        res.json(channel);
+    app.post(prefix + '/assetSplit/query', function (req, res) {
+        res.json(splitRules);
+    });
+    app.post(prefix + '/outputTem/query', function (req, res) {
+        res.json(cashOutput);
     });
 
-    app.post('/mock//asset/pages/config/channel/add', function (req, res) {
-        res.json({result:"上传成功"});
+    app.post(prefix + '/outputFile/query', function (req, res) {
+        res.json(outputDetail);
     });
 
-    app.post('/mock//asset/pages/config/channel/update', function (req, res) {
-        res.json({result:"上传成功"});
+
+    app.post(prefix + '/channel/add', function (req, res) {
+        res.json({result: "上传成功"});
+    });
+
+    app.post(prefix + '/channel/update', function (req, res) {
+        res.json({result: "上传成功"});
     });
 }
 

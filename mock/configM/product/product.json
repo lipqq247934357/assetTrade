@@ -1,13 +1,19 @@
 {
   "resultCode": "0000",
   "resultMsg": "成功",
-  "dataCount": 40,
+  "dataCount": 20,
+  "channelDict": [
+    {
+      "channel_no": "360",
+      "channel_name": "360"
+    }
+  ],
   "data": [
     {
-      "channelNo": "QD001",
-      "channelName": "百度",
-      "channelType": "1",
-      "channelSymbol": "baidu",
+      "prodNo": "cn01",
+      "prodName": "产品名称1",
+      "prodDesc": "产品描述1",
+      "channelName": "渠道名称",
       "useYn": "Y",
       "inputUser": "李四",
       "createTime": "2019-4-1 22:24:43",
@@ -15,10 +21,10 @@
       "updateTime": "2019-4-2 11:24:43"
     },
     {
-      "channelNo": "QD001",
-      "channelName": "百度",
-      "channelType": "1",
-      "channelSymbol": "baidu",
+      "prodNo": "cn01",
+      "prodName": "产品名称1",
+      "prodDesc": "产品描述1",
+      "channelName": "渠道名称",
       "useYn": "Y",
       "inputUser": "李四",
       "createTime": "2019-4-1 22:24:43",
@@ -26,10 +32,10 @@
       "updateTime": "2019-4-2 11:24:43"
     },
     {
-      "channelNo": "QD001",
-      "channelName": "百度",
-      "channelType": "1",
-      "channelSymbol": "baidu",
+      "prodNo": "cn01",
+      "prodName": "产品名称1",
+      "prodDesc": "产品描述1",
+      "channelName": "渠道名称",
       "useYn": "Y",
       "inputUser": "李四",
       "createTime": "2019-4-1 22:24:43",
