@@ -15,6 +15,6 @@ export const getRoles = (data) => {
 };
 
 // 获取用户所有权限和用户个人信息
-// export const getRoles = (data) => {
-//     return post('/service/validate/ticket', data);
-// };
+export const privilegeInfo = (data) => {
+    return post('/service/validate/ticket', data);
+};

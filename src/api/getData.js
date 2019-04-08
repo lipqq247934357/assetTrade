@@ -2,6 +2,7 @@ import Qs from "qs";
 import axios from "axios";
 import {Message} from 'element-ui';
 import router from '../router';
+import {requestConf} from './requestConf';
 // axios 配置
 axios.defaults.timeout = 6969;
 if (process.env.NODE_ENV === 'development') {// 根据不同的环境使用不同的接口
@@ -12,7 +13,7 @@ if (process.env.NODE_ENV === 'development') {// 根据不同的环境使用不�
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 
 axios.interceptors.request.use(function (config) {
-    return config;
+    return requestConf(config);
 }, err => {
     Message.error({message: '请求超时!', duration: 5 * 1000});
     return Promise.reject(err);

@@ -27,15 +27,16 @@ export const productupdate = (prodNo, prodName, prodDesc, useYn, updateUser) => 
  */
 
 export const channelquery = (channelNo, channelName, pageNum = 1, pageSize = 10) => {
+    // console.log(`${channelNo}, ${channelName}, ${pageNum}, ${pageSize}`)
     return post(prefix + '/channel/query', {channelNo, channelName, pageNum, pageSize});
 };
 
-export const channeladd = (channelNo, channelName, channelType, useYn, inputUser) => {
-    return post(prefix + '/channel/add', {channelNo, channelName, channelType, useYn, inputUser});
+export const channeladd = (channelNo, channelName, channelType, channelSymbol, useYn, inputUser) => {
+    return post(prefix + '/channel/add', {channelNo, channelName, channelType, channelSymbol, useYn, inputUser});
 };
 
-export const channelupdate = (channelNo, channelName, channelType, useYn, updateUser) => {
-    return post(prefix + '/channel/update', {channelNo, channelName, channelType, useYn, updateUser});
+export const channelupdate = (channelNo, channelName, channelType, channelSymbol, useYn, updateUser) => {
+    return post(prefix + '/channel/update', {channelNo, channelName, channelType, channelSymbol, useYn, updateUser});
 };
 
 

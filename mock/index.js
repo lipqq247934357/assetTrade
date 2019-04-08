@@ -5,6 +5,9 @@ let splitRules = require('./configM/splitRules/splitRules');
 let cashOutput = require('./configM/cashOutput/cashOutput');
 let outputDetail = require('./configM/cashOutput/outputDetail');
 
+
+let privilegeInfo = require('./user/getRoles');
+
 function mock(app) {
     /**
      * 用户名
@@ -44,11 +47,7 @@ function mock(app) {
     });
 
     app.post('/mock/service/validate/ticket', function (req, res) {
-        res.json({
-            roles: "simple",
-            name: "lipeng",
-            avatar: ""
-        });
+        res.json(privilegeInfo);
     });
 
     let prefix = '/mock/asset/pages/config';
@@ -58,6 +57,9 @@ function mock(app) {
     });
 
     app.post(prefix + '/channel/query', function (req, res) {
+        res.json(channel);
+    });
+    app.post(prefix + '/channel/update', function (req, res) {
         res.json(channel);
     });
 
