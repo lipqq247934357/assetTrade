@@ -51,8 +51,7 @@ router.beforeEach((to, from, next) => {
             next(`/login?redirect=${to.path}`) // 否则全部重定向到登录页
         }
     }
-
-})
+});
 
 function hasPermission(roles, to) {
     if (!Array.isArray(roles)) {

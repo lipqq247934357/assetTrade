@@ -1,5 +1,5 @@
 /**
- * Created by jiachenpan on 16/11/18.
+ *基本的表单校验
  */
 
 export function isvalidUsername(str) {
@@ -10,3 +10,7 @@ export function isvalidUsername(str) {
 export function isExternal(path) {
     return /^(https?:|mailto:|tel:)/.test(path)
 }
+
+
+
+
