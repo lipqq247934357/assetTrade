@@ -18,3 +18,15 @@ export const getRoles = (data) => {
 export const privilegeInfo = (data) => {
     return post('/service/validate/ticket', data);
 };
+
+
+// 业务异常接口
+export const flowError = () => {
+    return post('/flowError');
+};
+
+
+// 系统异常接口
+export const systemError = () => {
+    return post('/systemError');
+};

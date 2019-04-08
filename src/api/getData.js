@@ -20,6 +20,11 @@ axios.interceptors.request.use(function (config) {
 });
 
 axios.interceptors.response.use(function (response) {
+    if (response.data.resultCode === '9000') {
+        Message.error({message: response.data.resultMsg, duration: 5 * 1000});
+    } else if (response.data.resultCode === '9999') {
+        Message.error({message: response.data.resultMsg, duration: 5 * 1000});
+    }
     return response;
 }, err => {
     if (!err.response) {

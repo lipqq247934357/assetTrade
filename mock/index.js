@@ -4,8 +4,6 @@ let cashProvider = require('./configM/cashProvider/cashProvider');
 let splitRules = require('./configM/splitRules/splitRules');
 let cashOutput = require('./configM/cashOutput/cashOutput');
 let outputDetail = require('./configM/cashOutput/outputDetail');
-
-
 let privilegeInfo = require('./user/getRoles');
 
 function mock(app) {
@@ -86,6 +84,24 @@ function mock(app) {
     app.post(prefix + '/channel/update', function (req, res) {
         res.json({result: "上传成功"});
     });
+
+    app.post('/mock/flowError', function (req, res) {
+        res.json({
+                "resultCode": "9000",
+                "resultMsg": "业务异常"
+            }
+        );
+    });
+
+    app.post('/mock/systemError', function (req, res) {
+        res.json({
+                "resultCode": "9999",
+                "resultMsg": "系统异常"
+            }
+        );
+    });
+
 }
+
 
 module.exports = mock;

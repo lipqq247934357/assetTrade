@@ -2,6 +2,16 @@
   "resultCode": "0000",
   "resultMsg": "成功",
   "dataCount": 40,
+  "channelDict": [
+    {
+      "channel_no": "360",
+      "channel_name": "360"
+    },
+    {
+      "channel_no": "bd",
+      "channel_name": "百度"
+    }
+  ],
   "data": [
     {
       "channelNo": "QD001",
