@@ -3,24 +3,34 @@
         <el-dialog
                 title="个人信息"
                 :visible.sync="vis"
-                width="20%">
+                width="25%">
             <div class="cc">
-                <div class="name">
-                    <div>用户名:</div>
-                    <div>姓名:</div>
-                    <div>手机号:</div>
-                    <div>邮箱:</div>
-                    <div>职位:</div>
-                    <div></div>
-                </div>
-                <div class="content">
-                    <div>111</div>
-                    <div>222</div>
-                    <div>333</div>
-                    <div>444</div>
-                    <div>555</div>
-                    <div></div>
-                </div>
+                <table>
+                    <tr>
+                        <td>用户名:</td>
+                        <td>1</td>
+                    </tr>
+
+                    <tr>
+                        <td>姓名:</td>
+                        <td>2</td>
+                    </tr>
+
+                    <tr>
+                        <td>手机号:</td>
+                        <td>3</td>
+                    </tr>
+
+                    <tr>
+                        <td>邮箱:</td>
+                        <td>4</td>
+                    </tr>
+
+                    <tr>
+                        <td>职位:</td>
+                        <td>5</td>
+                    </tr>
+                </table>
             </div>
         </el-dialog>
     </div>
@@ -63,10 +73,18 @@
         text-align: left;
     }
 
-    .name, .content {
-        div {
-            height: 28px;
+
+    tr {
+
+        td:nth-child(1){
+            width: 90px;
+            text-align: right;
         }
+        td:nth-child(2){
+            border-left: 40px solid #ffffff;
+        }
+        line-height: 24px;
+        height: 10px;
     }
 
 
