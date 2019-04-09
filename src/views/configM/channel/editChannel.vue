@@ -2,7 +2,7 @@
     <div class="edit-channel app-container">
         <div class="edit-content">
             <div class="content-border">
-                <el-form :model="form" :rules="rules" ref="form">
+                <el-form :model="form" ref="form">
                     <div class="row">
                         <div class="name must-choose">渠道编码</div>
                         <div class="content">
@@ -37,7 +37,6 @@
                             <el-form-item prop="channelSymbol">
                                 <el-input v-model="form.channelSymbol"></el-input>
                             </el-form-item>
-
                         </div>
                     </div>
                     <div class="row">
@@ -89,12 +88,11 @@
                     inputUser: '',
                     updateUser: ''
                 },
-                rules: {},
                 "channelTypeList": [{
-                    value: 1,
+                    value: "1",
                     label: '自营'
                 }, {
-                    value: 2,
+                    value: "2",
                     label: '三方'
                 }],
                 "useYnList": [{
@@ -114,10 +112,11 @@
                 }
             )
         },
-        created() {
+        activated() {
+            this.form = {};
             // 获取updateId,如果有值说明是更新
             let params = urlParse();
-            // 主键查询，有值是修改，将主键保存，否则console.log提示
+            // 主键查询，有值是修改，将主键保存，否则设置增加人为自己
             if (params.updateId) {
                 this.query(params.updateId);
             } else {
@@ -128,18 +127,19 @@
             async query(channelNo) { // 查询用户信息
                 //发起ajax请求，更改数据
                 let data = await channelquery(channelNo);
-                if (data.total > 0) {// 存在
-                    this.updateId = data.data[0].channelNo;
-                    this.form = data.data[0];
-                } else {
-                    console.log('没有找到channelNo为' + channelNo + '的内容');
+                if (data.data.resultCode === '0000') {
+                    data = data.data;
+                    if (data.dataCount > 0) {// 存在
+                        this.updateId = data.data[0].channelNo;
+                        this.form = data.data[0];
+                    } else {
+                        // 提示参数异常
+                        console.log('没有找到channelNo为' + channelNo + '的内容');
+                    }
                 }
             },
             back() {
-                this.$router.push({ // 返回上个页面，将参数传过去
-                    name: "channel",
-                    params: urlParse()
-                });
+                this.$router.go(-1);
             },
             submit(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -156,11 +156,17 @@
             },
             async add() {
                 let form = this.form;
-                let res = await channeladd(form.channelNo, form.channelName, form.channelType, form.channelSymbol, form.useYn, this.inputUser);
+                let data = await channeladd(form.channelNo, form.channelName, form.channelType, form.channelSymbol, form.useYn, this.inputUser);
+                if (data.data.resultCode === '0000') {
+                    this.$router.go(-1);
+                }
             },
-            async udpate() {
+            async update() {
                 let form = this.form;
-                let res = await channelupdate(form.channelNo, form.channelName, form.channelType, form.channelSymbol, form.useYn, this.inputUser);
+                let data = await channelupdate(form.channelNo, form.channelName, form.channelType, form.channelSymbol, form.useYn, this.inputUser);
+                if (data.data.resultCode === '0000') {
+                    this.$router.go(-1);
+                }
             }
         }
     }

@@ -7,7 +7,7 @@
             </template>
             <template>
                 <div>
-                    <el-form :model="form" :rules="rules" ref="form" inline>
+                    <el-form :model="form" ref="form" inline>
                         <el-form-item prop="channelName" label="渠道名称">
                             <el-input v-model.number="form.channelName" placeholder="渠道名称"></el-input>
                         </el-form-item>
@@ -57,6 +57,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="useYn"
+                            :formatter="formatterUseYn"
                             label="是否启用">
                     </el-table-column>
                     <el-table-column
@@ -65,6 +66,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="createTime"
+                            :formatter="formatterData"
                             label="创建时间">
                     </el-table-column>
                     <el-table-column
@@ -73,6 +75,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="updateTime"
+                            :formatter="formatterData"
                             label="更新时间">
                     </el-table-column>
                     <el-table-column
@@ -106,29 +109,18 @@
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
     import {productquery} from "@/api/configM";
+    import formatter from '@/components/mixins/formatter';
 
     export default {
         name: 'product',
         components: {pagination, blockTitle, collapse},
         directives: {waves},
+        mixins: [formatter],
         data() {
-            // 渠道No校验
-            let qdNoValid = function (rule, value, callback) { // 校验渠道编号规则
-                if (value && !Number.isInteger(value)) {
-                    callback(new Error('请输入数字值'));
-                } else {
-                    callback();
-                }
-            };
             return {
                 form: {
                     channelName: '',
                     prodName: '',
-                },
-                rules: {
-                    qdNo: [
-                        {validator: qdNoValid, trigger: 'blur'}
-                    ]
                 },
                 pagInfo: {
                     total: '',
@@ -141,19 +133,18 @@
             };
         },
         created() {
-            //1.如果页面从修改和配置跳过来，填充默认值
-            this.form.prodName = this.$route.params.prodName || '';
-            this.form.channelName = this.$route.params.channelName || '';
-            this.getProduct();// 2.获取数据
+            this.getProduct();
         },
         methods: {
             async getProduct() {
                 //发起ajax请求，更改数据
                 this.loading = true;
-                let data = await productquery(this.form.qdNo, this.form.qdName);
-                data = data.data;
-                this.data = data.data;
-                this.pagInfo.total = data.dataCount / this.pagInfo.pageSize;
+                let data = await productquery(this.form.qdNo, this.form.qdName, this.pagInfo.currentPage, this.pagInfo.pageSize);
+                if (data.data.resultCode === '0000') {
+                    data = data.data;
+                    this.data = data.data;
+                    this.pagInfo.total = data.dataCount;
+                }
                 this.loading = false;
             },
             getInfo() {
@@ -166,23 +157,12 @@
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             },
-            add() {
-                // 新增渠道,跳转存储默认值
-                this.$router.push({path: '/configm/addproduct', query: this.remainParam()});
+            add() {// 新增
+                this.$router.push({path: '/configm/addproduct'});
             },
-            update(row) {
-                // 修改渠道,跳转存储默认值
-                let obj = this.remainParam();
-                obj.updateId = row.prodNo;
-                this.$router.push({path: "/configm/updateproduct", query: obj});
-            },
-            remainParam() { // 获取默认参数
-                let obj = {};
-                Object.keys(this.form).forEach((key) => {
-                    if (this.form[key]) obj[key] = this.form[key];
-                });
-                return obj;
-            },
+            update(row) { //修改
+                this.$router.push({path: "/configm/updateproduct", query: {updateId: row.prodNo}});
+            }
         }
     }
 </script>

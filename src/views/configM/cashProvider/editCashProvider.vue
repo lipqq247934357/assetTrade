@@ -2,7 +2,7 @@
     <div class="edit-provider app-container">
         <div class="edit-content">
             <div class="content-border">
-                <el-form :model="form" :rules="rules" ref="form">
+                <el-form :model="form" ref="form">
                     <div class="row">
                         <div class="name must-choose">资金方编码</div>
                         <div class="content">
@@ -23,7 +23,7 @@
                             <el-form-item prop="outputTemNo">
                                 <el-select v-model="form.outputTemNo" placeholder="请选择" size="max">
                                     <el-option
-                                            v-for="item in useYnList"
+                                            v-for="item in dicts"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value">
@@ -65,29 +65,23 @@
 
 <script>
     import {urlParse} from '@/utils/utils';
-    import {channelquery, channeladd, channelupdate} from "@/api/configM";
+    import {cashproviderquery, cashprovideradd, cashproviderupdate} from "@/api/configM";
+    import {mapGetters} from 'vuex'
 
     export default {
         name: 'editProvider',
         data() {
             return {
                 form: {
-                    channelNo: '',
-                    channelName: '',
-                    channelType: '',
-                    channelSymbol: '',
+                    contributiveNo: '',
+                    contributiveName: '',
+                    outputTemNo: '',
                     useYn: '',
                     inputUser: '',
                     updateUser: ''
                 },
                 rules: {},
-                "channelTypeList": [{
-                    value: 1,
-                    label: '自营'
-                }, {
-                    value: 2,
-                    label: '三方'
-                }],
+                dicts: [],
                 "useYnList": [{
                     value: "Y",
                     label: '启用'
@@ -99,28 +93,46 @@
                 updateId: ''
             }
         },
-        created() {
+        activated() {
+            this.form = {};
             // 获取updateId,如果有值说明是更新
             let params = urlParse();
-            // 主键查询，有值是修改，将主键保存，否则console.log提示
-            params.updateId && this.query(params.updateId);
+            // 主键查询，有值是修改，将主键保存，否则设置增加人为自己
+            if (params.updateId) {
+                this.query(params.updateId);
+            } else {
+                // 获取资产输出模板内容
+                this.form.inputUser = this.inputUser;
+            }
+        },
+        computed: {
+            ...mapGetters({
+                    inputUser: 'name'
+                }
+            )
         },
         methods: {
-            async query(channelNo) { // 查询用户信息
+            async query(contributiveNo) { // 查询用户信息
                 //发起ajax请求，更改数据
-                let data = await channelquery(channelNo);
-                if (data.total > 0) {// 存在
-                    this.updateId = data.data[0].channelNo;
+                let data = await cashproviderquery(contributiveNo);
+                data = data.data;
+                if (data.dataCount > 0) {// 存在
+                    this.updateId = data.data[0].contributiveNo;
                     this.form = data.data[0];
+                    // 将字典的内容放入到下拉列表中
+                    for (let item of data.dicts) {
+                        let obj = {};
+                        obj.value = item.code;
+                        obj.label = item.codeName;
+                        this.dicts.push(obj);
+                    }
+
                 } else {
-                    console.log('没有找到channelNo为' + channelNo + '的内容');
+                    console.log('没有找到contributiveNo为' + contributiveNo + '的内容');
                 }
             },
             back() {
-                this.$router.push({ // 返回上个页面，将参数传过去
-                    name: "channel",
-                    params: urlParse()
-                });
+                this.$router.go(-1);
             },
             submit(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -136,10 +148,18 @@
                 });
             },
             async add() {
-                let res = await channeladd();
+                let form = this.form;
+                let data = await cashprovideradd(form.contributiveNo, form.contributiveName, form.outputTemNo, form.useYn, this.inputUser);
+                if (data.data.resultCode === '0000') {
+                    this.$router.go(-1);
+                }
             },
-            async udpate() {
-                let res = await channelupdate();
+            async update() {
+                let form = this.form;
+                let data = await cashproviderupdate(form.contributiveNo, form.contributiveName, form.outputTemNo, form.useYn, this.inputUser);
+                if (data.data.resultCode === '0000') {
+                    this.$router.go(-1);
+                }
             }
         }
     }

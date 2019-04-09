@@ -7,7 +7,7 @@
             </template>
             <template>
                 <div>
-                    <el-form :model="form" :rules="rules" ref="form" inline>
+                    <el-form :model="form" ref="form" inline>
                         <el-form-item prop="assetSplitWay" label="拆分方式">
                             <el-input v-model.number="form.assetSplitWay" placeholder="拆分方式"></el-input>
                         </el-form-item>
@@ -33,7 +33,7 @@
                 <el-table
                         border
                         v-loading="loading"
-                        :data="data.pageData"
+                        :data="data"
                         style="width: 100%"
                         header-cell-class-name="header-cell-class-name">
                     <el-table-column
@@ -42,10 +42,11 @@
                     </el-table-column>
                     <el-table-column
                             prop="assetSplitWay"
+                            :formatter="formatterSplitWay"
                             label="拆分方式">
                     </el-table-column>
                     <el-table-column
-                            prop="contributiveNo"
+                            prop="contributiveName"
                             label="资金方">
                     </el-table-column>
                     <el-table-column
@@ -53,8 +54,8 @@
                             label="拆分值">
                     </el-table-column>
                     <el-table-column
-                            prop="useYn"
-                            label="尾差归属资金方(还没prop)">
+                            prop="pennyDifferenceBelongsName"
+                            label="尾差归属资金方">
                     </el-table-column>
                     <el-table-column
                             prop="inputUser"
@@ -62,6 +63,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="createTime"
+                            :formatter="formatterData"
                             label="创建时间">
                     </el-table-column>
                     <el-table-column
@@ -70,10 +72,12 @@
                     </el-table-column>
                     <el-table-column
                             prop="updateTime"
+                            :formatter="formatterData"
                             label="更新时间">
                     </el-table-column>
                     <el-table-column
                             prop="useYn"
+                            :formatter="formatterUseYn"
                             label="是否启用">
                     </el-table-column>
                     <el-table-column
@@ -106,29 +110,19 @@
     import pagination from '@/components/Pagination';
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
-    import {channelquery} from "@/api/configM";
+    import {splitRulesquery} from "@/api/configM";
+    import formatter from '@/components/mixins/formatter';
+
 
     export default {
         name: 'splitRules',
         components: {pagination, blockTitle, collapse},
         directives: {waves},
+        mixins: [formatter],
         data() {
-            // 渠道No校验
-            let qdNoValid = function (rule, value, callback) { // 校验渠道编号规则
-                if (value && !Number.isInteger(value)) {
-                    callback(new Error('请输入数字值'));
-                } else {
-                    callback();
-                }
-            };
             return {
                 form: {
                     assetSplitWay: ''
-                },
-                rules: {
-                    channelNo: [
-                        {validator: qdNoValid, trigger: 'blur'}
-                    ]
                 },
                 pagInfo: {
                     total: '',
@@ -136,30 +130,29 @@
                     pageSize: 10
                 },
                 loading: false,
-                data: {},
+                data: [],
                 trueVal: true
             };
         },
-        created() {
-            //如果页面从修改和配置跳过来，填充默认值
-            let channelNo = this.$route.params.channelNo;
-            this.form.channelNo = channelNo ? Number(channelNo) : '';
-            this.form.channelName = this.$route.params.channelName || '';
-            this.getChannel();// 获取数据
+        activated() {
+            this.getSplRules();// 获取数据
         },
         methods: {
-            async getChannel() {
+            async getSplRules() {
                 //发起ajax请求，更改数据
                 this.loading = true;
-                let data = await channelquery(this.form.qdNo, this.form.qdName);
-                this.data = data.data;
-                this.pagInfo.total = data.totalPage;
+                let data = await splitRulesquery('', this.form.assetSplitWay, this.pagInfo.currentPage, this.pagInfo.pageSize);
+                if (data.data.resultCode === '0000') {
+                    data = data.data;
+                    this.data = data.data;
+                    this.pagInfo.total = data.dataCount;
+                }
                 this.loading = false;
             },
             getInfo() {
                 this.$refs.form.validate((valid) => { //1.校验参数是否合法
                     if (valid) {
-                        this.getChannel();
+                        this.getSplRules();
                     }
                 });
             },
@@ -167,22 +160,11 @@
                 this.$refs[formName].resetFields();
             },
             add() {
-                // 新增渠道,跳转存储默认值
-                this.$router.push({path: '/configm/addchannel', query: this.remainParam()});
+                this.$router.push({path: '/configm/addsplitrules'});
             },
             update(row) {
-                // 修改渠道,跳转存储默认值
-                let obj = this.remainParam();
-                obj.updateId = row.channelNo;
-                this.$router.push({path: "/configm/addchannel", query: obj});
-            },
-            remainParam() { // 获取默认参数
-                let obj = {};
-                Object.keys(this.form).forEach((key) => {
-                    if (this.form[key]) obj[key] = this.form[key];
-                });
-                return obj;
-            },
+                this.$router.push({path: "/configm/updatesplitrules", query: {updateId: row.assetSplitNo}});
+            }
         }
     }
 </script>

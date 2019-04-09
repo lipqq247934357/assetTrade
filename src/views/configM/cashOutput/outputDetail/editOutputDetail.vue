@@ -1,29 +1,35 @@
 <template>
-    <div v-show="show" class="edit-out-detail app-container">
+    <div class="edit-out-detail app-container">
         <div class="edit-content">
             <div class="content-border">
                 <el-form :model="form" :rules="rules" ref="form">
                     <div class="row">
-                        <div class="name must-choose">渠道编码</div>
+                        <div class="name must-choose">输出模版编号</div>
                         <div class="content">
-                            <el-form-item prop="fileNo">
-                                <el-input v-model="form.qdNo"></el-input>
+                            <el-form-item prop="outputTemNo">
+                                <el-input v-model="form.outputTemNo"></el-input>
                             </el-form-item>
                         </div>
-                        <div class="name must-choose">渠道名称</div>
+                        <div class="name must-choose">文件名称</div>
                         <div class="content last-box">
-                            <el-form-item prop="qdName">
-                                <el-input v-model="form.qdName"></el-input>
+                            <el-form-item prop="filename">
+                                <el-input v-model="form.filename"></el-input>
                             </el-form-item>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="name must-choose">渠道类型</div>
+                        <div class="name must-choose">列分隔符</div>
                         <div class="content">
-                            <el-form-item prop="qdType">
-                                <el-select v-model="form.qdType" placeholder="请选择" size="max">
+                            <el-form-item prop="colSplitSymbol">
+                                <el-input v-model="form.colSplitSymbol"></el-input>
+                            </el-form-item>
+                        </div>
+                        <div class="name must-choose">文件字符编码</div>
+                        <div class="content last-box">
+                            <el-form-item prop="fileWordCode">
+                                <el-select v-model="form.fileWordCode" placeholder="请选择" size="max">
                                     <el-option
-                                            v-for="item in channelType"
+                                            v-for="item in fileWordCode"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value">
@@ -32,33 +38,32 @@
                             </el-form-item>
 
                         </div>
-                        <div class="name must-choose">渠道标识</div>
-                        <div class="content last-box">
-                            <el-form-item prop="qdTag">
-                                <el-input v-model="form.qdTag"></el-input>
+                    </div>
+                    <div class="row">
+                        <div class="name sql-name must-choose">SQL语句</div>
+                        <div class="content sql-content last-box">
+                            <el-form-item class="sql-textarea" prop="sqlSentence">
+                                <el-input type="textarea" v-model="form.sqlSentence" rows="5"></el-input>
                             </el-form-item>
-
                         </div>
                     </div>
                     <div class="row">
-                        <div class="name must-choose">是否启用</div>
-                        <div class="content">
-                            <el-form-item prop="status">
-                                <el-select v-model="form.status" placeholder="请选择" size="max">
-                                    <el-option
-                                            v-for="item in useYn"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value">
-                                    </el-option>
-                                </el-select>
+                        <div class="name">文件描述</div>
+                        <div class="content last-box desc">
+                            <el-form-item prop="fileDesc">
+                                <el-input v-model="form.fileDesc"></el-input>
                             </el-form-item>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="name">创建人</div>
-                        <div class="content last-box">
-                            <el-form-item prop="creator">
-                                <el-input v-model="form.creator" :disabled="trueVal"></el-input>
+                        <div class="content">
+                            <el-form-item prop="inputUser">
+                                <el-input v-model="form.inputUser" :disabled="trueVal"></el-input>
                             </el-form-item>
+                        </div>
+                        <div class="name last-box"></div>
+                        <div class="content last-box">
                         </div>
                     </div>
                 </el-form>
@@ -88,19 +93,22 @@
                     "creator": ''
                 },
                 rules: {},
-                "channelType": [{
-                    value: 1,
-                    label: '自营'
-                }, {
-                    value: 2,
-                    label: '三方'
-                }],
                 "useYn": [{
                     value: "Y",
                     label: '启用'
                 }, {
                     value: "N",
                     label: '禁用'
+                }],
+                fileWordCode: [{
+                    value: "utf-8",
+                    label: 'utf-8'
+                }, {
+                    value: "gbk",
+                    label: 'gbk'
+                }, {
+                    value: "gb2312",
+                    label: 'gb2312'
                 }],
                 trueVal: true,
                 updateId: ''
@@ -126,7 +134,7 @@
                 }
             },
             back() {
-                alert(1);
+                this.$router.go(-1);
             },
             submit(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -165,6 +173,7 @@
         left: 0;
         bottom: 0;
         right: 0;
+        z-index: 1;
 
     }
 
@@ -207,6 +216,19 @@
             border-right: 1px solid #f4f4f5;
             border-bottom: 1px solid #f4f4f5;
             height: 40px;
+        }
+
+
+        .name.sql-name, .content.sql-content {
+            height: 140px;
+        }
+
+        .content.sql-content, .content.desc {
+            width: 82%;
+        }
+
+        .sql-textarea {
+            margin-top: 10px;
         }
 
         .name {

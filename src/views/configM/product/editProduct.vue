@@ -2,14 +2,14 @@
     <div class="edit-product app-container">
         <div class="edit-content">
             <div class="content-border">
-                <el-form :model="form" :rules="rules" ref="form">
+                <el-form :model="form" ref="form">
                     <div class="row">
                         <div class="name must-choose">渠道</div>
                         <div class="content">
                             <el-form-item prop="channelNo">
                                 <el-select v-model="form.channelNo" placeholder="请选择" size="max">
                                     <el-option
-                                            v-for="item in useYnList"
+                                            v-for="item in channelList"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="name must-choose">产品描述</div>
+                        <div class="name">产品描述</div>
                         <div class="content">
                             <el-form-item prop="prodDesc">
                                 <el-input v-model="form.prodDesc"></el-input>
@@ -93,11 +93,12 @@
                     value: "N",
                     label: '禁用'
                 }],
+                channelList: [],
                 trueVal: true,
                 updateId: ''
             }
         },
-        created() {
+        activated() {
             // 获取updateId,如果有值说明是更新
             let params = urlParse();
             // 主键查询，有值是修改，将主键保存，否则console.log提示
@@ -107,18 +108,19 @@
             async query(productNo) { // 查询用户信息
                 //发起ajax请求，更改数据
                 let data = await productquery(productNo);
-                if (data.total > 0) {// 存在
-                    this.updateId = data.data[0].productNo;
-                    this.form = data.data[0];
-                } else {
-                    console.log('没有找到productNo为' + productNo + '的内容');
+                if (data.data.resultCode === '0000') {
+                    data = data.data;
+                    if (data.dataCount > 0) {// 存在
+                        this.updateId = data.data[0].productNo;
+                        this.addChannelList(data);
+                        this.form = data.data[0];
+                    } else {
+                        console.log('没有找到productNo为' + productNo + '的内容');
+                    }
                 }
             },
             back() {
-                this.$router.push({ // 返回上个页面，将参数传过去
-                    name: "product",
-                    params: urlParse()
-                });
+                this.$router.go(-1);
             },
             submit(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -134,10 +136,29 @@
                 });
             },
             async add() {
-                let res = await productadd();
+                let form = this.form;
+                let data = await productadd(form.channelNo, form.channelName, form.channelType, form.channelSymbol, form.useYn, this.inputUser);
+                if (data.data.resultCode === '0000') {
+                    this.$router.go(-1);
+                }
             },
-            async udpate() {
-                let res = await productupdate();
+            async update() {
+                let form = this.form;
+                let data = await productupdate(form.channelNo, form.channelName, form.channelType, form.channelSymbol, form.useYn, this.inputUser);
+                if (data.data.resultCode === '0000') {
+                    this.$router.go(-1);
+                }
+            },
+            addChannelList(data) {
+                // 将字典的内容放入到下拉列表中
+                let tmp = [];
+                for (let item of data.dicts) {
+                    let obj = {};
+                    obj.value = item.code;
+                    obj.label = item.codeName;
+                    tmp.push(obj);
+                }
+                this.channelList = tmp;
             }
         }
     }

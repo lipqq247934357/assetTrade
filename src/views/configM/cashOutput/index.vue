@@ -7,7 +7,7 @@
             </template>
             <template>
                 <div>
-                    <el-form :model="form" :rules="rules" ref="form" inline>
+                    <el-form :model="form" ref="form" inline>
                         <el-form-item prop="outputTemName" label="模板输出名称">
                             <el-input v-model.number="form.outputTemName" placeholder="模板输出名称"></el-input>
                         </el-form-item>
@@ -46,6 +46,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="useYn"
+                            :formatter="formatterUseYn"
                             label="是否启用">
                     </el-table-column>
                     <el-table-column
@@ -54,6 +55,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="createTime"
+                            :formatter="formatterData"
                             label="创建时间">
                     </el-table-column>
                     <el-table-column
@@ -62,6 +64,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="updateTime"
+                            :formatter="formatterData"
                             label="更新时间">
                     </el-table-column>
                     <el-table-column
@@ -99,29 +102,17 @@
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
     import {outputquery} from "@/api/configM";
+    import formatter from '@/components/mixins/formatter';
 
     export default {
         name: 'cashOutput',
         components: {pagination, blockTitle, collapse},
         directives: {waves},
+        mixins: [formatter],
         data() {
-            // 渠道No校验
-            let qdNoValid = function (rule, value, callback) { // 校验渠道编号规则
-                if (value && !Number.isInteger(value)) {
-                    callback(new Error('请输入数字值'));
-                } else {
-                    callback();
-                }
-            };
             return {
                 form: {
-                    channelNo: '',
-                    channelName: '',
-                },
-                rules: {
-                    channelNo: [
-                        {validator: qdNoValid, trigger: 'blur'}
-                    ]
+                    outputTemName: '',
                 },
                 pagInfo: {
                     total: '',
@@ -134,18 +125,19 @@
             };
         },
         created() {
-            //如果页面从修改和配置跳过来，填充默认值
-            let channelNo = this.$route.params.channelNo;
-            this.form.channelNo = channelNo ? Number(channelNo) : '';
-            this.form.channelName = this.$route.params.channelName || '';
             this.getoutput();// 获取数据
         },
         methods: {
             async getoutput() {
                 //2.发起ajax请求，更改数据
                 this.loading = true;
-                let data = await outputquery(this.form.qdNo, this.form.qdName);
-                this.data = data.data.data;
+                let data = await outputquery(this.form.qdNo, this.form.qdName, this.pagInfo.currentPage, this.pagInfo.pageSize);
+                console.log(data);
+                if (data.data.resultCode === '0000') {
+                    data = data.data;
+                    this.data = data.data;
+                    this.pagInfo.total = data.dataCount;
+                }
                 this.loading = false;
             },
             getInfo() {
@@ -156,22 +148,13 @@
                 });
             },
             add() { // 新增渠道
-                this.$router.push({path: '/configm/addcashoutput', query: this.remainParam()});// 跳转页面的时候将上个页面的默认值传过去
+                this.$router.push({path: '/configm/addcashoutput'});
             },
             update(row) {
-                let obj = this.remainParam();
-                obj.outputNo = row.outputNo;
-                this.$router.push({path: "/configm/updatecashoutput", query: obj});// 跳转页面将上个页面的默认值传过去
+                this.$router.push({path: "/configm/updatecashoutput", query: {updateId: row.outputTemNo}});
             },
-            configDetail() {
-                this.$router.push({path: "/configm/outputdetail"});// 跳转页面将上个页面的默认值传过去
-            },
-            remainParam() { // 获取默认参数
-                let obj = {};
-                Object.keys(this.form).forEach((key) => {
-                    if (this.form[key]) obj[key] = this.form[key];
-                });
-                return obj;
+            configDetail(row) {
+                this.$router.push({path: "/configm/outputdetail", query: {updateId: row.outputTemNo}});
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();

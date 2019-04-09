@@ -7,7 +7,7 @@
             </template>
             <template>
                 <div>
-                    <el-form :model="form" :rules="rules" ref="form" inline>
+                    <el-form :model="form" ref="form" inline>
                         <el-form-item prop="channelNo" label="渠道编码">
                             <el-input v-model.number="form.channelNo" placeholder="渠道编码"></el-input>
                         </el-form-item>
@@ -49,6 +49,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="channelType"
+                            :formatter="formatterChannelType"
                             label="渠道类型">
                     </el-table-column>
                     <el-table-column
@@ -57,6 +58,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="useYn"
+                            :formatter="formatterUseYn"
                             label="是否启用">
                     </el-table-column>
                     <el-table-column
@@ -65,6 +67,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="createTime"
+                            :formatter="formatterData"
                             label="创建时间">
                     </el-table-column>
                     <el-table-column
@@ -73,6 +76,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="updateTime"
+                            :formatter="formatterData"
                             label="更新时间">
                     </el-table-column>
                     <el-table-column
@@ -106,29 +110,18 @@
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
     import {channelquery} from "@/api/configM";
+    import formatter from '@/components/mixins/formatter';
 
     export default {
         name: 'channel',
         components: {pagination, blockTitle, collapse},
         directives: {waves},
+        mixins: [formatter],
         data() {
-            // 渠道No校验
-            let qdNoValid = function (rule, value, callback) { // 校验渠道编号规则
-                if (value && !Number.isInteger(value)) {
-                    callback(new Error('请输入数字值'));
-                } else {
-                    callback();
-                }
-            };
             return {
                 form: {
                     channelNo: '',
                     channelName: '',
-                },
-                rules: {
-                    channelNo: [
-                        {validator: qdNoValid, trigger: 'blur'}
-                    ]
                 },
                 pagInfo: {
                     total: '',
@@ -140,20 +133,18 @@
                 trueVal: true
             };
         },
-        created() {
-            //如果页面从修改和配置跳过来，填充默认值
-            let channelNo = this.$route.params.channelNo;
-            this.form.channelNo = channelNo ? Number(channelNo) : '';
-            this.form.channelName = this.$route.params.channelName || '';
+        activated() {
             this.getChannel();// 获取数据
         },
         methods: {
             async getChannel() { //发起ajax请求，更改数据
                 this.loading = true;
                 let data = await channelquery(this.form.qdNo, this.form.qdName, this.pagInfo.currentPage, this.pagInfo.pageSize);
-                data = data.data;
-                this.data = data.data;
-                this.pagInfo.total = data.dataCount;
+                if (data.data.resultCode === '0000') {
+                    data = data.data;
+                    this.data = data.data;
+                    this.pagInfo.total = data.dataCount;
+                }
                 this.loading = false;
             },
             getInfo() {
@@ -168,28 +159,17 @@
             },
             add() {
                 // 新增渠道,跳转存储默认值
-                this.$router.push({path: '/configm/addchannel', query: this.remainParam()});
+                this.$router.push({path: '/configm/addchannel'});
             },
             update(row) {
                 // 修改渠道,跳转存储默认值
-                let obj = this.remainParam();
-                obj.updateId = row.channelNo;
-                this.$router.push({path: "/configm/addchannel", query: obj});
-            },
-            remainParam() { // 获取默认参数
-                let obj = {};
-                Object.keys(this.form).forEach((key) => {
-                    if (this.form[key]) obj[key] = this.form[key];
-                });
-                return obj;
-            },
+                this.$router.push({path: "/configm/addchannel", query: {updateId: row.channelNo}});
+            }
         }
     }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-
-
     .search, .content {
         background: #fff;
         border-radius: 5px;
@@ -235,6 +215,7 @@
         }
     }
 
+
     /*操作的宽度太高*/
     /deep/ .operate {
         padding: 6px 0;
@@ -254,5 +235,6 @@
     .is-success /deep/ .el-input__inner:focus {
         border-color: #409EFF !important;
     }
+
 
 </style>

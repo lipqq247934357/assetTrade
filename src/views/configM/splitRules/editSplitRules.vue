@@ -2,42 +2,54 @@
     <div class="edit-split-rules app-container">
         <div class="edit-content">
             <div class="content-border">
-                <el-form :model="form" :rules="rules" ref="form">
+                <el-form :model="form" ref="form">
                     <div class="row">
-                        <div class="name must-choose">渠道编码</div>
+                        <div class="name must-choose">拆分方式</div>
                         <div class="content">
-                            <el-form-item prop="channelNo">
-                                <el-input v-model="form.channelNo"></el-input>
-                            </el-form-item>
-                        </div>
-                        <div class="name must-choose">渠道名称</div>
-                        <div class="content last-box">
-                            <el-form-item prop="channelName">
-                                <el-input v-model="form.channelName"></el-input>
-                            </el-form-item>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="name must-choose">渠道类型</div>
-                        <div class="content">
-                            <el-form-item prop="qdType">
-                                <el-select v-model="form.channelType" placeholder="请选择" size="max">
+                            <el-form-item prop="assetSplitWay">
+                                <el-select v-model="form.assetSplitWay" placeholder="请选择" size="max">
                                     <el-option
-                                            v-for="item in channelTypeList"
+                                            v-for="item in splitWay"
                                             :key="item.value"
                                             :label="item.label"
                                             :value="item.value">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-
                         </div>
-                        <div class="name must-choose">渠道标识</div>
+                        <div class="name must-choose">拆分值</div>
                         <div class="content last-box">
-                            <el-form-item prop="channelSymbol">
-                                <el-input v-model="form.channelSymbol"></el-input>
+                            <el-form-item prop="assetSplitValue">
+                                <el-input v-model="form.assetSplitValue"></el-input>
                             </el-form-item>
-
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="name must-choose">资金方</div>
+                        <div class="content">
+                            <el-form-item prop="contributiveNo">
+                                <el-select v-model="form.contributiveNo" multiple placeholder="请选择" size="max">
+                                    <el-option
+                                            v-for="item in assetProvider"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                        <div class="name must-choose">尾差归属方</div>
+                        <div class="content last-box">
+                            <el-form-item prop="qdType">
+                                <el-select v-model="form.pennyDifferenceBelongs" placeholder="请选择" size="max">
+                                    <el-option
+                                            v-for="item in assetProvider"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
                         </div>
                     </div>
                     <div class="row">
@@ -73,29 +85,22 @@
 
 <script>
     import {urlParse} from '@/utils/utils';
-    import {channelquery, channeladd, channelupdate} from "@/api/configM";
+    import {splitRulesquery, splitRulesadd, splitRulesupdate} from "@/api/configM";
 
     export default {
         name: 'editSplitRules',
         data() {
             return {
                 form: {
-                    channelNo: '',
-                    channelName: '',
-                    channelType: '',
+                    assetSplitWay: '', //
+                    assetSplitValue: '',
+                    contributiveNo: [],
                     channelSymbol: '',
                     useYn: '',
                     inputUser: '',
                     updateUser: ''
                 },
                 rules: {},
-                "channelTypeList": [{
-                    value: 1,
-                    label: '自营'
-                }, {
-                    value: 2,
-                    label: '三方'
-                }],
                 "useYnList": [{
                     value: "Y",
                     label: '启用'
@@ -103,32 +108,54 @@
                     value: "N",
                     label: '禁用'
                 }],
+                "splitWay": [{
+                    value: "01",
+                    label: '按比例拆分'
+                }, {
+                    value: "02",
+                    label: '按固定值拆分'
+                }],
+                assetProvider: [],
                 trueVal: true,
                 updateId: ''
             }
         },
-        created() {
+        activated() {
             // 获取updateId,如果有值说明是更新
             let params = urlParse();
-            // 主键查询，有值是修改，将主键保存，否则console.log提示
-            params.updateId && this.query(params.updateId);
+            // 主键查询，有值是修改，将主键保存，否则设置增加人为自己
+            if (params.updateId) {
+                this.query(params.updateId);
+            } else {
+                this.form.inputUser = this.inputUser;
+                this.form.assetSplitWay = '';
+                this.form.assetSplitValue = '';
+                this.form.contributiveNo = [];
+                this.form.channelSymbol = '';
+                this.form.useYn = '';
+                this.form.inputUser = '';
+                this.form.updateUser = ''
+            }
         },
         methods: {
-            async query(channelNo) { // 查询用户信息
+            async query(assetSplitNo) { // 查询用户信息
                 //发起ajax请求，更改数据
-                let data = await channelquery(channelNo);
-                if (data.total > 0) {// 存在
-                    this.updateId = data.data[0].channelNo;
-                    this.form = data.data[0];
-                } else {
-                    console.log('没有找到channelNo为' + channelNo + '的内容');
+                let data = await splitRulesquery(assetSplitNo);
+                if (data.data.resultCode === '0000') {
+                    data = data.data;
+                    if (data.dataCount > 0) {// 存在
+                        this.updateId = data.data[0].assetSplitNo;
+                        let item = data.data[0];
+                        this.addAssetProvider(data);
+                        item.contributiveNo = item.contributiveNo.split(',');
+                        Object.assign(this.form, data.data[0]);
+                    } else {
+                        console.log('没有找到assetSplitNo为' + assetSplitNo + '的内容');
+                    }
                 }
             },
             back() {
-                this.$router.push({ // 返回上个页面，将参数传过去
-                    name: "channel",
-                    params: urlParse()
-                });
+                this.$router.go(-1);
             },
             submit(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -144,10 +171,29 @@
                 });
             },
             async add() {
-                let res = await channeladd();
+                let form = this.form;
+                let data = await splitRulesadd(form.assetSplitNo, form.channelSymbol, form.useYn, this.inputUser);
+                if (data.data.resultCode === '0000') {
+                    this.$router.go(-1);
+                }
             },
-            async udpate() {
-                let res = await channelupdate();
+            async update() {
+                let form = this.form;
+                let data = await splitRulesupdate(form.channelNo, form.channelName, form.useYn, this.inputUser);
+                if (data.data.resultCode === '0000') {
+                    this.$router.go(-1);
+                }
+            },
+            addAssetProvider(data) {
+                // 将字典的内容放入到下拉列表中
+                let tmp = [];
+                for (let item of data.dicts) {
+                    let obj = {};
+                    obj.value = item.code;
+                    obj.label = item.codeName;
+                    tmp.push(obj);
+                }
+                this.assetProvider = tmp;
             }
         }
     }
