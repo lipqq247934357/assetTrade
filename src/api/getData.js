@@ -21,8 +21,10 @@ axios.interceptors.request.use(function (config) {
 
 axios.interceptors.response.use(function (response) {
     if (response.data.resultCode === '9000') {
+        //业务异常
         Message.error({message: response.data.resultMsg, duration: 5 * 1000});
     } else if (response.data.resultCode === '9999') {
+        //系统异常
         Message.error({message: response.data.resultMsg, duration: 5 * 1000});
     }
     return response;

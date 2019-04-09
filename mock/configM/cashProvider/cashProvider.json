@@ -2,17 +2,26 @@
   "resultCode": "0000",
   "resultMsg": "成功",
   "dataCount": 20,
-  "outputTemDict": [
-    {
-      "outputTemNo": "360",
-      "outputTemName": "360"
-    }
-  ],
+  "dicts": [
+  {
+    "code": "1",
+    "codeName": "模板1"
+  },
+  {
+    "code": "2",
+    "codeName": "模板2"
+  },
+  {
+    "code": "3",
+    "codeName": "模板3"
+  }
+],
   "data": [
     {
       "contributiveNo": "code1",
       "contributiveName": "百度",
-      "outputTemNo": "bank",
+      "outputTemNo": "2",
+      "outputTemName": "bankName",
       "useYn": "Y",
       "inputUser": "李四",
       "createTime": "2019-4-1 22:24:43",
@@ -23,6 +32,7 @@
       "contributiveNo": "code1",
       "contributiveName": "百度",
       "outputTemNo": "bank",
+      "outputTemName": "bankName",
       "useYn": "Y",
       "inputUser": "李四",
       "createTime": "2019-4-1 22:24:43",
@@ -33,6 +43,7 @@
       "contributiveNo": "code1",
       "contributiveName": "百度",
       "outputTemNo": "bank",
+      "outputTemName": "bankName",
       "useYn": "Y",
       "inputUser": "李四",
       "createTime": "2019-4-1 22:24:43",

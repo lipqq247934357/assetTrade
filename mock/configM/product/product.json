@@ -2,10 +2,18 @@
   "resultCode": "0000",
   "resultMsg": "成功",
   "dataCount": 20,
-  "channelDict": [
+  "dicts": [
     {
-      "channel_no": "360",
-      "channel_name": "360"
+      "code": "1",
+      "codeName": "百度"
+    },
+    {
+      "code": "2",
+      "codeName": "360"
+    },
+    {
+      "code": "3",
+      "codeName": "消金"
     }
   ],
   "data": [
@@ -13,6 +21,7 @@
       "prodNo": "cn01",
       "prodName": "产品名称1",
       "prodDesc": "产品描述1",
+      "channelNo": "1",
       "channelName": "渠道名称",
       "useYn": "Y",
       "inputUser": "李四",
@@ -24,6 +33,7 @@
       "prodNo": "cn01",
       "prodName": "产品名称1",
       "prodDesc": "产品描述1",
+      "channelNo": "2",
       "channelName": "渠道名称",
       "useYn": "Y",
       "inputUser": "李四",
@@ -35,6 +45,7 @@
       "prodNo": "cn01",
       "prodName": "产品名称1",
       "prodDesc": "产品描述1",
+      "channelNo": "3",
       "channelName": "渠道名称",
       "useYn": "Y",
       "inputUser": "李四",

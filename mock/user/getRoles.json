@@ -1,4 +1,13 @@
 {
+
+  "userPriv": {
+    "roleNameArr": [
+      "财务人员",
+      "业务查询员"
+    ],
+    "username": "张三"
+  },
+
   "buttonPrivList": [
     {
       "buttonIdArr": [
@@ -79,12 +88,5 @@
       "menuUrl": "/loan/loanledger",
       "parentMenuId": "100100"
     }
-  ],
-  "userPriv": {
-    "roleNameArr": [
-      "财务人员",
-      "业务查询员"
-    ],
-    "username": "张三"
-  }
+  ]
 }

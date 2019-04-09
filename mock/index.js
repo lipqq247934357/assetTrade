@@ -58,7 +58,16 @@ function mock(app) {
         res.json(channel);
     });
     app.post(prefix + '/channel/update', function (req, res) {
-        res.json(channel);
+        res.json({
+            resultCode: '0000',
+            resultMsg: '成功'
+        });
+    });
+    app.post(prefix + '/channel/add', function (req, res) {
+        res.json({
+            resultCode: '0000',
+            resultMsg: '成功'
+        });
     });
 
     app.post(prefix + '/contributive/query', function (req, res) {

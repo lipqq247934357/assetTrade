@@ -13,12 +13,12 @@ export const productquery = (prodNo, prodName, channelNo, pageNum = 1, pageSize 
     return post(prefix + '/finProduct/query', {prodNo, prodName, channelNo, pageNum, pageSize});
 };
 
-export const productadd = (prodNo, prodName, prodDesc, useYn, inputUser) => {
-    return post(prefix + '/finProduct/add', {prodNo, prodName, prodDesc, useYn, inputUser});
+export const productadd = (prodNo, prodName, prodDesc, channelNo, channelName, useYn, inputUser) => {
+    return post(prefix + '/finProduct/add', {prodNo, prodName, prodDesc, channelNo, channelName, useYn, inputUser});
 };
 
-export const productupdate = (prodNo, prodName, prodDesc, useYn, updateUser) => {
-    return post(prefix + '/finProduct/update', {prodNo, prodName, prodDesc, useYn, updateUser});
+export const productupdate = (prodNo, prodName, prodDesc, channelNo, channelName, useYn,updateUser) => {
+    return post(prefix + '/finProduct/update', {prodNo, prodName, prodDesc, channelNo, channelName, useYn,updateUser});
 };
 
 
