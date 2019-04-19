@@ -1,131 +1,112 @@
-import {get, post} from "./getData";
+import {get, post} from "./config/getData";
+
+let prefix = '/asset/pages/config';
+const configM = {
 
 
-/**
- * 配置管理相关接口
- */
+    /**
+     * 配置管理相关接口
+     */
 
 //金融产品配置
 
-let prefix = '/asset/pages/config';
+    productquery(p) {
+        return post(prefix + '/finProduct/query', p);
+    },
 
-export const productquery = (prodNo, prodName, channelNo, pageNum = 1, pageSize = 10) => {
-    return post(prefix + '/finProduct/query', {prodNo, prodName, channelNo, pageNum, pageSize});
-};
+    productadd(p) {
+        return post(prefix + '/finProduct/add', p);
+    },
 
-export const productadd = (prodNo, prodName, prodDesc, channelNo, channelName, useYn, inputUser) => {
-    return post(prefix + '/finProduct/add', {prodNo, prodName, prodDesc, channelNo, channelName, useYn, inputUser});
-};
-
-export const productupdate = (prodNo, prodName, prodDesc, channelNo, channelName, useYn,updateUser) => {
-    return post(prefix + '/finProduct/update', {prodNo, prodName, prodDesc, channelNo, channelName, useYn,updateUser});
-};
+    productupdate(p) {
+        return post(prefix + '/finProduct/update', p);
+    },
 
 
-/**
- * 渠道配置
- */
+    /**
+     * 渠道配置
+     */
 
-export const channelquery = (channelNo, channelName, pageNum = 1, pageSize = 10) => {
-    // console.log(`${channelNo}, ${channelName}, ${pageNum}, ${pageSize}`)
-    return post(prefix + '/channel/query', {channelNo, channelName, pageNum, pageSize});
-};
+    channelquery(p) {
+        return post(prefix + '/channel/query', p);
+    },
 
-export const channeladd = (channelNo, channelName, channelType, channelSymbol, useYn, inputUser) => {
-    return post(prefix + '/channel/add', {channelNo, channelName, channelType, channelSymbol, useYn, inputUser});
-};
+    channeladd(p) {
+        return post(prefix + '/channel/add', p);
+    },
 
-export const channelupdate = (channelNo, channelName, channelType, channelSymbol, useYn, updateUser) => {
-    return post(prefix + '/channel/update', {channelNo, channelName, channelType, channelSymbol, useYn, updateUser});
-};
-
-
-/**
- * 资金方配置
- */
-
-export const cashproviderquery = (contributiveNo, contributiveName, pageNum, pageSize) => {
-    return post(prefix + '/contributive/query', {contributiveNo, contributiveName, pageNum, pageSize});
-};
-
-export const cashprovideradd = (contributiveNo, contributiveName, outputTemNo, useYn, inputUser) => {
-    return post(prefix + '/contributive/add', {
-        contributiveNo,
-        contributiveName,
-        outputTemNo,
-        useYn,
-        inputUser
-    });
-};
-
-export const cashproviderupdate = (contributiveNo, contributiveName, outputTemNo, useYn, inputUser) => {
-    return post(prefix + '/contributive/update', {
-        contributiveNo,
-        contributiveName,
-        outputTemNo,
-        useYn,
-        inputUser
-    });
-};
-
-/**
- * 拆分规则配置
- */
-
-export const splitRulesquery = (assetSplitWay, pageNum, pageSize) => {
-    return post(prefix + '/assetSplit/query', {assetSplitWay, pageNum, pageSize});
-};
-
-export const splitRulesadd = (assetSplitWay, assetSplitValue, contributiveNo, useYn, inputUser) => {
-    return post(prefix + '/assetSplit/add', {
-        assetSplitWay,
-        assetSplitValue,
-        contributiveNo,
-        useYn,
-        inputUser
-    });
-};
-
-export const splitRulesupdate = (assetSplitWay, assetSplitValue, contributiveNo, useYn, inputUser) => {
-    return post(prefix + '/assetSplit/update', {
-        assetSplitWay,
-        assetSplitValue,
-        contributiveNo,
-        useYn,
-        inputUser
-    });
-};
+    channelupdate(p) {
+        return post(prefix + '/channel/update', p);
+    },
 
 
-/**
- * 资产输出模板配置
- */
+    /**
+     * 资金方配置
+     */
 
-export const outputquery = (outputTemName, pageNum, pageSize) => {
-    return post(prefix + '/outputTem/query', {outputTemName, pageNum, pageSize});
-};
+    cashproviderquery(p) {
+        return post(prefix + '/contributive/query', p);
+    },
 
-export const outputadd = (outputTemName, useYn, inputUser) => {
-    return post(prefix + '/outputTem/add', {outputTemName, useYn, inputUser});
-};
+    cashprovideradd(p) {
+        return post(prefix + '/contributive/add', p);
+    },
 
-export const outputupdate = (outputTemName, useYn, inputUser) => {
-    return post(prefix + '/outputTem/update', {outputTemName, useYn, inputUser});
+    cashproviderupdate(p) {
+        return post(prefix + '/contributive/update', p);
+    },
+
+    /**
+     * 拆分规则配置
+     */
+
+    splitRulesquery(p) {
+        return post(prefix + '/assetSplit/query', p);
+    },
+
+    splitRulesadd(p) {
+        return post(prefix + '/assetSplit/add', p);
+    },
+
+    splitRulesupdate(p) {
+        return post(prefix + '/assetSplit/update', p);
+    },
+
+
+    /**
+     * 资产输出模板配置
+     */
+
+    outputquery(p) {
+        return post(prefix + '/outputTem/query', p);
+    },
+
+    outputadd(p) {
+        return post(prefix + '/outputTem/add', p);
+    },
+
+    outputupdate(p) {
+        return post(prefix + '/outputTem/update', p);
+    },
+
+
+    /**
+     * 资产输出明细配置
+     */
+
+    outdetailquery(p) {
+        return post(prefix + '/outputFile/query', p);
+    },
+
+    outdetailadd(p) {
+        return post(prefix + '/outputFile/add', p);
+    },
+
+    outdetailupdate(p) {
+        return post(prefix + '/outputFile/udpate', p);
+    },
+
 };
 
 
-/**
- * 资产输出明细配置
- */
-
-export const outdetailquery = (outputTemName, pageNum, pageSize) => {
-    return post(prefix + '/outputFile/query', {outputTemName, pageNum, pageSize});
-};
-
-export const outdetailadd = (outputTemName, useYn, inputUser) => {
-    return post(prefix + '/outputFile/add', {outputTemName, useYn, inputUser});
-};
-
-export const outdetailupdate = (outputTemName, useYn, inputUser) => {
-    return post(prefix + '/outputFile/udpate', {outputTemName, useYn, inputUser});
-};
+export default configM;

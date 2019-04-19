@@ -1,4 +1,4 @@
-import {getToken} from '../utils/auth';
+import {getToken} from '../../utils/auth';
 
 export const requestConf = function (config) {
     //设置systemId

@@ -15,6 +15,8 @@ import router from './router'
 import '@/icons' // icon
 import '@/utils/beforeEach' // permission control
 
+import $api from './api' // 将所有的接口放到vue原型上
+
 /**
  * This project originally used easy-mock to simulate data,
  * but its official service is very unstable,
@@ -24,9 +26,11 @@ import '@/utils/beforeEach' // permission control
  * If you remove `../mock` it will automatically request easy-mock data.
  */
 
-Vue.use(ElementUI, {locale})
+Vue.use(ElementUI, {locale});
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+this.prototype.$api = $api;
 
 new Vue({
     el: '#app',

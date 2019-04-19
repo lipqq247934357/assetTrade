@@ -1,32 +1,4 @@
-import {post} from "./getData";
+import common from './common'
+import configM from './configM'
 
-// 所有的不涉及具体的data的接口写到这里，统一维护
-
-export const login = (username, password) => {
-    return post('/login', {username: username, password: password});
-};
-
-export const getInfo = (data) => {
-    return post('/userInfo', data);
-};
-
-export const getRoles = (data) => {
-    return post('/getRoles', data);
-};
-
-// 获取用户所有权限和用户个人信息
-export const privilegeInfo = (data) => {
-    return post('/service/validate/ticket', data);
-};
-
-
-// 业务异常接口
-export const flowError = () => {
-    return post('/flowError');
-};
-
-
-// 系统异常接口
-export const systemError = () => {
-    return post('/systemError');
-};
+export default {common, configM}

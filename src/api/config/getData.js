@@ -1,7 +1,7 @@
-import Qs from "qs";
+import qs from 'qs';
 import axios from "axios";
 import {Message} from 'element-ui';
-import router from '../router';
+import router from '../../router';
 import {requestConf} from './requestConf';
 // axios 配置
 axios.defaults.timeout = 6969;
@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'development') {// 根据不同的环境使用不�
 } else {
     axios.defaults.baseURL = '/api';
 }
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+axios.defaults.headers['Content-Type'] = 'application/json; charset=utf-8';
 
 axios.interceptors.request.use(function (config) {
     return requestConf(config);
@@ -49,15 +49,10 @@ axios.interceptors.response.use(function (response) {
 });
 
 export const get = (url, data = {}) => {
-    let method = 'get';
-    return axios({method, url, data});
+    return axios.get(url, {params: data});
 }
 
 
 export const post = (url, data = {}) => {
-    let method = 'post';
-    data = Qs.stringify(data);
-    return axios({method, url, data});
+    return axios.post(url, qs.stringify(data));
 }
-
-
