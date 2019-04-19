@@ -1,10 +1,10 @@
 import router from '../router';
 import store from '../store';
-import {getRoles} from '../api/';
 import {Message} from 'element-ui';
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css'// progress bar style
 import {getToken} from './auth';
+import Vue from 'vue';
 
 const whiteList = ['/login', '/regist', '/403', '/404'];
 NProgress.configure({showSpinner: false})// NProgress Configuration
@@ -21,7 +21,8 @@ router.beforeEach((to, from, next) => {
         if (getToken()) { // determine if there has token
             // 校验是否有权限树
             if (store.getters.roles.length === 0) { // 是否已经获取当前用户角色
-                getRoles().then(res => {
+                console.log(Vue.prototype.$api);
+                Vue.prototype.$api.common.getRoles().then(res => {
                     NProgress.done();
                     const roles = res.data.roles;
                     //添加store中的roles
