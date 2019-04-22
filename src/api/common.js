@@ -15,7 +15,17 @@ let common = {
         return post('/getRoles', p);
     },
 
-    // 获取用户所有权限和用户个人信息
+    /**
+     *
+     * @param p
+     * @returns {*}
+     *
+     * ticketStatus  票据状态
+     * userPriv  用户信息
+     * menuPrivList 菜单权限
+     * buttonPrivList 按钮权限
+     */
+
     privilegeInfo(p) {
         return post('/service/validate/ticket', p);
     },

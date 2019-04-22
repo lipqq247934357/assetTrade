@@ -36,14 +36,6 @@ function mock(app) {
         });
     });
 
-    app.post('/mock/getRoles', function (req, res) {
-        res.json({
-            roles: "simple",
-            name: "lipeng",
-            avatar: ""
-        });
-    });
-
     app.post('/mock/service/validate/ticket', function (req, res) {
         res.json(privilegeInfo);
     });

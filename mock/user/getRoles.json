@@ -1,13 +1,5 @@
 {
-
-  "userPriv": {
-    "roleNameArr": [
-      "财务人员",
-      "业务查询员"
-    ],
-    "username": "张三"
-  },
-
+  "ticketStatus": "01",
   "buttonPrivList": [
     {
       "buttonIdArr": [
@@ -24,50 +16,11 @@
       "menuId": "100102"
     }
   ],
-  "dataColPrivList": [
-    {
-      "buttonId": "100101001",
-      "menuId": "100101",
-      "visibleColsArr": [
-        "listId",
-        "amount"
-      ]
-    },
-    {
-      "buttonId": "100101002",
-      "invisibleColsArr": [
-        "certId",
-        "prodId"
-      ],
-      "menuId": "100101"
-    }
-  ],
-  "dataRowPrivList": [
-    {
-      "buttonId": "100101001",
-      "menuId": "100101",
-      "rowPriv": "prodId in ('1001020370') and overFlag = '1'"
-    },
-    {
-      "buttonId": "all",
-      "menuId": "100101",
-      "rowPriv": "prodId in ('1001020370')"
-    },
-    {
-      "buttonId": "all",
-      "menuId": "all",
-      "rowPriv": "prodId in ('1001020370')"
-    }
-  ],
-  "lowerLevelUsers": [
-    "guanqi.zeng",
-    "wu.wang"
-  ],
   "menuPrivList": [
     {
       "menuId": "100100",
       "menuLevel": "1",
-      "menuName": "贷款管理",
+      "menuName": "资产管理",
       "menuOrder": "1",
       "menuUrl": "",
       "parentMenuId": ""
@@ -75,18 +28,81 @@
     {
       "menuId": "100101",
       "menuLevel": "2",
-      "menuName": "借据管理",
+      "menuName": "资产列表",
       "menuOrder": "1",
-      "menuUrl": "/loan/creditduebill",
+      "menuUrl": "/assetmanage/assetlist",
       "parentMenuId": "100100"
     },
     {
       "menuId": "100102",
       "menuLevel": "2",
-      "menuName": "台账管理",
+      "menuName": "客户信息列表",
       "menuOrder": "2",
-      "menuUrl": "/loan/loanledger",
+      "menuUrl": "/assetmanage/customerinfolist",
       "parentMenuId": "100100"
+    },
+    {
+      "menuId": "100103",
+      "menuLevel": "2",
+      "menuName": "授信信息列表",
+      "menuOrder": "3",
+      "menuUrl": "/assetmanage/authorizationinfolist",
+      "parentMenuId": "100100"
+    },
+    {
+      "menuId": "100200",
+      "menuLevel": "1",
+      "menuName": "配置管理",
+      "menuOrder": "2",
+      "menuUrl": "",
+      "parentMenuId": ""
+    },
+    {
+      "menuId": "100201",
+      "menuLevel": "2",
+      "menuName": "渠道配置",
+      "menuOrder": "1",
+      "menuUrl": "/configm/channel",
+      "parentMenuId": "100200"
+    },
+    {
+      "menuId": "100202",
+      "menuLevel": "2",
+      "menuName": "资金方配置",
+      "menuOrder": "2",
+      "menuUrl": "/configm/cashprovider",
+      "parentMenuId": "100200"
+    },
+    {
+      "menuId": "100203",
+      "menuLevel": "2",
+      "menuName": "拆分规则配置",
+      "menuOrder": "3",
+      "menuUrl": "/configm/splitrules",
+      "parentMenuId": "100200"
+    },
+    {
+      "menuId": "100204",
+      "menuLevel": "2",
+      "menuName": "金融产品配置",
+      "menuOrder": "4",
+      "menuUrl": "/configm/product",
+      "parentMenuId": "100200"
+    },
+    {
+      "menuId": "100205",
+      "menuLevel": "2",
+      "menuName": "资产输出配置",
+      "menuOrder": "5",
+      "menuUrl": "/configm/cashoutput",
+      "parentMenuId": "100200"
     }
-  ]
+  ],
+  "userPriv": {
+    "roleNameArr": [
+      "财务人员",
+      "业务查询员"
+    ],
+    "username": "张三"
+  }
 }

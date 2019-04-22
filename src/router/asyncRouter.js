@@ -33,7 +33,6 @@ import cashOutput from '@/views/configM/cashOutput';
 import editCashOutput from '@/views/configM/cashOutput/editCashOutput';
 //资产输出明细配置
 import outputDetail from '@/views/configM/cashOutput/outputDetail';
-import editOutputDetail from '@/views/configM/cashOutput/outputDetail/editOutputDetail';
 
 
 /**
@@ -266,24 +265,6 @@ export default [
                 name: 'outputDetail',
                 hidden: true,
                 component: outputDetail,
-                meta: {
-                    title: '模板明细配置'
-                }
-            },
-            {
-                path: 'addoutputDetail',
-                name: 'addoutputDetail',
-                hidden: true,
-                component: editOutputDetail,
-                meta: {
-                    title: '模板明细配置'
-                }
-            },
-            {
-                path: 'updateoutputDetail',
-                name: 'updateoutputDetail',
-                hidden: true,
-                component: editOutputDetail,
                 meta: {
                     title: '模板明细配置'
                 }
