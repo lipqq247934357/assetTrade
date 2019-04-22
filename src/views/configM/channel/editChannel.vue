@@ -21,12 +21,12 @@
                         <div class="name must-choose">渠道类型</div>
                         <div class="content">
                             <el-form-item prop="qdType">
-                                <el-select v-model="form.channelType" placeholder="请选择" size="max">
+                                <el-select placeholder="请选择" size="max" v-model="form.channelType">
                                     <el-option
-                                            v-for="item in channelTypeList"
                                             :key="item.value"
                                             :label="item.label"
-                                            :value="item.value">
+                                            :value="item.value"
+                                            v-for="item in channelTypeList">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -43,12 +43,12 @@
                         <div class="name must-choose">是否启用</div>
                         <div class="content">
                             <el-form-item prop="status">
-                                <el-select v-model="form.useYn" placeholder="请选择" size="max">
+                                <el-select placeholder="请选择" size="max" v-model="form.useYn">
                                     <el-option
-                                            v-for="item in useYnList"
                                             :key="item.value"
                                             :label="item.label"
-                                            :value="item.value">
+                                            :value="item.value"
+                                            v-for="item in useYnList">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -56,14 +56,14 @@
                         <div class="name">创建人</div>
                         <div class="content last-box">
                             <el-form-item prop="creator">
-                                <el-input v-model="form.inputUser" :disabled="trueVal"></el-input>
+                                <el-input :disabled="trueVal" v-model="form.inputUser"></el-input>
                             </el-form-item>
                         </div>
                     </div>
                 </el-form>
                 <div class="btn-action">
-                    <el-button @click="back" type="primary" size="medium">返回</el-button>
-                    <el-button @click="submit('form')" type="primary" size="medium">提交</el-button>
+                    <el-button @click="back" size="medium" type="primary">返回</el-button>
+                    <el-button @click="submit('form')" size="medium" type="primary">提交</el-button>
                 </div>
             </div>
         </div>
@@ -72,7 +72,6 @@
 
 <script>
     import {urlParse} from '@/utils/utils';
-    import {channelquery, channeladd, channelupdate} from "@/api/configM";
     import {mapGetters} from 'vuex'
 
     export default {
@@ -126,7 +125,11 @@
         methods: {
             async query(channelNo) { // 查询用户信息
                 //发起ajax请求，更改数据
-                let data = await channelquery(channelNo);
+                let data = await this.$api.configM.channelquery({
+                    channelNo: channelNo,
+                    currentPage: 1,
+                    pageSize: 10
+                });
                 if (data.data.resultCode === '0000') {
                     data = data.data;
                     if (data.dataCount > 0) {// 存在
@@ -156,14 +159,28 @@
             },
             async add() {
                 let form = this.form;
-                let data = await channeladd(form.channelNo, form.channelName, form.channelType, form.channelSymbol, form.useYn, this.inputUser);
+                let data = await this.$api.configM.channeladd({
+                    channelNo: form.channelNo,
+                    channelName: form.channelName,
+                    channelType: form.channelType,
+                    channelSymbol: form.channelSymbol,
+                    useYn: form.useYn,
+                    inputUser: this.inputUser
+                });
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
                 }
             },
             async update() {
                 let form = this.form;
-                let data = await channelupdate(form.channelNo, form.channelName, form.channelType, form.channelSymbol, form.useYn, this.inputUser);
+                let data = await this.$api.configM.channelupdate({
+                    channelNo: form.channelNo,
+                    channelName: form.channelName,
+                    channelType: form.channelType,
+                    channelSymbol: form.channelSymbol,
+                    useYn: form.useYn,
+                    updateUser: this.updateUser
+                });
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
                 }
