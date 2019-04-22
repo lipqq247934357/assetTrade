@@ -7,19 +7,19 @@
             </template>
             <template>
                 <div>
-                    <el-form :model="form" ref="form" inline label-width="100px">
-                        <el-form-item prop="qdNo" label="姓名" class="aa">
-                            <el-input placeholder="请输入姓名" v-model="form.qdNo"></el-input>
+                    <el-form :model="form" inline label-width="100px" ref="form">
+                        <el-form-item class="aa" label="姓名" prop="custName">
+                            <el-input placeholder="请输入姓名" v-model="form.custName"></el-input>
                         </el-form-item>
-                        <el-form-item prop="qdName" label="身份证号">
-                            <el-input placeholder="请输入身份证号" v-model="form.qdName"></el-input>
+                        <el-form-item label="身份证号" prop="idNo">
+                            <el-input placeholder="请输入身份证号" v-model="form.idNo"></el-input>
                         </el-form-item>
                     </el-form>
                     <div class="search-btn-box">
-                        <el-button v-waves type="primary" icon="el-icon-search" size="medium" @click="getInfo">查询
+                        <el-button @click="search" icon="el-icon-search" size="medium" type="primary" v-waves>查询
                         </el-button>
-                        <el-button v-waves type="primary" icon="el-icon-refresh" size="medium"
-                                   @click="resetForm('form')">重置
+                        <el-button @click="resetForm('form')" icon="el-icon-refresh" size="medium" type="primary"
+                                   v-waves>重置
                         </el-button>
                     </div>
                 </div>
@@ -32,55 +32,55 @@
             </blockTitle>
             <div class="table-content">
                 <el-table
+                        :data="list"
                         border
-                        v-loading="loading"
-                        :data="data.pageData"
+                        header-cell-class-name="header-cell-class-name"
                         style="width: 100%"
-                        header-cell-class-name="header-cell-class-name">
+                        v-loading="loading">
                     >
                     <el-table-column
-                            prop="channel"
-                            label="申请编号"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            prop="code"
-                            label="申请日期"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                            prop="number"
                             label="渠道"
+                            prop="channelNo"
                     >
                     </el-table-column>
                     <el-table-column
-                            prop="name"
                             label="借款人编号"
+                            prop="custId"
                     >
                     </el-table-column>
                     <el-table-column
-                            prop="money"
                             label="借款人姓名"
+                            prop="custName"
                     >
                     </el-table-column>
                     <el-table-column
-                            prop="mode"
-                            label="身份证号"
+                            label="证件类型"
+                            prop="idType"
                     >
                     </el-table-column>
                     <el-table-column
-                            prop="rate"
-                            label="决策结果"
+                            label="证件号码"
+                            prop="idNo"
                     >
                     </el-table-column>
                     <el-table-column
-                            prop="balance"
-                            label="风控策略码"
+                            label="性别"
+                            prop="gender"
                     >
                     </el-table-column>
                     <el-table-column
-                            prop="deadline"
+                            label="联系电话"
+                            prop="mobilePhone"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                            label="通讯地址"
+                            prop="address"
+                    >
+                    </el-table-column>
+                    <el-table-column
                             label="创建时间"
+                            prop="curDate"
                     >
                     </el-table-column>
                     <el-table-column
@@ -94,13 +94,13 @@
             </div>
             <!--pagination-->
             <div class="pagination">
-                <pagination v-if="pagInfo.total"
-                            :page.sync="pagInfo.currentPage"
+                <pagination :limit.sync="pagInfo.pageSize"
                             :page-sizes="[10,20,30,50]"
-                            :limit.sync="pagInfo.pageSize"
-                            layout="sizes, prev, pager, next, jumper"
+                            :page.sync="pagInfo.currentPage"
                             :total="pagInfo.total"
-                            @pagination="getInfo"
+                            @pagination="customerList"
+                            layout="sizes, prev, pager, next, jumper"
+                            v-if="pagInfo.total"
                 ></pagination>
             </div>
         </div>
@@ -113,34 +113,16 @@
     import pagination from '@/components/Pagination';
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
-    import {channelquery} from "@/api/configM";
 
     export default {
         name: 'customer',
         components: {pagination, blockTitle, collapse},
         directives: {waves},
         data() {
-            // 渠道No校验
-            let qdNoValid = function (rule, value, callback) { // 校验渠道编号规则
-                if (value && !Number.isInteger(value)) {
-                    callback(new Error('请输入数字值'));
-                } else {
-                    callback();
-                }
-            };
             return {
                 form: {
-                    qdNo: '',
-                    qdName: '',
-                    qdName2: '',
-                    qdName3: '',
-                    startDate: '',
-                    endDate: ''
-                },
-                rules: {
-                    channelNo: [
-                        {validator: qdNoValid, trigger: 'blur'}
-                    ]
+                    idNo: '',
+                    custName: ''
                 },
                 pagInfo: {
                     total: '',
@@ -148,43 +130,37 @@
                     pageSize: 10
                 },
                 loading: false,
-                data: {},
+                list: [],
                 trueVal: true
             };
         },
         created() {
         },
         methods: {
-            async getChannel() {
+            async customerList() {
                 //发起ajax请求，更改数据
                 this.loading = true;
-                let data = await channelquery(this.form.qdNo, this.form.qdName);
-                this.data = data.data;
-                this.pagInfo.total = data.totalPage;
+                let data = await this.$api.assetM.customerList({
+                    pager: {
+                        pageNo: this.pagInfo.currentPage,
+                        recordNum: this.pagInfo.pageSize
+                    },
+                    body: this.form
+                });
+                this.list = data.data.list;
+                this.pagInfo.total = Number(data.data.pager.totalNum);
                 this.loading = false;
             },
-            getInfo() {
-                this.$refs.form.validate((valid) => { //1.校验参数是否合法
-                    if (valid) {
-                        this.getChannel();
-                    }
-                });
+            search() {
+                this.pagInfo.currentPage = 1;
+                this.customerList();
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             },
-            detail() {
-                let obj = this.remainParam();
-                obj.updateId = 2;
-                this.$router.push({path: '/assetmanage/customerdetail', query: obj});                // 新增渠道,跳转存储默认值
-            },
-            remainParam() { // 获取默认参数
-                let obj = {};
-                Object.keys(this.form).forEach((key) => {
-                    if (this.form[key]) obj[key] = this.form[key];
-                });
-                return obj;
-            },
+            detail(row) {
+                this.$router.push({path: '/assetmanage/customerdetail', query: {updateId: row.custId}});
+            }
         }
     }
 </script>

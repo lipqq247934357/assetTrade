@@ -6,6 +6,14 @@ let cashOutput = require('./configM/cashOutput/cashOutput');
 let outputDetail = require('./configM/cashOutput/outputDetail');
 let privilegeInfo = require('./user/getRoles');
 
+let assetList = require('./assetM/asset/assetList');
+let assetDetail = require('./assetM/asset/assetDetail');
+let creditList = require('./assetM/credit/creditList');
+let creditDetail = require('./assetM/credit/creditDetail');
+let customerList = require('./assetM/customer/customerList');
+let customerDetail = require('./assetM/customer/customerDetail');
+
+
 function mock(app) {
     /**
      * 用户名
@@ -100,6 +108,28 @@ function mock(app) {
                 "resultMsg": "系统异常"
             }
         );
+    });
+
+
+    let prefix2 = '/mock/AssetWeb/list';
+
+    app.post(prefix2 + '/queryAssetList', function (req, res) {
+        res.json(assetList);
+    });
+    app.post(prefix2 + '/queryAssetDetail', function (req, res) {
+        res.json(assetDetail);
+    });
+    app.post(prefix2 + '/queryCustomerInfoList', function (req, res) {
+        res.json(customerList);
+    });
+    app.post(prefix2 + '/queryCustomerInfoDetail', function (req, res) {
+        res.json(customerDetail);
+    });
+    app.post(prefix2 + '/queryApplyCreditist', function (req, res) {
+        res.json(creditList);
+    });
+    app.post(prefix2 + '/queryApplyCreditInfoDetail', function (req, res) {
+        res.json(creditDetail);
     });
 
 }

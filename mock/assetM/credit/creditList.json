@@ -1,0 +1,46 @@
+{
+  "pager": {
+    "pageNo": "1",
+    "pageNum": "10",
+    "totalNum": "100",
+    "recordNum": "10"
+  },
+  "list": [
+    {
+      "applyId": "1",
+      "channelNo": "1",
+      "channelName": "1",
+      "custId": "1",
+      "custName": "1",
+      "idNo": "1",
+      "gender": "1",
+      "mobilePhone ": "1",
+      "address": "1",
+      "curDate": "1"
+    },
+    {
+      "applyId": "1",
+      "channelNo": "1",
+      "channelName": "1",
+      "custId": "1",
+      "custName": "1",
+      "idNo": "1",
+      "gender": "1",
+      "mobilePhone ": "1",
+      "address": "1",
+      "curDate": "1"
+    },
+    {
+      "applyId": "1",
+      "channelNo": "1",
+      "channelName": "1",
+      "custId": "1",
+      "custName": "1",
+      "idNo": "1",
+      "gender": "1",
+      "mobilePhone ": "1",
+      "address": "1",
+      "curDate": "1"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "detail": {
+    "channelNo": "1",
+    "channelName": "1",
+    "custId": "1",
+    "custName": "1",
+    "idNo": "1",
+    "gender": "1",
+    "mobilePhone": "1",
+    "address": "1",
+    "maritalStatus": "1",
+    "education": "1",
+    "Degree": "1",
+    "companyAddress": "1",
+    "companyName": "1",
+    "indmonthIncome": "1",
+    "companyPhone": "1",
+    "spouseName": "1",
+    "spouseIdType": "1",
+    "spouseMobilePhone": "1"
+  }
+}

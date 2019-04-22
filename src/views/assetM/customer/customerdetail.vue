@@ -4,75 +4,75 @@
             <ul>
                 <li>
                     <span>渠道</span>
-                    <span>{{info.channel}}</span>
+                    <span>{{info.channelNo}}</span>
                 </li>
                 <li>
                     <span>借款人姓名</span>
-                    <span>{{info.code}}</span>
+                    <span>{{info.custName}}</span>
                 </li>
                 <li>
                     <span>借款人编号</span>
-                    <span>{{info.number}}</span>
+                    <span>{{info.custId}}</span>
                 </li>
                 <li>
                     <span>证件号码</span>
-                    <span>{{info.product}}</span>
+                    <span>{{info.idNo}}</span>
                 </li>
                 <li>
                     <span>证件类型</span>
-                    <span>{{info.name}}</span>
+                    <span>{{info.idType}}</span>
                 </li>
                 <li>
                     <span>通讯地址</span>
-                    <span>{{info.idcode}}</span>
+                    <span>{{info.address}}</span>
                 </li>
                 <li>
                     <span>联系电话</span>
-                    <span>{{info.mode}}</span>
+                    <span>{{info.mobilePhone}}</span>
                 </li>
                 <li>
                     <span>婚姻状况</span>
-                    <span>{{info.money}}</span>
+                    <span>{{info.maritalStatus}}</span>
                 </li>
                 <li>
                     <span>性别</span>
-                    <span>{{info.rate}}</span>
+                    <span>{{info.gender}}</span>
                 </li>
                 <li>
                     <span>最高学位</span>
-                    <span>{{info.balance}}</span>
+                    <span>{{info.Degree}}</span>
                 </li>
                 <li>
                     <span>最高学历</span>
-                    <span>{{info.deadline}}</span>
+                    <span>{{info.education}}</span>
                 </li>
                 <li>
                     <span>单位地址</span>
-                    <span>{{info.loanday}}</span>
+                    <span>{{info.companyAddress}}</span>
                 </li>
                 <li>
                     <span>单位名称</span>
-                    <span>{{info.expireday}}</span>
+                    <span>{{info.companyName}}</span>
                 </li>
                 <li>
                     <span>个人月收入</span>
-                    <span>{{info.deadline}}</span>
+                    <span>{{info.indmonthIncome}}</span>
                 </li>
                 <li>
                     <span>单位电话</span>
-                    <span>{{info.beginrate}}</span>
+                    <span>{{info.companyPhone}}</span>
                 </li>
                 <li>
                     <span>配偶姓名</span>
-                    <span>{{info.splitproportion}}</span>
+                    <span>{{info.spouseName}}</span>
                 </li>
                 <li>
                     <span>配偶证件类型</span>
-                    <span>{{info.provide}}</span>
+                    <span>{{info.spouseIdType}}</span>
                 </li>
                 <li>
                     <span>配偶联系电话</span>
-                    <span>{{info.provide}}</span>
+                    <span>{{info.spouseMobilePhone}}</span>
                 </li>
             </ul>
         </div>
@@ -85,30 +85,20 @@
         name: 'customerDetail',
         data() {
             return {
-                info: { // 列表详情数据模拟
-                    "id": 1,
-                    "channel": "百度",
-                    "code": "BD001",
-                    "number": "JKR001",
-                    "name": "张三",
-                    "money": "10000.00",
-                    "mode": "等额本息",
-                    "rate": "0.06%",
-                    "balance": "190000",
-                    "deadline": "12",
-                    "loanday": "2018-5-02",
-                    "expireday": "2019-5-01",
-                    "beginrate": "2018-5-02",
-                    "splitmode": "按比例",
-                    "splitproportion": "3：7",
-                    "provide": "消金，哈银",
-                    "idcode": "123123123123123",
-                    "product": "贷款"
-                }
+                info: {}
             }
         },
-        created() {
-
+        activated() {
+            this.getInfo();
+        },
+        methods: {
+            async getInfo() {
+                let data = await this.$api.assetM.customerDetail({
+                    listId: this.$route.query.updateId // 获取updateId,然后查找内容
+                });
+                console.log(data);
+                this.info = data.data.detail;
+            }
         }
     }
 

@@ -1,0 +1,21 @@
+{
+  "detail": {
+    "channelNo": "1",
+    "listId": "1",
+    "prodId": "1",
+    "custId": "1",
+    "custName": "1",
+    "idNo": "1",
+    "loanAmount": "1",
+    "repayMethod": "1",
+    "interestType": "1",
+    "Bal": "1",
+    "loanTerm": "1",
+    "beginDate": "1",
+    "endDate": "1",
+    "endDate": "1",
+    "assetSpiltWay": "1",
+    "assetSpiltValue": "1",
+    "contributiveName": "1"
+  }
+}
