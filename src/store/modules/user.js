@@ -1,4 +1,4 @@
-import {login, getInfo} from '@/api'
+import vue from 'vue'
 import {getToken, setToken, removeToken} from '@/utils/auth'
 
 const user = {
@@ -6,7 +6,13 @@ const user = {
         token: getToken(),
         name: '',
         avatar: '',
-        roles: []
+        roles: [],
+        tree: [], // 树结构
+        btn: [], // 按钮权限数组
+        userInfo: {},
+        menuId: '', // 当前页面所属按钮ID
+        buttonArr: [], // 当前页面可以访问的按钮组
+        btnId: '' // 点击按钮之后临时存放的btnId,在ajax请求获取这个值之后删除它
     },
 
     mutations: {
@@ -21,7 +27,28 @@ const user = {
         },
         SET_ROLES: (state, roles) => {
             state.roles = roles
-        }
+        },
+
+        SET_TREE: (state, tree) => {
+            state.tree = tree
+        },
+
+        SET_BTN: (state, btn) => {
+            state.btn = btn
+        },
+
+        SET_USERINFO: (state, userInfo) => {
+            state.userInfo = userInfo
+        },
+        SET_MENUID: (state, menuId) => {
+            state.menuId = menuId
+        },
+        SET_BUTTONIDARR: (state, buttonArr) => {
+            state.buttonArr = buttonArr
+        },
+        SET_BTNID: (state, btnId) => {
+            state.btnId = btnId
+        },
     },
 
     actions: {
@@ -29,7 +56,7 @@ const user = {
         Login({commit}, userInfo) {
             const username = userInfo.username.trim()
             return new Promise((resolve, reject) => {
-                login(username, userInfo.password).then(response => {
+                vue.prototype.$api.common.login(username, userInfo.password).then(response => {
                     const data = response.data
                     setToken(data.token) // 设置token值
                     commit('SET_TOKEN', data.token)
@@ -43,7 +70,7 @@ const user = {
         // 获取用户信息
         GetInfo({commit, state}) {
             return new Promise((resolve, reject) => {
-                getInfo(state.token).then(response => {
+                vue.prototype.$api.common.getInfo(state.token).then(response => {
                     const data = response.data
                     if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
                         commit('SET_ROLES', data.roles)

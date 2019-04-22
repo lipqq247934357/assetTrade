@@ -3,7 +3,7 @@ import store from '../store';
 import {Message} from 'element-ui';
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css'// progress bar style
-import {getToken} from './auth';
+import {getToken, setToken} from './auth';
 import Vue from 'vue';
 
 const whiteList = ['/login', '/regist', '/403', '/404'];
@@ -17,34 +17,42 @@ router.beforeEach((to, from, next) => {
         NProgress.done();
         next();
     } else {
-        // 是否需要校验token
-        if (getToken()) { // determine if there has token
+        if (getToken() || to.query.token) { // determine if there has token
+            if (!getToken()) setToken(to.query.token);
             // 校验是否有权限树
-            if (store.getters.roles.length === 0) { // 是否已经获取当前用户角色
-                console.log(Vue.prototype.$api);
-                Vue.prototype.$api.common.getRoles().then(res => {
-                    NProgress.done();
-                    const roles = res.data.roles;
-                    //添加store中的roles
-                    store.commit('SET_ROLES', roles)
-                    store.commit('SET_NAME', res.data.name)
-                    store.commit('SET_AVATAR', res.data.avatar)
-                    if (hasPermission(roles, to)) {
-                        next({...to, replace: true}) // 强制刷新路由
+            if (store.getters.tree.length === 0) { // 是否已经获取当前用户信息和权限树等
+                Vue.prototype.$api.common.privilegeInfo().then(res => {
+                    let ticketStatus = res.data.ticketStatus;
+                    if (ticketStatus !== '01') { // 无效票据
+                        NProgress.done();
+                        next(`/login?redirect=${to.path}`) // 否则全部重定向到登录页
                     } else {
-                        next({path: '/403', replace: true, query: {noGoBack: true}});
+                        //添加store中的tree和userInfo
+                        store.commit('SET_TREE', res.data.menuPrivList);
+                        store.commit('SET_BTN', res.data.buttonPrivList);
+                        store.commit('SET_USERINFO', res.data.username);
+                        // 强制刷新路由
+                        next({...to, replace: true});
+                        NProgress.done();
                     }
-                    NProgress.done();
                 }).catch(function (error) {
                     NProgress.done();
                     Message.error({message: error.toLocaleString(), duration: 5 * 1000});
                 });
-            } else {
-                if (hasPermission(store.getters.roles, to)) {
-                    next()
-                } else {
-                    next({path: '/403', replace: true, query: {noGoBack: true}});
-                }
+            } else { // 如果用户已经有权限树和用户信息
+                // 通过请求路径设置menuId,btnArr
+                store.getters.tree.some(item => {
+                    if (item.menuUrl === to.path) {
+                        store.commit('SET_MENUID', item.menuId);
+                        for (let btn of store.getters.btn) {
+                            if (btn.menuId === item.menuId) {
+                                store.commit('SET_BUTTONIDARR', btn.buttonIdArr);
+                            }
+                        }
+                        return true;
+                    }
+                })
+                next();
                 NProgress.done();
             }
         } else {
@@ -53,18 +61,5 @@ router.beforeEach((to, from, next) => {
         }
     }
 });
-
-function hasPermission(roles, to) {
-    if (!Array.isArray(roles)) {
-        roles = [roles];
-    }
-
-    if (!to.meta || !to.meta.roles) {
-        return true;
-    }
-    return roles.some((item) => {
-        return item === to.meta.roles;
-    });
-}
 
 
