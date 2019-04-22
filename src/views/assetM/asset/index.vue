@@ -7,40 +7,40 @@
             </template>
             <template>
                 <div>
-                    <el-form :model="form" ref="form" inline label-width="100px">
-                        <el-form-item prop="qdNo" label="渠道">
-                            <el-input placeholder="请输入渠道" v-model="form.qdNo"></el-input>
+                    <el-form :model="form" inline label-width="100px" ref="form">
+                        <el-form-item label="渠道" prop="channelNo">
+                            <el-input placeholder="请输入渠道" v-model="form.channelNo"></el-input>
                         </el-form-item>
-                        <el-form-item prop="qdName" label="借据编号">
-                            <el-input placeholder="请输入借据编号" v-model="form.qdName"></el-input>
+                        <el-form-item label="借据编号" prop="listId">
+                            <el-input placeholder="请输入借据编号" v-model="form.listId"></el-input>
                         </el-form-item>
-                        <el-form-item prop="qdName2" label="借款人姓名">
-                            <el-input placeholder="请输入借款人姓名" v-model="form.qdName2"></el-input>
+                        <el-form-item label="借款人姓名" prop="custName">
+                            <el-input placeholder="请输入借款人姓名" v-model="form.custName"></el-input>
                         </el-form-item>
-                        <el-form-item prop="qdName3" label="身份证号">
-                            <el-input placeholder="请输入身份证号" v-model="form.qdName3"></el-input>
+                        <el-form-item label="身份证号" prop="idNo">
+                            <el-input placeholder="请输入身份证号" v-model="form.idNo"></el-input>
                         </el-form-item>
                         <el-form-item label="放款日期">
                             <el-date-picker
-                                    v-model="form.startDate"
                                     class="datetime"
+                                    placeholder="请选择日期"
                                     type="date"
-                                    placeholder="请选择日期">
+                                    v-model="form.startDate">
                             </el-date-picker>
                             &nbsp;-&nbsp;
                             <el-date-picker
-                                    v-model="form.endDate"
                                     class="datetime"
+                                    placeholder="请选择日期"
                                     type="date"
-                                    placeholder="请选择日期">
+                                    v-model="form.endDate">
                             </el-date-picker>
                         </el-form-item>
                     </el-form>
                     <div class="search-btn-box">
-                        <el-button v-waves type="primary" icon="el-icon-search" size="medium" @click="getInfo">查询
+                        <el-button @click="search" icon="el-icon-search" size="medium" type="primary" v-waves>查询
                         </el-button>
-                        <el-button v-waves type="primary" icon="el-icon-refresh" size="medium"
-                                   @click="resetForm('form')">重置
+                        <el-button @click="resetForm('form')" icon="el-icon-refresh" size="medium" type="primary"
+                                   v-waves>重置
                         </el-button>
                     </div>
                 </div>
@@ -53,78 +53,78 @@
             </blockTitle>
             <div class="table-content">
                 <el-table
+                        :data="list"
                         border
-                        v-loading="loading"
-                        :data="data.pageData"
+                        header-cell-class-name="header-cell-class-name"
                         style="width: 100%"
-                        header-cell-class-name="header-cell-class-name">
+                        v-loading="loading">
                     <el-table-column
-                            prop="qdNo"
-                            label="渠道">
+                            label="渠道"
+                            prop="channelNo">
                     </el-table-column>
                     <el-table-column
-                            prop="qdName"
-                            label="借据编码">
+                            label="借据编码"
+                            prop="listId">
                     </el-table-column>
                     <el-table-column
-                            prop="qdType"
-                            label="金融产品">
+                            label="金融产品"
+                            prop="prodId">
                     </el-table-column>
                     <el-table-column
-                            prop="creator"
-                            label="借据人编号">
+                            label="借款人编号"
+                            prop="custId">
                     </el-table-column>
                     <el-table-column
-                            prop="createTime"
-                            label="借据人姓名">
+                            label="借款人姓名"
+                            prop="custName">
                     </el-table-column>
                     <el-table-column
-                            prop="updateUser"
-                            label="身份证号">
+                            label="身份证号"
+                            prop="idNo">
                     </el-table-column>
                     <el-table-column
-                            prop="updateTime"
-                            label="借款金额">
+                            label="借款金额"
+                            prop="loanAmount">
                     </el-table-column>
                     <el-table-column
-                            prop="updateTime"
-                            label="还款方式">
+                            label="还款方式"
+                            prop="repayMethod">
                     </el-table-column>
                     <el-table-column
-                            prop="updateTime"
-                            label="日利率">
+                            label="日利率"
+                            prop="interestType">
                     </el-table-column>
                     <el-table-column
-                            prop="updateTime"
-                            label="贷款余额">
+                            label="贷款余额"
+                            prop="Bal">
                     </el-table-column>
                     <el-table-column
-                            prop="updateTime"
-                            label="还款期限">
+                            label="还款期限"
+                            prop="loanTerm">
                     </el-table-column>
                     <el-table-column
-                            prop="updateTime"
-                            label="放款日">
+                            label="放款日"
+                            prop="beginDate">
                     </el-table-column>
                     <el-table-column
-                            prop="updateTime"
-                            label="到期日">
+                            label="到期日"
+                            prop="endDate">
                     </el-table-column>
                     <el-table-column
-                            prop="updateTime"
-                            label="起息日">
+                            label="起息日"
+                            prop="endDate">
                     </el-table-column>
                     <el-table-column
-                            prop="updateTime"
-                            label="拆分方式">
+                            label="拆分方式"
+                            prop="assetSpiltWay">
                     </el-table-column>
                     <el-table-column
-                            prop="updateTime"
-                            label="拆分比例">
+                            label="拆分比例"
+                            prop="assetSpiltValue">
                     </el-table-column>
                     <el-table-column
-                            prop="updateTime"
-                            label="出资方">
+                            label="出资方"
+                            prop="contributiveName">
                     </el-table-column>
                     <el-table-column
                             class-name="operate"
@@ -137,13 +137,13 @@
             </div>
             <!--pagination-->
             <div class="pagination">
-                <pagination v-if="pagInfo.total"
-                            :page.sync="pagInfo.currentPage"
+                <pagination :limit.sync="pagInfo.pageSize"
                             :page-sizes="[10,20,30,50]"
-                            :limit.sync="pagInfo.pageSize"
-                            layout="sizes, prev, pager, next, jumper"
+                            :page.sync="pagInfo.currentPage"
                             :total="pagInfo.total"
-                            @pagination="getInfo"
+                            @pagination="assetList"
+                            layout="sizes, prev, pager, next, jumper"
+                            v-if="pagInfo.total"
                 ></pagination>
             </div>
         </div>
@@ -156,34 +156,20 @@
     import pagination from '@/components/Pagination';
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
-    import {channelquery} from "@/api/configM";
 
     export default {
         name: 'asset',
         components: {pagination, blockTitle, collapse},
         directives: {waves},
         data() {
-            // 渠道No校验
-            let qdNoValid = function (rule, value, callback) { // 校验渠道编号规则
-                if (value && !Number.isInteger(value)) {
-                    callback(new Error('请输入数字值'));
-                } else {
-                    callback();
-                }
-            };
             return {
                 form: {
-                    qdNo: '',
-                    qdName: '',
-                    qdName2: '',
-                    qdName3: '',
+                    channelNo: '',
+                    listId: '',
+                    custName: '',
+                    idNo: '',
                     startDate: '',
                     endDate: ''
-                },
-                rules: {
-                    channelNo: [
-                        {validator: qdNoValid, trigger: 'blur'}
-                    ]
                 },
                 pagInfo: {
                     total: '',
@@ -191,43 +177,39 @@
                     pageSize: 10
                 },
                 loading: false,
-                data: {},
+                list: [],
                 trueVal: true
             };
         },
         created() {
+            console.log(this.$store.getters.btn);
+            console.log(this.$store.getters.buttonArr);
         },
         methods: {
-            async getChannel() {
+            async assetList() {
                 //发起ajax请求，更改数据
                 this.loading = true;
-                let data = await channelquery(this.form.qdNo, this.form.qdName);
-                this.data = data.data;
-                this.pagInfo.total = data.totalPage;
+                let data = await this.$api.assetM.assetList({
+                    pager: {
+                        pageNo: this.pagInfo.currentPage,
+                        recordNum: this.pagInfo.pageSize
+                    },
+                    body: this.form
+                });
+                this.list = data.data.list;
+                this.pagInfo.total = Number(data.data.pager.totalNum);
                 this.loading = false;
             },
-            getInfo() {
-                this.$refs.form.validate((valid) => { //1.校验参数是否合法
-                    if (valid) {
-                        this.getChannel();
-                    }
-                });
+            search() {
+                this.pagInfo.currentPage = 1;
+                this.assetList();
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             },
-            detail() {
-                let obj = this.remainParam();
-                obj.updateId = 2;
-                this.$router.push({path: '/assetmanage/assetlistdetail',query: obj});                // 新增渠道,跳转存储默认值
-            },
-            remainParam() { // 获取默认参数
-                let obj = {};
-                Object.keys(this.form).forEach((key) => {
-                    if (this.form[key]) obj[key] = this.form[key];
-                });
-                return obj;
-            },
+            detail(row) {
+                this.$router.push({path: "/assetmanage/assetlistdetail", query: {updateId: row.listId}});
+            }
         }
     }
 </script>
@@ -244,6 +226,7 @@
         .el-form {
             margin: 20px 20px 50px;
         }
+
         .el-form-item {
             width: 32%;
 
@@ -251,16 +234,20 @@
                 width: 60%;
             }
         }
+
         .el-input {
             width: 100%;
         }
+
         .datetime {
             display: inline-block;
             width: 180px;
         }
+
         .el-date-editor--date {
             display: inline-block;
         }
+
         .search-btn-box {
             text-align: center;
 

@@ -4,71 +4,71 @@
             <ul>
                 <li>
                     <span>渠道</span>
-                    <span>{{info.channel}}</span>
+                    <span>{{info.channelName}}</span>
                 </li>
                 <li>
                     <span>借据编码</span>
-                    <span>{{info.code}}</span>
+                    <span>{{info.listId}}</span>
                 </li>
                 <li>
                     <span>借款人编号</span>
-                    <span>{{info.number}}</span>
+                    <span>{{info.custId}}</span>
                 </li>
                 <li>
                     <span>金融产品</span>
-                    <span>{{info.product}}</span>
+                    <span>{{info.prodName}}</span>
                 </li>
                 <li>
                     <span>借款人姓名</span>
-                    <span>{{info.name}}</span>
+                    <span>{{info.custName}}</span>
                 </li>
                 <li>
                     <span>身份号</span>
-                    <span>{{info.idcode}}</span>
+                    <span>{{info.idNo}}</span>
                 </li>
                 <li>
                     <span>还款方式</span>
-                    <span>{{info.mode}}</span>
+                    <span>{{info.repayMethod}}</span>
                 </li>
                 <li>
                     <span>借款金额</span>
-                    <span>{{info.money}}</span>
+                    <span>{{info.loanAmount}}</span>
                 </li>
                 <li>
                     <span>日利率</span>
-                    <span>{{info.rate}}</span>
+                    <span>{{info.interestType}}</span>
                 </li>
                 <li>
                     <span>贷款余额</span>
-                    <span>{{info.balance}}</span>
+                    <span>{{info.Bal}}</span>
                 </li>
                 <li>
                     <span>还款期限</span>
-                    <span>{{info.deadline}}</span>
+                    <span>{{info.loanTerm}}</span>
                 </li>
                 <li>
                     <span>放款日</span>
-                    <span>{{info.loanday}}</span>
+                    <span>{{info.beginDate}}</span>
                 </li>
                 <li>
                     <span>到期日</span>
-                    <span>{{info.expireday}}</span>
+                    <span>{{info.endDate}}</span>
                 </li>
                 <li>
                     <span>起息日</span>
-                    <span>{{info.deadline}}</span>
+                    <span>{{info.endDate}}</span>
                 </li>
                 <li>
                     <span>拆分方式</span>
-                    <span>{{info.beginrate}}</span>
+                    <span>{{info.assetSpiltWay}}</span>
                 </li>
                 <li>
                     <span>拆分比例</span>
-                    <span>{{info.splitproportion}}</span>
+                    <span>{{info.assetSpiltValue}}</span>
                 </li>
                 <li>
                     <span>出资方</span>
-                    <span>{{info.provide}}</span>
+                    <span>{{info.contributiveName}}</span>
                 </li>
             </ul>
         </div>
@@ -81,30 +81,19 @@
         name: 'assetDetail',
         data() {
             return {
-                info: { // 列表详情数据模拟
-                    "id": 1,
-                    "channel": "百度",
-                    "code": "BD001",
-                    "number": "JKR001",
-                    "name": "张三",
-                    "money": "10000.00",
-                    "mode": "等额本息",
-                    "rate": "0.06%",
-                    "balance": "190000",
-                    "deadline": "12",
-                    "loanday": "2018-5-02",
-                    "expireday": "2019-5-01",
-                    "beginrate": "2018-5-02",
-                    "splitmode": "按比例",
-                    "splitproportion": "3：7",
-                    "provide": "消金，哈银",
-                    "idcode": "123123123123123",
-                    "product": "贷款"
-                }
+                info: {}// 列表详情数据
             }
         },
-        created() {
-
+        activated() {
+            this.getInfo();
+        },
+        methods: {
+            async getInfo() {
+                let data = await this.$api.assetM.assetDetail({
+                    listId: this.$route.query.updateId // 获取updateId,然后查找内容
+                });
+                this.info = data.data.detail;
+            }
         }
     }
 
