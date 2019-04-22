@@ -2,6 +2,9 @@
  * 解析url参数 注意：只支持hash的参数
  * @example /#/?id=12345&a=b
  * @return Object {id:12345,a:b}
+ *
+ * 备注：vue-router中的this.$route.query可以获取到需要的内容
+ *
  */
 export const urlParse = function () {
     let url = window.location.hash;

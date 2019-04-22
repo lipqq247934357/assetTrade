@@ -1,14 +1,14 @@
 <template>
     <div class="login-container">
-        <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
-                 label-position="left">
+        <el-form :model="loginForm" :rules="loginRules" auto-complete="on" class="login-form" label-position="left"
+                 ref="loginForm">
             <h3 class="title">资产交易平台</h3>
             <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user"/>
         </span>
-                <el-input v-model="loginForm.username" name="username" type="text" auto-complete="on"
-                          placeholder="username"/>
+                <el-input auto-complete="on" name="username" placeholder="username" type="text"
+                          v-model="loginForm.username"/>
             </el-form-item>
             <el-form-item prop="password">
         <span class="svg-container">
@@ -16,17 +16,17 @@
         </span>
                 <el-input
                         :type="pwdType"
-                        v-model="loginForm.password"
-                        name="password"
+                        @keyup.enter.native="handleLogin"
                         auto-complete="on"
+                        name="password"
                         placeholder="password"
-                        @keyup.enter.native="handleLogin"/>
-                <span class="show-pwd" @click="showPwd">
+                        v-model="loginForm.password"/>
+                <span @click="showPwd" class="show-pwd">
           <svg-icon :icon-class="pwdType === 'password' ? 'eye' : 'eye-open'"/>
         </span>
             </el-form-item>
             <el-form-item>
-                <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
+                <el-button :loading="loading" @click.native.prevent="handleLogin" style="width:100%;" type="primary">
                     Sign in
                 </el-button>
             </el-form-item>
@@ -87,13 +87,7 @@
             handleLogin() {
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
-                        this.loading = true
-                        this.$store.dispatch('Login', this.loginForm).then(() => {
-                            this.loading = false
-                            this.$router.push({path: this.redirect || '/'})
-                        }).catch(() => {
-                            this.loading = false
-                        })
+                        this.$router.push({path: (this.redirect || '/') + '?token=xxxx'})
                     } else {
                         console.log('error submit!!')
                         return false
