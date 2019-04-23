@@ -5,6 +5,7 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css'// progress bar style
 import {getToken, setToken} from './auth';
 import Vue from 'vue';
+import {urlParse4Search} from './utils';
 
 const whiteList = ['/login', '/regist', '/403', '/404'];
 NProgress.configure({showSpinner: false})// NProgress Configuration
@@ -17,11 +18,16 @@ router.beforeEach((to, from, next) => {
         NProgress.done();
         next();
     } else {
-        if (getToken() || to.query.token) { // determine if there has token
-            if (!getToken()) setToken(to.query.token);
+        let ticket = urlParse4Search().ticket;
+        if (getToken() || ticket) { // determine if there has token
+            if (!getToken()) setToken(ticket);
             // 校验是否有权限树
             if (store.getters.tree.length === 0) { // 是否已经获取当前用户信息和权限树等
-                Vue.prototype.$api.common.privilegeInfo().then(res => {
+                Vue.prototype.$api.common.privilegeInfo({
+                    ticket: getToken(),
+                    systemId: 's000008',
+                    isReturn: 1
+                }).then(res => {
                     let ticketStatus = res.data.ticketStatus;
                     if (ticketStatus !== '01') { // 无效票据
                         NProgress.done();

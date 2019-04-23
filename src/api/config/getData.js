@@ -6,13 +6,16 @@ import {requestConf} from './requestConf';
 // axios 配置
 axios.defaults.timeout = 6969;
 if (process.env.NODE_ENV === 'development') {// 根据不同的环境使用不同的接口
-    axios.defaults.baseURL = '/mock';
+    axios.defaults.baseURL = '/api';
 } else {
     axios.defaults.baseURL = '/api';
 }
 axios.defaults.headers['Content-Type'] = 'application/json; charset=utf-8';
 
 axios.interceptors.request.use(function (config) {
+    if(config.url.endsWith('/ucenter/service/validate/ticket')){
+     config.headers['Content-Type'] = 'text/plain;charset=UTF-8';
+    }
     return requestConf(config);
 }, err => {
     Message.error({message: '请求超时!', duration: 5 * 1000});
