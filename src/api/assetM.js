@@ -4,7 +4,7 @@ let prefix = '/AssetWeb/list';
 const assetM = {
 
 
-    // 查询资产列表`
+    // 查询资产列表
     assetList(p) {
         return post(prefix + '/queryAssetList', p);
     },
@@ -25,8 +25,7 @@ const assetM = {
     },
     creditDetail(p) {
         return post(prefix + '/queryApplyCreditInfoDetail', p);
-    },
-
+    }
 };
 
 

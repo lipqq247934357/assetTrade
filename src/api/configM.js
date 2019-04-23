@@ -1,6 +1,6 @@
 import {get, post} from "./config/getData";
 
-let prefix = '/asset/pages/config';
+let prefix = '/AssetWeb/asset/pages/config';
 const configM = {
 
 
@@ -104,6 +104,17 @@ const configM = {
 
     outdetailupdate(p) {
         return post(prefix + '/outputFile/udpate', p);
+    },
+
+
+    /**
+     * 字典输出查询
+     * @param p
+     * @returns {*}
+     */
+
+    dictQuery(p) {
+        return post(prefix + '/dict/query', p);
     },
 
 };

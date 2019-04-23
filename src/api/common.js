@@ -27,7 +27,7 @@ let common = {
      */
 
     privilegeInfo(p) {
-        return post('/service/validate/ticket', p);
+        return post('/ucenter/service/validate/ticket', p);
     },
 
     // 业务异常接口
