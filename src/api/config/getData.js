@@ -1,4 +1,3 @@
-import qs from 'qs';
 import axios from "axios";
 import {Message} from 'element-ui';
 import router from '../../router';
@@ -57,5 +56,5 @@ export const get = (url, data = {}) => {
 
 
 export const post = (url, data = {}) => {
-    return axios.post(url, qs.stringify(data));
+    return axios.post(url, data);
 }
