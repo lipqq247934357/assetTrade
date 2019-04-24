@@ -1,0 +1,52 @@
+{
+  "dicts": [],
+  "pageCount": 1,
+  "resultCode": "0000",
+  "resultMsg": "成功",
+  "dataCount": 20,
+  "data": [
+    {
+      "colSplitSymbol": ",",
+      "createTime": "2019-04-09 10:41:56",
+      "fileDesc": "pdd的文件",
+      "fileName": "pdd-001",
+      "fileNo": "2",
+      "fileWordCode": "gbk",
+      "inputUser": "wanglei",
+      "outputTemNo": "1",
+      "sqlSentence": "select * from tb_common_cd",
+      "updateTime": "2019-04-09 10:42:33",
+      "updateUser": ""
+    },
+    {
+      "colSplitSymbol": ",",
+      "createTime": "2019-04-09 10:41:56",
+      "fileDesc": "pdd的文件",
+      "fileName": "pdd-001",
+      "fileNo": "2",
+      "fileWordCode": "gbk",
+      "inputUser": "wanglei",
+      "outputTemNo": "1",
+      "pageNum": "",
+      "pageSize": "",
+      "sqlSentence": "select * from tb_common_cd",
+      "updateTime": "2019-04-09 10:42:33",
+      "updateUser": ""
+    },
+    {
+      "colSplitSymbol": ",",
+      "createTime": "2019-04-09 10:41:56",
+      "fileDesc": "pdd的文件",
+      "fileName": "pdd-001",
+      "fileNo": "2",
+      "fileWordCode": "gbk",
+      "inputUser": "wanglei",
+      "outputTemNo": "1",
+      "pageNum": "",
+      "pageSize": "",
+      "sqlSentence": "select * from tb_common_cd",
+      "updateTime": "2019-04-09 10:42:33",
+      "updateUser": ""
+    }
+  ]
+}

@@ -3,7 +3,7 @@ let channel = require('./configM/channel/channel');
 let cashProvider = require('./configM/cashProvider/cashProvider');
 let splitRules = require('./configM/splitRules/splitRules');
 let cashOutput = require('./configM/cashOutput/cashOutput');
-let outputDetail = require('./configM/cashOutput/outputDetail');
+let outputDetail = require('./configM/cashOutput/outputDetail/outputDetail');
 let privilegeInfo = require('./user/getRoles');
 
 let assetList = require('./assetM/asset/assetList');
@@ -48,7 +48,7 @@ function mock(app) {
         res.json(privilegeInfo);
     });
 
-    let prefix = '/mock/asset/pages/config';
+    let prefix = '/mock/AssetWeb/asset/pages/config';
 
     app.post(prefix + '/finProduct/query', function (req, res) {
         res.json(product);
@@ -84,6 +84,8 @@ function mock(app) {
     app.post(prefix + '/outputFile/query', function (req, res) {
         res.json(outputDetail);
     });
+
+
 
 
     app.post(prefix + '/channel/add', function (req, res) {
