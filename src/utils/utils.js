@@ -56,12 +56,12 @@ export const treeUtil = function (data) {
     while (data.length !== 0) {
         let item = data[i];
         item.children = [];
-        let parentId = item['parentMenuId'].trim();
-        if (parentId === '') { //一级菜单
+        if (item.menuLevel === '1') { //一级菜单
             tree.push(item);
             pos[item['menuId']] = tree[tree.length - 1];
             data.splice(i, 1);
         } else { // 子节点
+            let parentId = item['parentMenuId'].trim();
             let obj = pos[parentId];
             if (obj !== undefined) {
                 obj.children.push(item);
