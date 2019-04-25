@@ -22,6 +22,7 @@
                                     class="datetime"
                                     placeholder="请选择日期"
                                     type="date"
+                                    value-format="yyyy-MM-dd"
                                     v-model="form.startDate">
                             </el-date-picker>
                             &nbsp;-&nbsp;
@@ -29,6 +30,7 @@
                                     class="datetime"
                                     placeholder="请选择日期"
                                     type="date"
+                                    value-format="yyyy-MM-dd"
                                     v-model="form.endDate">
                             </el-date-picker>
                         </el-form-item>
@@ -164,7 +166,7 @@
                     body: this.form
                 });
                 this.list = data.data.list;
-                this.pagInfo.total = Number(data.data.pager.totalNum);
+                this.pagInfo.total = Number(data.data.pager ? data.data.pager.totalNum : 0);
                 this.loading = false;
             },
             search() {

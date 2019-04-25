@@ -147,8 +147,8 @@
                     },
                     body: this.form
                 });
-                this.list = data.data.list;
-                this.pagInfo.total = Number(data.data.pager.totalNum);
+                this.list = data.data.list || [];
+                this.pagInfo.total = Number(data.data.pager ? data.data.pager.totalNum : 0);
                 this.loading = false;
             },
             search() {
