@@ -166,20 +166,20 @@
         data() {
             return {
                 form: {
-                    channelNo: '',
-                    listId: '',
-                    custName: '',
-                    idNo: '',
-                    startDate: '',
-                    endDate: ''
+                    channelNo: '', // 渠道编号
+                    listId: '', //结局编号
+                    custName: '', // 借款人姓名
+                    idNo: '', // 身份证号
+                    startDate: '', // 放款开始时间
+                    endDate: '' // 放款结束时间
                 },
-                pagInfo: {
+                pagInfo: { // 分页数据
                     total: '',
                     currentPage: 1,
                     pageSize: 10
                 },
                 loading: false,
-                list: [],
+                list: [], // 列表数据
                 trueVal: true
             };
         },
@@ -188,7 +188,7 @@
             console.log(this.$store.getters.buttonArr);
         },
         methods: {
-            async assetList() {
+            async assetList() { // 查询资产列表
                 //发起ajax请求，更改数据
                 this.loading = true;
                 let data = await this.$api.assetM.assetList({
@@ -202,14 +202,14 @@
                 this.pagInfo.total = Number(data.data.pager ? data.data.pager.totalNum : 0);
                 this.loading = false;
             },
-            search() {
+            search() { // 点击查询按钮
                 this.pagInfo.currentPage = 1;
                 this.assetList();
             },
-            resetForm(formName) {
+            resetForm(formName) { // 重置表单
                 this.$refs[formName].resetFields();
             },
-            detail(row) {
+            detail(row) { // 查看详情
                 this.$router.push({path: "/assetmanage/assetlistdetail", query: {updateId: row.listId}});
             }
         }

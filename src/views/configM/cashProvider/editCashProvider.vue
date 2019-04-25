@@ -72,9 +72,9 @@
         data() {
             return {
                 form: {
-                    contributiveNo: '',
-                    contributiveName: '',
-                    outputTemNo: '',
+                    contributiveNo: '', // 资金方编码
+                    contributiveName: '', // 资金方名称
+                    outputTemNo: '', // 输出模板编码
                     useYn: '',
                     inputUser: '',
                     updateUser: ''
@@ -134,18 +134,13 @@
             back() {
                 this.$router.go(-1);
             },
-            submit(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        //如果updateId不为空，是更新，否则是新增
-                        if (this.updateId) {
-                            this.update();
-                        } else {
-                            this.add();
-                        }
-                    } else {
-                    }
-                });
+            submit() {
+                //如果updateId不为空，是更新，否则是新增
+                if (this.updateId) {
+                    this.update();
+                } else {
+                    this.add();
+                }
             },
             async add() {
                 let form = this.form;

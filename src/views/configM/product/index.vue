@@ -121,8 +121,8 @@
         data() {
             return {
                 form: {
-                    channelName: '',
-                    prodName: '',
+                    channelName: '', // 渠道名称
+                    prodName: '', // 金融产品名称
                 },
                 pagInfo: {
                     total: '',

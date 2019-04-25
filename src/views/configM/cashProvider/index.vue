@@ -112,7 +112,7 @@
         data() {
             return {
                 form: {
-                    contributiveName: ''
+                    contributiveName: '' // 资金提供方名称
                 },
                 pagInfo: {
                     total: '',

@@ -79,13 +79,13 @@
         data() {
             return {
                 form: {
-                    channelNo: '',
-                    channelName: '',
-                    channelType: '',
-                    channelSymbol: '',
-                    useYn: '',
-                    inputUser: '',
-                    updateUser: ''
+                    channelNo: '', // 渠道编码
+                    channelName: '', // 渠道名称
+                    channelType: '', // 渠道类型
+                    channelSymbol: '', // 渠道标识
+                    useYn: '', //是否启用
+                    inputUser: '', // 创建用户
+                    updateUser: '' // 创建时间
                 },
                 "channelTypeList": [{
                     value: "1",
@@ -109,21 +109,20 @@
             ...mapGetters(['userInfo'])
         },
         activated() {
-            this.form = {};
+            this.form = {}; // 每次进入页面重置表单内容
             // 获取updateId,如果有值说明是更新,使用vue-router的path也可以获取
             let params = urlParse();
-            // 主键查询，有值是修改，将主键保存，否则设置增加人为自己
+            // 主键查询 设置内容，没有对数据为空情况的处理
             if (params.updateId) {
-                this.updateId = params.updateId;
+                this.updateId = params.updateId; //设置更新id，判断是新增还是修改
                 this.query(params.updateId);
-            } else {
+            } else { // 当没有数据的时候说明该页面是新增，从vuex中取数据
                 this.form.inputUser = this.userInfo.username;
             }
         },
         methods: {
-            async query(channelNo) { // 查询用户信息
-                //发起ajax请求，更改数据
-                let data = await this.$api.configM.channelquery({
+            async query(channelNo) { // 查询
+                let data = await this.$api.configM.channelquery({ //发起ajax请求，更改数据
                     channelNo: channelNo,
                     pageNum: 1,
                     pageSize: 10
@@ -133,17 +132,17 @@
                     this.form = data.data[0];
                 }
             },
-            back() {
+            back() { // 返回上一级
                 this.$router.go(-1);
             },
-            submit() {
+            submit() { // 提交表单
                 if (this.updateId) { //如果updateId不为空，是更新，否则是新增
                     this.update();
                 } else {
                     this.add();
                 }
             },
-            async add() {
+            async add() { // 新增数据
                 let form = this.form;
                 let data = await this.$api.configM.channeladd({
                     channelNo: form.channelNo,
@@ -157,7 +156,7 @@
                     this.$router.go(-1);
                 }
             },
-            async update() {
+            async update() { // 修改数据
                 let form = this.form;
                 let data = await this.$api.configM.channelupdate({
                     channelNo: form.channelNo,

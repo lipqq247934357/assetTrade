@@ -88,7 +88,7 @@
             this.getInfo();
         },
         methods: {
-            async getInfo() {
+            async getInfo() { // 根据id获取数据
                 let data = await this.$api.assetM.assetDetail({
                     body: {
                         listId: this.$route.query.updateId // 获取updateId,然后查找内容

@@ -119,8 +119,8 @@
         data() {
             return {
                 form: {
-                    channelNo: '',
-                    channelName: '',
+                    channelNo: '', // 渠道编码
+                    channelName: '', // 渠道名称
                 },
                 pagInfo: {
                     total: '',
@@ -133,7 +133,7 @@
             };
         },
         activated() {
-            this.getChannel();// 获取数据
+            this.getChannel();// 每次进入页面获取数据
         },
         methods: {
             async getChannel() { //发起ajax请求，更改数据
@@ -151,19 +151,17 @@
                 }
                 this.loading = false;
             },
-            search() {
+            search() { // 点击查询按钮
                 this.pagInfo.currentPage = 1;
                 this.getChannel();
             },
-            resetForm(formName) {
+            resetForm(formName) { // 重置表单内容
                 this.$refs[formName].resetFields();
             },
-            add() {
-                // 新增渠道,跳转存储默认值
+            add() { //进入新增页面
                 this.$router.push({path: '/configm/addchannel'});
             },
-            update(row) {
-                // 修改渠道,跳转存储默认值
+            update(row) { // 进入修改页面
                 this.$router.push({path: "/configm/addchannel", query: {updateId: row.channelNo}});
             }
         }

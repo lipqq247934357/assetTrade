@@ -92,10 +92,10 @@
         data() {
             return {
                 form: {
-                    assetSplitWay: '', //
-                    assetSplitValue: '',
-                    contributiveNo: [],
-                    pennyDifferenceBelongs: '',
+                    assetSplitWay: '', // 拆分方式
+                    assetSplitValue: '', // 拆分值
+                    contributiveNo: [], // 资金方编码
+                    pennyDifferenceBelongs: '', // 尾差归属方
                     useYn: '',
                     inputUser: '',
                     updateUser: ''
@@ -169,17 +169,13 @@
             back() {
                 this.$router.go(-1);
             },
-            submit(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        //如果updateId不为空，是更新，否则是新增
-                        if (this.updateId) {
-                            this.update();
-                        } else {
-                            this.add();
-                        }
-                    }
-                });
+            submit() {
+                //如果updateId不为空，是更新，否则是新增
+                if (this.updateId) {
+                    this.update();
+                } else {
+                    this.add();
+                }
             },
             async add() {
                 let data = await this.$api.configM.splitRulesadd({

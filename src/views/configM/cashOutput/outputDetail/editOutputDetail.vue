@@ -89,20 +89,12 @@
                     "outputTemNo": '',
                     "fileName": '',
                     "fileDesc": '',
-                    "useYn": '',
                     "fileWordCode": '',
                     "colSplitSymbol": '',
                     "sqlSentence": '',
                     "inputUser": ''
                 },
                 rules: {},
-                "useYn": [{
-                    value: "Y",
-                    label: '启用'
-                }, {
-                    value: "N",
-                    label: '禁用'
-                }],
                 fileWordCode: [{
                     value: "utf-8",
                     label: 'utf-8'
@@ -128,14 +120,13 @@
             updateId: async function (val) {
                 if (!val) {
                     this.form = {
-                        "outputTemNo": '',
-                        "fileName": '',
-                        "fileDesc": '',
-                        "useYn": '',
-                        "fileWordCode": '',
-                        "colSplitSymbol": '',
-                        "sqlSentence": '',
-                        "inputUser": this.userInfo.username
+                        outputTemNo: '', // 输出模板编号
+                        fileName: '', // 文件名称
+                        fileDesc: '', // 文件描述
+                        fileWordCode: '', // 文件字符编码
+                        colSplitSymbol: '', // 列分隔符
+                        sqlSentence: '', // sql语句
+                        inputUser: this.userInfo.username
                     }
                 } else {
                     let data = await this.$api.configM.outdetailquery({
@@ -154,28 +145,23 @@
             back() {
                 this.updateShow();
             },
-            submit(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        //如果updateId不为空，是更新，否则是新增
-                        if (this.updateId) {
-                            this.update();
-                        } else {
-                            this.add();
-                        }
-                    } else {
-                    }
-                });
+            submit() {
+                //如果updateId不为空，是更新，否则是新增
+                if (this.updateId) {
+                    this.update();
+                } else {
+                    this.add();
+                }
             },
             async add() {
                 let data = await this.$api.configM.outdetailadd({
-                    "outputTemNo": this.form.outputTemNo,
-                    "fileName": this.form.fileName,
-                    "fileDesc": this.form.fileDesc,
-                    "fileWordCode": this.form.fileWordCode,
-                    "colSplitSymbol": this.form.colSplitSymbol,
-                    "sqlSentence": this.form.sqlSentence,
-                    "inputUser": this.form.inputUser // 当前用户
+                    outputTemNo: this.form.outputTemNo,
+                    fileName: this.form.fileName,
+                    fileDesc: this.form.fileDesc,
+                    fileWordCode: this.form.fileWordCode,
+                    colSplitSymbol: this.form.colSplitSymbol,
+                    sqlSentence: this.form.sqlSentence,
+                    inputUser: this.form.inputUser // 当前用户
                 });
                 if (data.data.resultCode === '0000') {
                     this.$emit('updateData');
@@ -184,14 +170,14 @@
             },
             async update() {
                 let data = await this.$api.configM.outdetailupdate({
-                    "fileNo": this.updateId,
-                    "outputTemNo": this.form.outputTemNo,
-                    "fileName": this.form.fileName,
-                    "fileDesc": this.form.fileDesc,
-                    "fileWordCode": this.form.fileWordCode,
-                    "colSplitSymbol": this.form.colSplitSymbol,
-                    "sqlSentence": this.form.sqlSentence,
-                    "updateUser": this.userInfo.username
+                    fileNo: this.updateId,
+                    outputTemNo: this.form.outputTemNo,
+                    fileName: this.form.fileName,
+                    fileDesc: this.form.fileDesc,
+                    fileWordCode: this.form.fileWordCode,
+                    colSplitSymbol: this.form.colSplitSymbol,
+                    sqlSentence: this.form.sqlSentence,
+                    updateUser: this.userInfo.username
                 });
                 if (data.data.resultCode === '0000') {
                     this.$emit('updateData');

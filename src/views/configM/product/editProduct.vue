@@ -78,14 +78,13 @@
         data() {
             return {
                 form: {
-                    channelNo: '',
-                    prodNo: '',
-                    prodName: '',
-                    prodDesc: '',
+                    channelNo: '', // 渠道编号
+                    prodNo: '', // 金融产品编号
+                    prodName: '', // 金融产品名称
+                    prodDesc: '', // 产品描述
                     useYn: '',
                     inputUser: ''
                 },
-                rules: {},
                 "useYnList": [{
                     value: "Y",
                     label: '启用'
@@ -139,18 +138,13 @@
             back() {
                 this.$router.go(-1);
             },
-            submit(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        //如果updateId不为空，是更新，否则是新增
-                        if (this.updateId) {
-                            this.update();
-                        } else {
-                            this.add();
-                        }
-                    } else {
-                    }
-                });
+            submit() {
+                //如果updateId不为空，是更新，否则是新增
+                if (this.updateId) {
+                    this.update();
+                } else {
+                    this.add();
+                }
             },
             async add() {
                 let form = this.form;

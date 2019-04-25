@@ -53,7 +53,7 @@
         data() {
             return {
                 form: {
-                    outputTemName: '',
+                    outputTemName: '', // 资产输出模板名称
                     useYn: '',
                     inputUser: ''
                 },
@@ -110,18 +110,13 @@
             back() {
                 this.$router.go(-1);
             },
-            submit(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        //如果updateId不为空，是更新，否则是新增
-                        if (this.updateId) {
-                            this.update();
-                        } else {
-                            this.add();
-                        }
-                    } else {
-                    }
-                });
+            submit() {
+                //如果updateId不为空，是更新，否则是新增
+                if (this.updateId) {
+                    this.update();
+                } else {
+                    this.add();
+                }
             },
             async add() {
                 let data = await this.$api.configM.outputadd({

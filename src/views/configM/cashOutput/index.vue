@@ -111,7 +111,7 @@
         data() {
             return {
                 form: {
-                    outputTemName: '',
+                    outputTemName: '', // 资产输出模板名称
                 },
                 pagInfo: {
                     total: '',

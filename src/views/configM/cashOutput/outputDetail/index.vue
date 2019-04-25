@@ -116,8 +116,8 @@
         data() {
             return {
                 form: {
-                    fileNo: '',
-                    fileName: '',
+                    fileNo: '', // 文件编号
+                    fileName: '', // 文件名称
                 },
                 pagInfo: {
                     total: '',

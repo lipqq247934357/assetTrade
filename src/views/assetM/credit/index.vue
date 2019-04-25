@@ -22,16 +22,16 @@
                                     class="datetime"
                                     placeholder="请选择日期"
                                     type="date"
-                                    value-format="yyyy-MM-dd"
-                                    v-model="form.startDate">
+                                    v-model="form.startDate"
+                                    value-format="yyyy-MM-dd">
                             </el-date-picker>
                             &nbsp;-&nbsp;
                             <el-date-picker
                                     class="datetime"
                                     placeholder="请选择日期"
                                     type="date"
-                                    value-format="yyyy-MM-dd"
-                                    v-model="form.endDate">
+                                    v-model="form.endDate"
+                                    value-format="yyyy-MM-dd">
                             </el-date-picker>
                         </el-form-item>
                     </el-form>
@@ -136,11 +136,11 @@
         data() {
             return {
                 form: {
-                    custName:'',
-                    idNo:'',
-                    channelNo:'',
-                    startDate: '',
-                    endDate: ''
+                    custName: '', // 借款人姓名
+                    idNo: '', // 身份证号
+                    channelNo: '', // 渠道编号
+                    startDate: '', // 申请开始时间
+                    endDate: '' // 申请结束时间
                 },
                 pagInfo: {
                     total: '',

@@ -123,7 +123,7 @@
         data() {
             return {
                 form: {
-                    assetSplitWay: ''
+                    assetSplitWay: '' // 拆分方式
                 },
                 pagInfo: {
                     total: '',
