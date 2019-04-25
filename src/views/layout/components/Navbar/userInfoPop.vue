@@ -1,34 +1,31 @@
 <template>
     <div class="navbar">
         <el-dialog
-                title="个人信息"
                 :visible.sync="vis"
+                title="个人信息"
                 width="25%">
             <div class="cc">
                 <table>
                     <tr>
                         <td>用户名:</td>
-                        <td>1</td>
+                        <td>{{userInfo.username}}</td>
                     </tr>
 
                     <tr>
-                        <td>姓名:</td>
-                        <td>2</td>
+                        <td>登录用:</td>
+                        <td>{{userInfo.loginname}}</td>
                     </tr>
 
                     <tr>
-                        <td>手机号:</td>
-                        <td>3</td>
+                        <td>角色:</td>
+                        <td>{{userInfo.roleNameArr}}</td>
                     </tr>
 
                     <tr>
                         <td>邮箱:</td>
-                        <td>4</td>
+                        <td>{{userInfo.email}}</td>
                     </tr>
-
                     <tr>
-                        <td>职位:</td>
-                        <td>5</td>
                     </tr>
                 </table>
             </div>
@@ -37,9 +34,12 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex'
+
     export default {
         props: ['dialogVisible'],
         computed: {
+            ...mapGetters(['userInfo']),
             vis: {
                 get() {
                     return this.dialogVisible;
@@ -76,13 +76,15 @@
 
     tr {
 
-        td:nth-child(1){
+        td:nth-child(1) {
             width: 90px;
             text-align: right;
         }
-        td:nth-child(2){
+
+        td:nth-child(2) {
             border-left: 40px solid #ffffff;
         }
+
         line-height: 24px;
         height: 10px;
     }

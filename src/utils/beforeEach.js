@@ -36,7 +36,7 @@ router.beforeEach((to, from, next) => {
                         //添加store中的tree和userInfo
                         store.commit('SET_TREE', res.data.menuPrivList);
                         store.commit('SET_BTN', res.data.buttonPrivList);
-                        store.commit('SET_USERINFO', res.data.username);
+                        store.commit('SET_USERINFO', res.data.userPriv);
                         // 强制刷新路由
                         next({...to, replace: true});
                         NProgress.done();

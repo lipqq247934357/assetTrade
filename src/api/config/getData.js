@@ -12,8 +12,10 @@ if (process.env.NODE_ENV === 'development') {// 根据不同的环境使用不�
 axios.defaults.headers['Content-Type'] = 'application/json; charset=utf-8';
 
 axios.interceptors.request.use(function (config) {
-    if(config.url.endsWith('/ucenter/service/validate/ticket')){
-     config.headers['Content-Type'] = 'text/plain;charset=UTF-8';
+    if (config.url.endsWith('/ucenter/service/validate/ticket')) {
+        config.baseURL = '';
+        config.headers['Content-Type'] = 'text/plain;charset=UTF-8';
+
     }
     return requestConf(config);
 }, err => {
