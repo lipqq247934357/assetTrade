@@ -40,7 +40,7 @@
                 </li>
                 <li>
                     <span>贷款余额</span>
-                    <span>{{info.Bal}}</span>
+                    <span>{{info.bal}}</span>
                 </li>
                 <li>
                     <span>还款期限</span>
@@ -90,7 +90,9 @@
         methods: {
             async getInfo() {
                 let data = await this.$api.assetM.assetDetail({
-                    listId: this.$route.query.updateId // 获取updateId,然后查找内容
+                    body: {
+                        listId: this.$route.query.updateId // 获取updateId,然后查找内容
+                    }
                 });
                 this.info = data.data.detail;
             }

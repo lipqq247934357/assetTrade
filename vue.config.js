@@ -1,21 +1,31 @@
 // vue.config.js
 // 获取mock数据
-const mock = require('./mock/index.js');
+// const mock = require('./mock/index.js');
 
 module.exports = {
     // 选项...
     devServer: {
-        before(app) {
-            mock(app);
-        },
+        // before(app) {
+        //     mock(app);
+        // },
         proxy: {
             '/api': {
-                target: 'http://39.105.185.89',
+                // target: 'http://172.16.131.67:8005',
+                target: 'http://172.16.131.31:8005', // 测试环境
+                // target: 'http://10.192.86.12:8005',
+
                 ws: true,
                 changeOrigin: true,
                 pathRewrite: {
-                    '^/api': '/static/mock'
+                    // '^/api': '/static/mock'
+                    '^/api': ''
                 }
+            },
+            '/ucenter': {
+                target: 'http://172.16.131.61:8081',
+                ws: true,
+                changeOrigin: true,
+                pathRewrite: {}
             }
         }
     }

@@ -94,9 +94,10 @@
         methods: {
             async getInfo() {
                 let data = await this.$api.assetM.customerDetail({
-                    listId: this.$route.query.updateId // 获取updateId,然后查找内容
+                    body: {
+                        listId: this.$route.query.updateId // 获取updateId,然后查找内容
+                    }
                 });
-                console.log(data);
                 this.info = data.data.detail;
             }
         }
