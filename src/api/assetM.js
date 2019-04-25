@@ -1,4 +1,4 @@
-import {get, post} from "./config/getData";
+import {post} from "./config/getData";
 
 let prefix = '/AssetWeb/list';
 const assetM = {

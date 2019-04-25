@@ -7,16 +7,16 @@
             </template>
             <template>
                 <div>
-                    <el-form :model="form" ref="form" inline>
-                        <el-form-item prop="assetSplitWay" label="拆分方式">
-                            <el-input v-model.number="form.assetSplitWay" placeholder="拆分方式"></el-input>
+                    <el-form :model="form" inline ref="form">
+                        <el-form-item label="拆分方式" prop="assetSplitWay">
+                            <el-input placeholder="拆分方式" v-model.number="form.assetSplitWay"></el-input>
                         </el-form-item>
                     </el-form>
                     <div class="search-btn-box">
-                        <el-button v-waves type="primary" icon="el-icon-search" size="medium" @click="getInfo">查询
+                        <el-button @click="search" icon="el-icon-search" size="medium" type="primary" v-waves>查询
                         </el-button>
-                        <el-button v-waves type="primary" icon="el-icon-refresh" size="medium"
-                                   @click="resetForm('form')">重置
+                        <el-button @click="resetForm('form')" icon="el-icon-refresh" size="medium" type="primary"
+                                   v-waves>重置
                         </el-button>
                     </div>
                 </div>
@@ -26,59 +26,61 @@
         <div class="content">
             <blockTitle :hide="trueVal">
                 拆分规则配置列表
-                <el-button type="primary" v-waves @click="add" size="mini">配置
+                <el-button @click="add" size="mini" type="primary" v-waves>配置
                 </el-button>
             </blockTitle>
             <div class="table-content">
                 <el-table
-                        border
-                        v-loading="loading"
                         :data="data"
+                        border
+                        header-cell-class-name="header-cell-class-name"
                         style="width: 100%"
-                        header-cell-class-name="header-cell-class-name">
+                        v-loading="loading">
                     <el-table-column
-                            prop="assetSplitNo"
-                            label="拆分规则编码">
+                            label="拆分规则编码"
+                            prop="assetSplitNo">
                     </el-table-column>
                     <el-table-column
-                            prop="assetSplitWay"
                             :formatter="formatterSplitWay"
-                            label="拆分方式">
+                            label="拆分方式"
+                            prop="assetSplitWay">
                     </el-table-column>
                     <el-table-column
-                            prop="contributiveName"
-                            label="资金方">
+                            :formatter="formatterCashProvider"
+                            label="资金方"
+                            prop="contributiveNo">
                     </el-table-column>
                     <el-table-column
-                            prop="assetSplitValue"
-                            label="拆分值">
+                            label="拆分值"
+                            prop="assetSplitValue">
                     </el-table-column>
                     <el-table-column
-                            prop="pennyDifferenceBelongsName"
-                            label="尾差归属资金方">
+                            :formatter="formatterBelongs"
+                            label="尾差归属资金方"
+                            prop="pennyDifferenceBelongs">
                     </el-table-column>
                     <el-table-column
-                            prop="inputUser"
-                            label="创建人">
+                            label="创建人"
+                            prop="inputUser">
                     </el-table-column>
                     <el-table-column
-                            prop="createTime"
                             :formatter="formatterData"
-                            label="创建时间">
+                            label="创建时间"
+                            prop="createTime">
                     </el-table-column>
                     <el-table-column
-                            prop="updateUser"
-                            label="更新人">
+                            label="更新人"
+                            prop="updateUser">
                     </el-table-column>
                     <el-table-column
-                            prop="updateTime"
                             :formatter="formatterData"
-                            label="更新时间">
+                            label="更新时间"
+                            prop="updateTime">
                     </el-table-column>
                     <el-table-column
-                            prop="useYn"
                             :formatter="formatterUseYn"
-                            label="是否启用">
+                            label="是否启用"
+                            prop="useYn">
                     </el-table-column>
                     <el-table-column
                             class-name="operate"
@@ -91,13 +93,13 @@
             </div>
             <!--pagination-->
             <div class="pagination">
-                <pagination v-if="pagInfo.total"
-                            :page.sync="pagInfo.currentPage"
+                <pagination :limit.sync="pagInfo.pageSize"
                             :page-sizes="[10,20,30,50]"
-                            :limit.sync="pagInfo.pageSize"
-                            layout="sizes, prev, pager, next, jumper"
+                            :page.sync="pagInfo.currentPage"
                             :total="pagInfo.total"
                             @pagination="getInfo"
+                            layout="sizes, prev, pager, next, jumper"
+                            v-if="pagInfo.total"
                 ></pagination>
             </div>
         </div>
@@ -110,7 +112,6 @@
     import pagination from '@/components/Pagination';
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
-    import {splitRulesquery} from "@/api/configM";
     import formatter from '@/components/mixins/formatter';
 
 
@@ -131,7 +132,8 @@
                 },
                 loading: false,
                 data: [],
-                trueVal: true
+                trueVal: true,
+                chashProivderDicts: []
             };
         },
         activated() {
@@ -141,13 +143,22 @@
             async getSplRules() {
                 //发起ajax请求，更改数据
                 this.loading = true;
-                let data = await splitRulesquery('', this.form.assetSplitWay, this.pagInfo.currentPage, this.pagInfo.pageSize);
+                let data = await this.$api.configM.splitRulesquery({
+                    assetSplitWay: this.form.assetSplitWay,
+                    pageNum: this.pagInfo.currentPage,
+                    pageSize: this.pagInfo.pageSize
+                });
                 if (data.data.resultCode === '0000') {
                     data = data.data;
+                    this.chashProivderDicts = data.dicts; // 字典
                     this.data = data.data;
                     this.pagInfo.total = data.dataCount;
                 }
                 this.loading = false;
+            },
+            search() {
+                this.pagInfo.currentPage = 1;
+                this.getSplRules();
             },
             getInfo() {
                 this.$refs.form.validate((valid) => { //1.校验参数是否合法
@@ -164,6 +175,16 @@
             },
             update(row) {
                 this.$router.push({path: "/configm/updatesplitrules", query: {updateId: row.assetSplitNo}});
+            },
+            formatterBelongs(row, column, cellValue) {
+                return this.getName(this.chashProivderDicts, cellValue)
+            },
+            formatterCashProvider(row, column, cellValue) {
+                let arr = [];
+                cellValue.split(',').forEach(item => {
+                    arr.push(this.getName(this.chashProivderDicts, item));
+                })
+                return arr.join(',')
             }
         }
     }

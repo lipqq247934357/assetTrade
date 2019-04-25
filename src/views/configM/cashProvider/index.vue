@@ -7,16 +7,16 @@
             </template>
             <template>
                 <div>
-                    <el-form :model="form" ref="form" inline>
-                        <el-form-item prop="contributiveName" label="资金方名称">
-                            <el-input v-model.number="form.contributiveName" placeholder="资金方名称"></el-input>
+                    <el-form :model="form" inline ref="form">
+                        <el-form-item label="资金方名称" prop="contributiveName">
+                            <el-input placeholder="资金方名称" v-model.number="form.contributiveName"></el-input>
                         </el-form-item>
                     </el-form>
                     <div class="search-btn-box">
-                        <el-button v-waves type="primary" icon="el-icon-search" size="medium" @click="getInfo">查询
+                        <el-button @click="search" icon="el-icon-search" size="medium" type="primary" v-waves>查询
                         </el-button>
-                        <el-button v-waves type="primary" icon="el-icon-refresh" size="medium"
-                                   @click="resetForm('form')">重置
+                        <el-button @click="resetForm('form')" icon="el-icon-refresh" size="medium" type="primary"
+                                   v-waves>重置
                         </el-button>
                     </div>
                 </div>
@@ -26,50 +26,51 @@
         <div class="content">
             <blockTitle :hide="trueVal">
                 资金方配置列表
-                <el-button type="primary" v-waves @click="add" size="mini">配置
+                <el-button @click="add" size="mini" type="primary" v-waves>配置
                 </el-button>
             </blockTitle>
             <div class="table-content">
                 <el-table
-                        border
-                        v-loading="loading"
                         :data="data"
+                        border
+                        header-cell-class-name="header-cell-class-name"
                         style="width: 100%"
-                        header-cell-class-name="header-cell-class-name">
+                        v-loading="loading">
                     <el-table-column
-                            prop="contributiveNo"
-                            label="资金方编号">
+                            label="资金方编号"
+                            prop="contributiveNo">
                     </el-table-column>
                     <el-table-column
-                            prop="contributiveName"
-                            label="资金方名称">
+                            label="资金方名称"
+                            prop="contributiveName">
                     </el-table-column>
                     <el-table-column
-                            prop="outputTemName"
-                            label="资产输出模板">
+                            :formatter="formatterOutputTemp"
+                            label="资产输出模板"
+                            prop="outputTemNo">
                     </el-table-column>
                     <el-table-column
-                            prop="useYn"
                             :formatter="formatterUseYn"
-                            label="是否启用">
+                            label="是否启用"
+                            prop="useYn">
                     </el-table-column>
                     <el-table-column
-                            prop="inputUser"
-                            label="创建人">
+                            label="创建人"
+                            prop="inputUser">
                     </el-table-column>
                     <el-table-column
-                            prop="createTime"
                             :formatter="formatterData"
-                            label="创建时间">
+                            label="创建时间"
+                            prop="createTime">
                     </el-table-column>
                     <el-table-column
-                            prop="updateUser"
-                            label="更新人">
+                            label="更新人"
+                            prop="updateUser">
                     </el-table-column>
                     <el-table-column
-                            prop="updateTime"
                             :formatter="formatterData"
-                            label="更新时间">
+                            label="更新时间"
+                            prop="updateTime">
                     </el-table-column>
                     <el-table-column
                             class-name="operate"
@@ -82,13 +83,13 @@
             </div>
             <!--pagination-->
             <div class="pagination">
-                <pagination v-if="pagInfo.total"
-                            :page.sync="pagInfo.currentPage"
+                <pagination :limit.sync="pagInfo.pageSize"
                             :page-sizes="[10,20,30,50]"
-                            :limit.sync="pagInfo.pageSize"
-                            layout="sizes, prev, pager, next, jumper"
+                            :page.sync="pagInfo.currentPage"
                             :total="pagInfo.total"
                             @pagination="getInfo"
+                            layout="sizes, prev, pager, next, jumper"
+                            v-if="pagInfo.total"
                 ></pagination>
             </div>
         </div>
@@ -101,7 +102,6 @@
     import pagination from '@/components/Pagination';
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
-    import {cashproviderquery} from "@/api/configM";
     import formatter from '@/components/mixins/formatter';
 
     export default {
@@ -121,23 +121,33 @@
                 },
                 loading: false,
                 data: [],
-                trueVal: true
+                trueVal: true,
+                outputTempDicts:[]
             };
         },
-        created() {
+        activated() {
             this.getProvider();// 获取数据
         },
         methods: {
             async getProvider() {
                 //发起ajax请求，更改数据
                 this.loading = true;
-                let data = await cashproviderquery('', this.form.contributiveName, this.pagInfo.currentPage, this.pagInfo.pageSize);
+                let data = await this.$api.configM.cashproviderquery({
+                    contributiveName: this.form.contributiveName,
+                    pageNum: this.pagInfo.currentPage,
+                    pageSize: this.pagInfo.pageSize
+                });
                 if (data.data.resultCode === '0000') {
                     data = data.data;
                     this.data = data.data;
+                    this.outputTempDicts = data.dicts; // 字典
                     this.pagInfo.total = data.dataCount;
                 }
                 this.loading = false;
+            },
+            search() {
+                this.pagInfo.currentPage = 1;
+                this.getProvider();
             },
             getInfo() {
                 this.$refs.form.validate((valid) => { //1.校验参数是否合法
@@ -156,6 +166,9 @@
             update(row) {
                 // 修改渠道
                 this.$router.push({path: "/configm/addprovider", query: {updateId: row.contributiveNo}});
+            },
+            formatterOutputTemp(row, column, cellValue) {
+                return this.getName(this.outputTempDicts, cellValue)
             }
         }
     }

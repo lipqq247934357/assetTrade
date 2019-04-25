@@ -147,6 +147,7 @@
                     },
                     body: this.form
                 });
+                console.log(data.data.list);
                 this.list = data.data.list || [];
                 this.pagInfo.total = Number(data.data.pager ? data.data.pager.totalNum : 0);
                 this.loading = false;

@@ -1,5 +1,5 @@
 <template>
-    <div class="edit-out-detail app-container">
+    <div class="edit-out-detail app-container" v-show="show">
         <div class="edit-content">
             <div class="content-border">
                 <el-form :model="form" :rules="rules" ref="form">
@@ -12,8 +12,8 @@
                         </div>
                         <div class="name must-choose">文件名称</div>
                         <div class="content last-box">
-                            <el-form-item prop="filename">
-                                <el-input v-model="form.filename"></el-input>
+                            <el-form-item prop="fileName">
+                                <el-input v-model="form.fileName"></el-input>
                             </el-form-item>
                         </div>
                     </div>
@@ -27,12 +27,12 @@
                         <div class="name must-choose">文件字符编码</div>
                         <div class="content last-box">
                             <el-form-item prop="fileWordCode">
-                                <el-select v-model="form.fileWordCode" placeholder="请选择" size="max">
+                                <el-select placeholder="请选择" size="max" v-model="form.fileWordCode">
                                     <el-option
-                                            v-for="item in fileWordCode"
                                             :key="item.value"
                                             :label="item.label"
-                                            :value="item.value">
+                                            :value="item.value"
+                                            v-for="item in fileWordCode">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -43,7 +43,7 @@
                         <div class="name sql-name must-choose">SQL语句</div>
                         <div class="content sql-content last-box">
                             <el-form-item class="sql-textarea" prop="sqlSentence">
-                                <el-input type="textarea" v-model="form.sqlSentence" rows="5"></el-input>
+                                <el-input rows="5" type="textarea" v-model="form.sqlSentence"></el-input>
                             </el-form-item>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                         <div class="name">创建人</div>
                         <div class="content">
                             <el-form-item prop="inputUser">
-                                <el-input v-model="form.inputUser" :disabled="trueVal"></el-input>
+                                <el-input :disabled="trueVal" v-model="form.inputUser"></el-input>
                             </el-form-item>
                         </div>
                         <div class="name last-box"></div>
@@ -68,8 +68,9 @@
                     </div>
                 </el-form>
                 <div class="btn-action">
-                    <el-button @click="back" type="primary" size="medium">返回</el-button>
-                    <el-button @click="submit('form')" type="primary" size="medium">提交</el-button>
+                    <el-button @click="back" size="medium" type="primary">返回</el-button>
+                    <el-button @click="submit('form')" size="medium" type="primary" v-if="type !== 'detail'">提交
+                    </el-button>
                 </div>
             </div>
         </div>
@@ -78,19 +79,21 @@
 
 <script>
     import {urlParse} from '@/utils/utils';
-    import {channel, addChannel} from "@/api";
+    import {mapGetters} from 'vuex';
 
     export default {
         name: 'editOutDetail',
         data() {
             return {
                 form: {
-                    "qdNo": '',
-                    "qdName": '',
-                    "qdType": '',
-                    "qdTag": '',
-                    "status": '',
-                    "creator": ''
+                    "outputTemNo": '',
+                    "fileName": '',
+                    "fileDesc": '',
+                    "useYn": '',
+                    "fileWordCode": '',
+                    "colSplitSymbol": '',
+                    "sqlSentence": '',
+                    "inputUser": ''
                 },
                 rules: {},
                 "useYn": [{
@@ -111,30 +114,45 @@
                     label: 'gb2312'
                 }],
                 trueVal: true,
-                updateId: ''
             }
         },
-        props: ['show']
+        props: ['show', 'type', 'updateId']
         ,
+        computed: {
+            ...mapGetters(['userInfo'])
+        },
         created() {
-            // 获取updateId,如果有值说明是更新
-            let params = urlParse();
-            // 主键查询，有值是修改，将主键保存，否则console.log提示
-            params.channelNo && this.query(params.channelNo);
+            this.form.inputUser = this.userInfo.username;
+        },
+        watch: {
+            updateId: async function (val) {
+                if (!val) {
+                    this.form = {
+                        "outputTemNo": '',
+                        "fileName": '',
+                        "fileDesc": '',
+                        "useYn": '',
+                        "fileWordCode": '',
+                        "colSplitSymbol": '',
+                        "sqlSentence": '',
+                        "inputUser": this.userInfo.username
+                    }
+                } else {
+                    let data = await this.$api.configM.outdetailquery({
+                        fileNo: val,
+                        pageNum: 1,
+                        pageSize: 10
+                    });
+                    if (data.data.resultCode === '0000') {
+                        data = data.data;
+                        this.form = data.data[0];
+                    }
+                }
+            }
         },
         methods: {
-            async query(channelNo) { // 查询用户信息
-                //发起ajax请求，更改数据
-                let data = await channel(channelNo);
-                if (data.total > 0) {// 存在
-                    this.updateId = data.data[0].channelNo;
-                    this.form = data.data[0];
-                } else {
-                    console.log('没有找到channelNo为' + channelNo + '的内容');
-                }
-            },
             back() {
-                this.$router.go(-1);
+                this.updateShow();
             },
             submit(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -150,14 +168,39 @@
                 });
             },
             async add() {
-                let res = await addChannel();
-                console.log(res);
-                this.$router.go(-1);
+                let data = await this.$api.configM.outdetailadd({
+                    "outputTemNo": this.form.outputTemNo,
+                    "fileName": this.form.fileName,
+                    "fileDesc": this.form.fileDesc,
+                    "fileWordCode": this.form.fileWordCode,
+                    "colSplitSymbol": this.form.colSplitSymbol,
+                    "sqlSentence": this.form.sqlSentence,
+                    "inputUser": this.form.inputUser // 当前用户
+                });
+                if (data.data.resultCode === '0000') {
+                    this.$emit('updateData');
+                    this.updateShow();
+                }
             },
-            async udpate() {
-                let res = await addChannel();
-                console.log(res);
-                this.$router.go(-1);
+            async update() {
+                let data = await this.$api.configM.outdetailupdate({
+                    "fileNo": this.updateId,
+                    "outputTemNo": this.form.outputTemNo,
+                    "fileName": this.form.fileName,
+                    "fileDesc": this.form.fileDesc,
+                    "fileWordCode": this.form.fileWordCode,
+                    "colSplitSymbol": this.form.colSplitSymbol,
+                    "sqlSentence": this.form.sqlSentence,
+                    "updateUser": this.userInfo.username
+                });
+                if (data.data.resultCode === '0000') {
+                    this.$emit('updateData');
+                    this.updateShow();
+                }
+            },
+            updateShow() {
+                this.$emit('update:show', !this.show);
+                this.$emit('clearUpdateId');
             }
         }
     }

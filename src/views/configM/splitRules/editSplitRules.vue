@@ -7,12 +7,12 @@
                         <div class="name must-choose">拆分方式</div>
                         <div class="content">
                             <el-form-item prop="assetSplitWay">
-                                <el-select v-model="form.assetSplitWay" placeholder="请选择" size="max">
+                                <el-select placeholder="请选择" size="max" v-model="form.assetSplitWay">
                                     <el-option
-                                            v-for="item in splitWay"
                                             :key="item.value"
                                             :label="item.label"
-                                            :value="item.value">
+                                            :value="item.value"
+                                            v-for="item in splitWay">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -28,12 +28,12 @@
                         <div class="name must-choose">资金方</div>
                         <div class="content">
                             <el-form-item prop="contributiveNo">
-                                <el-select v-model="form.contributiveNo" multiple placeholder="请选择" size="max">
+                                <el-select multiple placeholder="请选择" size="max" v-model="form.contributiveNo">
                                     <el-option
-                                            v-for="item in assetProvider"
                                             :key="item.value"
                                             :label="item.label"
-                                            :value="item.value">
+                                            :value="item.value"
+                                            v-for="item in assetProvider">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -41,12 +41,12 @@
                         <div class="name must-choose">尾差归属方</div>
                         <div class="content last-box">
                             <el-form-item prop="qdType">
-                                <el-select v-model="form.pennyDifferenceBelongs" placeholder="请选择" size="max">
+                                <el-select placeholder="请选择" size="max" v-model="form.pennyDifferenceBelongs">
                                     <el-option
-                                            v-for="item in assetProvider"
                                             :key="item.value"
                                             :label="item.label"
-                                            :value="item.value">
+                                            :value="item.value"
+                                            v-for="item in assetProvider">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -56,12 +56,12 @@
                         <div class="name must-choose">是否启用</div>
                         <div class="content">
                             <el-form-item prop="status">
-                                <el-select v-model="form.useYn" placeholder="请选择" size="max">
+                                <el-select placeholder="请选择" size="max" v-model="form.useYn">
                                     <el-option
-                                            v-for="item in useYnList"
                                             :key="item.value"
                                             :label="item.label"
-                                            :value="item.value">
+                                            :value="item.value"
+                                            v-for="item in useYnList">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -69,14 +69,14 @@
                         <div class="name">创建人</div>
                         <div class="content last-box">
                             <el-form-item prop="creator">
-                                <el-input v-model="form.inputUser" :disabled="trueVal"></el-input>
+                                <el-input disabled v-model="form.inputUser"></el-input>
                             </el-form-item>
                         </div>
                     </div>
                 </el-form>
                 <div class="btn-action">
-                    <el-button @click="back" type="primary" size="medium">返回</el-button>
-                    <el-button @click="submit('form')" type="primary" size="medium">提交</el-button>
+                    <el-button @click="back" size="medium" type="primary">返回</el-button>
+                    <el-button @click="submit('form')" size="medium" type="primary">提交</el-button>
                 </div>
             </div>
         </div>
@@ -85,7 +85,7 @@
 
 <script>
     import {urlParse} from '@/utils/utils';
-    import {splitRulesquery, splitRulesadd, splitRulesupdate} from "@/api/configM";
+    import {mapGetters} from 'vuex'
 
     export default {
         name: 'editSplitRules',
@@ -95,7 +95,7 @@
                     assetSplitWay: '', //
                     assetSplitValue: '',
                     contributiveNo: [],
-                    channelSymbol: '',
+                    pennyDifferenceBelongs: '',
                     useYn: '',
                     inputUser: '',
                     updateUser: ''
@@ -121,37 +121,49 @@
             }
         },
         activated() {
+            this.assetProvider = [];
+            this.getDict();
             // 获取updateId,如果有值说明是更新
             let params = urlParse();
             // 主键查询，有值是修改，将主键保存，否则设置增加人为自己
             if (params.updateId) {
+                this.updateId = params.updateId;
                 this.query(params.updateId);
             } else {
-                this.form.inputUser = this.inputUser;
                 this.form.assetSplitWay = '';
                 this.form.assetSplitValue = '';
                 this.form.contributiveNo = [];
-                this.form.channelSymbol = '';
+                this.form.pennyDifferenceBelongs = '';
                 this.form.useYn = '';
-                this.form.inputUser = '';
+                this.form.inputUser = this.userInfo.username;
                 this.form.updateUser = ''
             }
+        },
+        computed: {
+            ...mapGetters(['userInfo'])
         },
         methods: {
             async query(assetSplitNo) { // 查询用户信息
                 //发起ajax请求，更改数据
-                let data = await splitRulesquery(assetSplitNo);
+                let data = await this.$api.configM.splitRulesquery({
+                    assetSplitNo: assetSplitNo,
+                    pageNum: 1,
+                    pageSize: 10
+                });
                 if (data.data.resultCode === '0000') {
                     data = data.data;
-                    if (data.dataCount > 0) {// 存在
-                        this.updateId = data.data[0].assetSplitNo;
-                        let item = data.data[0];
-                        this.addAssetProvider(data);
-                        item.contributiveNo = item.contributiveNo.split(',');
-                        Object.assign(this.form, data.data[0]);
-                    } else {
-                        console.log('没有找到assetSplitNo为' + assetSplitNo + '的内容');
-                    }
+                    let item = data.data[0];
+                    item.contributiveNo = item.contributiveNo.split(',');
+                    Object.assign(this.form, data.data[0]);
+                }
+            },
+            async getDict() {
+                let data = await this.$api.configM.dictQuery({dictType: "contributive"});
+                for (let item of data.data.dicts) {
+                    let obj = {};
+                    obj.value = item.code;
+                    obj.label = item.codeName;
+                    this.assetProvider.push(obj);
                 }
             },
             back() {
@@ -166,35 +178,37 @@
                         } else {
                             this.add();
                         }
-                    } else {
                     }
                 });
             },
             async add() {
-                let form = this.form;
-                let data = await splitRulesadd(form.assetSplitNo, form.channelSymbol, form.useYn, this.inputUser);
+                let data = await this.$api.configM.splitRulesadd({
+                    assetSplitWay: this.form.assetSplitWay, //
+                    assetSplitValue: this.form.assetSplitValue,
+                    contributiveNo: this.form.contributiveNo.join(','),
+                    pennyDifferenceBelongs: this.form.pennyDifferenceBelongs,
+                    inputUser: this.form.inputUser,
+                    useYn: this.form.useYn
+                });
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
                 }
             },
             async update() {
-                let form = this.form;
-                let data = await splitRulesupdate(form.channelNo, form.channelName, form.useYn, this.inputUser);
+                let data = await this.$api.configM.splitRulesupdate({
+                        assetSplitNo: this.updateId,
+                        assetSplitWay: this.form.assetSplitWay, //
+                        assetSplitValue: this.form.assetSplitValue,
+                        contributiveNo: this.form.contributiveNo.join(','),
+                        pennyDifferenceBelongs: this.form.pennyDifferenceBelongs,
+                        updateUser: this.userInfo.username,
+                        useYn: this.form.useYn
+                    }
+                );
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
                 }
             },
-            addAssetProvider(data) {
-                // 将字典的内容放入到下拉列表中
-                let tmp = [];
-                for (let item of data.dicts) {
-                    let obj = {};
-                    obj.value = item.code;
-                    obj.label = item.codeName;
-                    tmp.push(obj);
-                }
-                this.assetProvider = tmp;
-            }
         }
     }
 
@@ -263,7 +277,7 @@
 
     /*修改input框的默认样式*/
     /deep/ .el-input__inner, .el-select-dropdown__list {
-        height: 28px;
+        height: 28px !important;
         font-size: 14px;
     }
 

@@ -11,9 +11,9 @@ let common = {
         return post('/userInfo', p);
     },
 
-    getRoles(p) {
-        return post('/getRoles', p);
-    },
+    // getRoles(p) {
+    //     return post('/getRoles', p);
+    // },
 
     /**
      *
@@ -29,16 +29,16 @@ let common = {
     privilegeInfo(p) {
         return post('/ucenter/service/validate/ticket', p);
     },
-
-    // 业务异常接口
-    flowError() {
-        return post('/flowError');
-    },
-
-    // 系统异常接口
-    systemError() {
-        return post('/systemError');
-    }
+    //
+    // // 业务异常接口
+    // flowError() {
+    //     return post('/flowError');
+    // },
+    //
+    // // 系统异常接口
+    // systemError() {
+    //     return post('/systemError');
+    // }
 };
 
 export default common;

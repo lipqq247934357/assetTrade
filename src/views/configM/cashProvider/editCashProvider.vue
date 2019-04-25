@@ -21,12 +21,12 @@
                         <div class="name must-choose">资产输出模板</div>
                         <div class="content">
                             <el-form-item prop="outputTemNo">
-                                <el-select v-model="form.outputTemNo" placeholder="请选择" size="max">
+                                <el-select placeholder="请选择" size="max" v-model="form.outputTemNo">
                                     <el-option
-                                            v-for="item in dicts"
                                             :key="item.value"
                                             :label="item.label"
-                                            :value="item.value">
+                                            :value="item.value"
+                                            v-for="item in dicts">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -34,12 +34,12 @@
                         <div class="name must-choose">是否启用</div>
                         <div class="content last-box">
                             <el-form-item prop="useYn">
-                                <el-select v-model="form.useYn" placeholder="请选择" size="max">
+                                <el-select placeholder="请选择" size="max" v-model="form.useYn">
                                     <el-option
-                                            v-for="item in useYnList"
                                             :key="item.value"
                                             :label="item.label"
-                                            :value="item.value">
+                                            :value="item.value"
+                                            v-for="item in useYnList">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -49,14 +49,14 @@
                         <div class="name">创建人</div>
                         <div class="content">
                             <el-form-item prop="creator">
-                                <el-input v-model="form.inputUser" :disabled="trueVal"></el-input>
+                                <el-input :disabled="trueVal" v-model="form.inputUser"></el-input>
                             </el-form-item>
                         </div>
                     </div>
                 </el-form>
                 <div class="btn-action">
-                    <el-button @click="back" type="primary" size="medium">返回</el-button>
-                    <el-button @click="submit('form')" type="primary" size="medium">提交</el-button>
+                    <el-button @click="back" size="medium" type="primary">返回</el-button>
+                    <el-button @click="submit('form')" size="medium" type="primary">提交</el-button>
                 </div>
             </div>
         </div>
@@ -65,8 +65,7 @@
 
 <script>
     import {urlParse} from '@/utils/utils';
-    import {cashproviderquery, cashprovideradd, cashproviderupdate} from "@/api/configM";
-    import {mapGetters} from 'vuex'
+    import {mapGetters} from 'vuex';
 
     export default {
         name: 'editProvider',
@@ -94,41 +93,42 @@
             }
         },
         activated() {
+            this.dicts = []; // 重置字典
+            this.getDict();
             this.form = {};
             // 获取updateId,如果有值说明是更新
             let params = urlParse();
             // 主键查询，有值是修改，将主键保存，否则设置增加人为自己
             if (params.updateId) {
+                this.updateId = params.updateId;
                 this.query(params.updateId);
             } else {
-                // 获取资产输出模板内容
-                this.form.inputUser = this.inputUser;
+                //
+                this.form.inputUser = this.userInfo.username;
             }
         },
         computed: {
-            ...mapGetters({
-                    inputUser: 'name'
-                }
-            )
+            ...mapGetters(['userInfo'])
         },
         methods: {
             async query(contributiveNo) { // 查询用户信息
                 //发起ajax请求，更改数据
-                let data = await cashproviderquery(contributiveNo);
-                data = data.data;
-                if (data.dataCount > 0) {// 存在
-                    this.updateId = data.data[0].contributiveNo;
-                    this.form = data.data[0];
-                    // 将字典的内容放入到下拉列表中
-                    for (let item of data.dicts) {
-                        let obj = {};
-                        obj.value = item.code;
-                        obj.label = item.codeName;
-                        this.dicts.push(obj);
-                    }
-
-                } else {
-                    console.log('没有找到contributiveNo为' + contributiveNo + '的内容');
+                let data = await this.$api.configM.cashproviderquery({
+                    contributiveNo: contributiveNo,
+                    pageNum: 1,
+                    pageSize: 10
+                });
+                if (data.data.resultCode === '0000') {
+                    this.form = data.data.data[0];
+                }
+            },
+            async getDict() {
+                let data = await this.$api.configM.dictQuery({dictType: "outputTem"});
+                for (let item of data.data.dicts) {
+                    let obj = {};
+                    obj.value = item.code;
+                    obj.label = item.codeName;
+                    this.dicts.push(obj);
                 }
             },
             back() {
@@ -149,14 +149,26 @@
             },
             async add() {
                 let form = this.form;
-                let data = await cashprovideradd(form.contributiveNo, form.contributiveName, form.outputTemNo, form.useYn, this.inputUser);
+                let data = await this.$api.configM.cashprovideradd({
+                    contributiveNo: form.contributiveNo,
+                    contributiveName: form.contributiveName,
+                    outputTemNo: form.outputTemNo,
+                    useYn: form.useYn,
+                    inputUser: this.form.inputUser
+                });
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
                 }
             },
             async update() {
                 let form = this.form;
-                let data = await cashproviderupdate(form.contributiveNo, form.contributiveName, form.outputTemNo, form.useYn, this.inputUser);
+                let data = await this.$api.configM.cashproviderupdate({
+                    contributiveNo: form.contributiveNo,
+                    contributiveName: form.contributiveName,
+                    outputTemNo: form.outputTemNo,
+                    useYn: form.useYn,
+                    updateUser: this.userInfo.username
+                });
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
                 }

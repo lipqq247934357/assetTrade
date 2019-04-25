@@ -7,12 +7,12 @@
                         <div class="name must-choose">渠道</div>
                         <div class="content">
                             <el-form-item prop="channelNo">
-                                <el-select v-model="form.channelNo" placeholder="请选择" size="max">
+                                <el-select placeholder="请选择" size="max" v-model="form.channelNo">
                                     <el-option
-                                            v-for="item in channelList"
                                             :key="item.value"
                                             :label="item.label"
-                                            :value="item.value">
+                                            :value="item.value"
+                                            v-for="item in channelList">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -34,12 +34,12 @@
                         <div class="name must-choose">是否启用</div>
                         <div class="content">
                             <el-form-item prop="status">
-                                <el-select v-model="form.useYn" placeholder="请选择" size="max">
+                                <el-select placeholder="请选择" size="max" v-model="form.useYn">
                                     <el-option
-                                            v-for="item in useYnList"
                                             :key="item.value"
                                             :label="item.label"
-                                            :value="item.value">
+                                            :value="item.value"
+                                            v-for="item in useYnList">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -55,14 +55,14 @@
                         <div class="name must-choose">创建人</div>
                         <div class="content last-box">
                             <el-form-item prop="inputUser">
-                                <el-input v-model="form.inputUser"></el-input>
+                                <el-input disabled v-model="form.inputUser"></el-input>
                             </el-form-item>
                         </div>
                     </div>
                 </el-form>
                 <div class="btn-action">
-                    <el-button @click="back" type="primary" size="medium">返回</el-button>
-                    <el-button @click="submit('form')" type="primary" size="medium">提交</el-button>
+                    <el-button @click="back" size="medium" type="primary">返回</el-button>
+                    <el-button @click="submit('form')" size="medium" type="primary">提交</el-button>
                 </div>
             </div>
         </div>
@@ -71,7 +71,7 @@
 
 <script>
     import {urlParse} from '@/utils/utils';
-    import {productquery, productadd, productupdate} from "@/api/configM";
+    import {mapGetters} from 'vuex'
 
     export default {
         name: 'editProduct',
@@ -99,24 +99,41 @@
             }
         },
         activated() {
+            this.channelList = [];
+            this.getDict();
             // 获取updateId,如果有值说明是更新
             let params = urlParse();
             // 主键查询，有值是修改，将主键保存，否则console.log提示
-            params.updateId && this.query(params.updateId);
+            if (params.updateId) {
+                this.updateId = params.updateId;
+                this.query(params.updateId);
+            } else {
+                this.form.inputUser = this.userInfo.username;
+            }
+        },
+        computed: {
+            ...mapGetters(['userInfo'])
         },
         methods: {
             async query(productNo) { // 查询用户信息
                 //发起ajax请求，更改数据
-                let data = await productquery(productNo);
+                let data = await this.$api.configM.productquery({
+                    productNo: productNo,
+                    pageNum: 1,
+                    pageSize: 10
+                });
                 if (data.data.resultCode === '0000') {
                     data = data.data;
-                    if (data.dataCount > 0) {// 存在
-                        this.updateId = data.data[0].productNo;
-                        this.addChannelList(data);
-                        this.form = data.data[0];
-                    } else {
-                        console.log('没有找到productNo为' + productNo + '的内容');
-                    }
+                    this.form = data.data[0];
+                }
+            },
+            async getDict() {
+                let data = await this.$api.configM.dictQuery({dictType: "channel"});
+                for (let item of data.data.dicts) {
+                    let obj = {};
+                    obj.value = item.code;
+                    obj.label = item.codeName;
+                    this.channelList.push(obj);
                 }
             },
             back() {
@@ -137,29 +154,32 @@
             },
             async add() {
                 let form = this.form;
-                let data = await productadd(form.channelNo, form.channelName, form.channelType, form.channelSymbol, form.useYn, this.inputUser);
+                let data = await this.$api.configM.productadd({
+                    channelNo: form.channelNo,
+                    prodNo: form.prodNo,
+                    prodName: form.prodName,
+                    prodDesc: form.prodDesc,
+                    useYn: form.useYn,
+                    inputUser: form.inputUser
+                });
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
                 }
             },
             async update() {
                 let form = this.form;
-                let data = await productupdate(form.channelNo, form.channelName, form.channelType, form.channelSymbol, form.useYn, this.inputUser);
+                let data = await this.$api.configM.productupdate({
+                    channelNo: form.channelNo,
+                    prodNo: form.prodNo,
+                    prodName: form.prodName,
+                    prodDesc: form.prodDesc,
+                    useYn: form.useYn,
+                    updateUser: this.userInfo.username
+                });
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
                 }
             },
-            addChannelList(data) {
-                // 将字典的内容放入到下拉列表中
-                let tmp = [];
-                for (let item of data.dicts) {
-                    let obj = {};
-                    obj.value = item.code;
-                    obj.label = item.codeName;
-                    tmp.push(obj);
-                }
-                this.channelList = tmp;
-            }
         }
     }
 

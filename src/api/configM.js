@@ -1,4 +1,4 @@
-import {get, post} from "./config/getData";
+import {post} from "./config/getData";
 
 let prefix = '/AssetWeb/asset/pages/config';
 const configM = {
@@ -103,7 +103,7 @@ const configM = {
     },
 
     outdetailupdate(p) {
-        return post(prefix + '/outputFile/udpate', p);
+        return post(prefix + '/outputFile/update', p);
     },
 
 

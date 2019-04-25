@@ -56,7 +56,7 @@
                         <div class="name">创建人</div>
                         <div class="content last-box">
                             <el-form-item prop="creator">
-                                <el-input :disabled="trueVal" v-model="form.inputUser"></el-input>
+                                <el-input disabled v-model="form.inputUser"></el-input>
                             </el-form-item>
                         </div>
                     </div>
@@ -106,20 +106,18 @@
             }
         },
         computed: {
-            ...mapGetters({
-                    inputUser: 'name'
-                }
-            )
+            ...mapGetters(['userInfo'])
         },
         activated() {
             this.form = {};
-            // 获取updateId,如果有值说明是更新
+            // 获取updateId,如果有值说明是更新,使用vue-router的path也可以获取
             let params = urlParse();
             // 主键查询，有值是修改，将主键保存，否则设置增加人为自己
             if (params.updateId) {
+                this.updateId = params.updateId;
                 this.query(params.updateId);
             } else {
-                this.form.inputUser = this.inputUser;
+                this.form.inputUser = this.userInfo.username;
             }
         },
         methods: {
@@ -127,35 +125,23 @@
                 //发起ajax请求，更改数据
                 let data = await this.$api.configM.channelquery({
                     channelNo: channelNo,
-                    currentPage: 1,
+                    pageNum: 1,
                     pageSize: 10
                 });
                 if (data.data.resultCode === '0000') {
                     data = data.data;
-                    if (data.dataCount > 0) {// 存在
-                        this.updateId = data.data[0].channelNo;
-                        this.form = data.data[0];
-                    } else {
-                        // 提示参数异常
-                        console.log('没有找到channelNo为' + channelNo + '的内容');
-                    }
+                    this.form = data.data[0];
                 }
             },
             back() {
                 this.$router.go(-1);
             },
-            submit(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        //如果updateId不为空，是更新，否则是新增
-                        if (this.updateId) {
-                            this.update();
-                        } else {
-                            this.add();
-                        }
-                    } else {
-                    }
-                });
+            submit() {
+                if (this.updateId) { //如果updateId不为空，是更新，否则是新增
+                    this.update();
+                } else {
+                    this.add();
+                }
             },
             async add() {
                 let form = this.form;
@@ -165,7 +151,7 @@
                     channelType: form.channelType,
                     channelSymbol: form.channelSymbol,
                     useYn: form.useYn,
-                    inputUser: this.inputUser
+                    inputUser: this.form.inputUser
                 });
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
@@ -179,7 +165,7 @@
                     channelType: form.channelType,
                     channelSymbol: form.channelSymbol,
                     useYn: form.useYn,
-                    updateUser: this.updateUser
+                    updateUser: this.userInfo.username
                 });
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);

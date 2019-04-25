@@ -152,8 +152,6 @@
                 trueVal: true
             };
         },
-        created() {
-        },
         methods: {
             async getData() {
                 //发起ajax请求，更改数据

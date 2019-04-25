@@ -6,19 +6,19 @@
                     <div class="row">
                         <div class="name must-choose">模板名称</div>
                         <div class="content">
-                            <el-form-item prop="qdNo">
-                                <el-input v-model="form.qdNo"></el-input>
+                            <el-form-item prop="outputTemName">
+                                <el-input v-model="form.outputTemName"></el-input>
                             </el-form-item>
                         </div>
                         <div class="name must-choose">是否启用</div>
                         <div class="content last-box">
                             <el-form-item prop="status">
-                                <el-select v-model="form.status" placeholder="请选择" size="max">
+                                <el-select placeholder="请选择" size="max" v-model="form.useYn">
                                     <el-option
-                                            v-for="item in useYn"
                                             :key="item.value"
                                             :label="item.label"
-                                            :value="item.value">
+                                            :value="item.value"
+                                            v-for="item in useStatus">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -27,16 +27,17 @@
                     <div class="row">
                         <div class="name">创建人</div>
                         <div class="content">
-                            <el-form-item prop="creator">
-                                <el-input v-model="form.creator" :disabled="trueVal"></el-input>
+                            <el-form-item prop="inputUser">
+                                <el-input disabled v-model="form.inputUser"></el-input>
                             </el-form-item>
                         </div>
                     </div>
                 </el-form>
                 <div class="btn-action">
-                    <el-button @click="configDetail" type="primary" size="medium">配置明细</el-button>
-                    <el-button @click="back" type="primary" size="medium">返回</el-button>
-                    <el-button @click="submit('form')" type="primary" size="medium">提交</el-button>
+                    <el-button @click="configDetail" size="medium" type="primary" v-if="updateId">配置明细
+                    </el-button>
+                    <el-button @click="back" size="medium" type="primary">返回</el-button>
+                    <el-button @click="submit('form')" size="medium" type="primary">提交</el-button>
                 </div>
             </div>
         </div>
@@ -45,19 +46,16 @@
 
 <script>
     import {urlParse} from '@/utils/utils';
-    import {outputquery} from "@/api/configM";
+    import {mapGetters} from 'vuex';
 
     export default {
         name: 'editCashOutput',
         data() {
             return {
                 form: {
-                    "qdNo": '',
-                    "qdName": '',
-                    "qdType": '',
-                    "qdTag": '',
-                    "status": '',
-                    "creator": ''
+                    outputTemName: '',
+                    useYn: '',
+                    inputUser: ''
                 },
                 rules: {},
                 "channelType": [{
@@ -67,7 +65,7 @@
                     value: 2,
                     label: '三方'
                 }],
-                "useYn": [{
+                "useStatus": [{
                     value: "Y",
                     label: '启用'
                 }, {
@@ -79,26 +77,34 @@
             }
         },
         activated() {
-            this.form = {};
+            this.form = {
+                outputTemName: '',
+                useYn: '',
+                inputUser: ''
+            };
             // 获取updateId,如果有值说明是更新
             let params = urlParse();
             // 主键查询，有值是修改，将主键保存，否则设置增加人为自己
-            console.log(params.updateId);
-            if (params.updateId) {
+            this.updateId = params.updateId;
+            if (this.updateId) {
                 this.query(params.updateId);
             } else {
-                this.form.inputUser = this.inputUser;
+                this.form.inputUser = this.userInfo.username;
             }
         },
+        computed: {
+            ...mapGetters(['userInfo'])
+        },
         methods: {
-            async query(channelNo) { // 查询用户信息
+            async query(params) { // 查询用户信息
                 //发起ajax请求，更改数据
-                let data = await outputquery(channelNo);
-                if (data.total > 0) {// 存在
-                    this.updateId = data.data[0].channelNo;
-                    this.form = data.data[0];
-                } else {
-                    console.log('没有找到channelNo为' + channelNo + '的内容');
+                let data = await this.$api.configM.outputquery({
+                    outputTemNo: params,
+                    pageNum: 1,
+                    pageSize: 10
+                });
+                if (data.data.resultCode === '0000') {
+                    this.form = data.data.data[0];
                 }
             },
             back() {
@@ -118,14 +124,25 @@
                 });
             },
             async add() {
-                let res = await addChannel();
-                console.log(res);
-                this.$router.go(-1);
+                let data = await this.$api.configM.outputadd({
+                    outputTemName: this.form.outputTemName,
+                    useYn: this.form.useYn,
+                    inputUser: this.form.inputUser // 这个值是当前用户
+                });
+                if (data.data.resultCode === '0000') {
+                    this.$router.go(-1);
+                }
             },
-            async udpate() {
-                let res = await addChannel();
-                console.log(res);
-                this.$router.go(-1);
+            async update() {
+                let data = await this.$api.configM.outputupdate({
+                    outputTemNo: this.updateId,
+                    outputTemName: this.form.outputTemName,
+                    useYn: this.form.useYn,
+                    updateUser: this.userInfo.username
+                });
+                if (data.data.resultCode === '0000') {
+                    this.$router.go(-1);
+                }
             },
             configDetail() {
                 this.$router.push({path: "/configm/outputdetail", query: {updateId: this.updateId}});
