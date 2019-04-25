@@ -177,7 +177,6 @@
                 this.$refs[formName].resetFields();
             },
             detail(row) {
-                console.log(row);
                 this.$router.push({path: '/assetmanage/creditdetail', query: {updateId: row.applyId}});                // 新增渠道,跳转存储默认值
             }
         }
