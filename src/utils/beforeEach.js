@@ -29,7 +29,7 @@ router.beforeEach((to, from, next) => {
             store.commit('SET_TREE', []);
             //url上删除 ticket
             window.location.href = window.location.href.split('?')[0] + '#/assetmanage/assetlist';
-        } else if (token || 1) {
+        } else if (token) {
             if (store.getters.tree.length === 0) { // 是否已经获取当前用户信息和权限树等
                 Vue.prototype.$api.common.privilegeInfo({
                     ticket: token,
