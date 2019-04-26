@@ -1,5 +1,4 @@
 import layout from '../views/layout/Layout';
-import dashboard from '../views/dashboard';
 /**
  * 资产管理
  */

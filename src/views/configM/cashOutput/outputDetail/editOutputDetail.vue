@@ -78,7 +78,6 @@
 </template>
 
 <script>
-    import {urlParse} from '@/utils/utils';
     import {mapGetters} from 'vuex';
 
     export default {
