@@ -117,7 +117,8 @@
                 }],
                 assetProvider: [],
                 trueVal: true,
-                updateId: ''
+                updateId: '',
+                isSubmit:false
             }
         },
         activated() {
@@ -130,6 +131,7 @@
                 this.updateId = params.updateId;
                 this.query(params.updateId);
             } else {
+                this.updateId = '';
                 this.form.assetSplitWay = '';
                 this.form.assetSplitValue = '';
                 this.form.contributiveNo = [];
@@ -138,6 +140,7 @@
                 this.form.inputUser = this.userInfo.username;
                 this.form.updateUser = ''
             }
+            this.isSubmit = false;
         },
         computed: {
             ...mapGetters(['userInfo'])
@@ -178,6 +181,10 @@
                 }
             },
             async add() {
+                if(this.isSubmit){
+                    return;
+                }
+                this.isSubmit = true;
                 let data = await this.$api.configM.splitRulesadd({
                     assetSplitWay: this.form.assetSplitWay, //
                     assetSplitValue: this.form.assetSplitValue,
@@ -189,6 +196,7 @@
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
                 }
+                this.isSubmit = false;
             },
             async update() {
                 let data = await this.$api.configM.splitRulesupdate({

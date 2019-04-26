@@ -73,7 +73,8 @@
                     label: '禁用'
                 }],
                 trueVal: true,
-                updateId: ''
+                updateId: '',
+                isSubmit: false // 是否正在提交，防止多次提交
             }
         },
         activated() {
@@ -89,8 +90,10 @@
             if (this.updateId) {
                 this.query(params.updateId);
             } else {
+                this.updateId = '';
                 this.form.inputUser = this.userInfo.username;
             }
+            this.isSubmit = false;
         },
         computed: {
             ...mapGetters(['userInfo'])
@@ -119,6 +122,10 @@
                 }
             },
             async add() {
+                if (this.isSubmit) {
+                    return;
+                }
+                this.isSubmit = true;
                 let data = await this.$api.configM.outputadd({
                     outputTemName: this.form.outputTemName,
                     useYn: this.form.useYn,
@@ -127,6 +134,7 @@
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
                 }
+                this.isSubmit = false;
             },
             async update() {
                 let data = await this.$api.configM.outputupdate({

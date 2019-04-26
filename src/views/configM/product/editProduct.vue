@@ -94,7 +94,8 @@
                 }],
                 channelList: [],
                 trueVal: true,
-                updateId: ''
+                updateId: '',
+                isSubmit:false
             }
         },
         activated() {
@@ -107,8 +108,10 @@
                 this.updateId = params.updateId;
                 this.query(params.updateId);
             } else {
+                this.updateId = '';
                 this.form.inputUser = this.userInfo.username;
             }
+            this.isSubmit = false;
         },
         computed: {
             ...mapGetters(['userInfo'])
@@ -147,6 +150,10 @@
                 }
             },
             async add() {
+                if(this.isSubmit){
+                    return;
+                }
+                this.isSubmit = true;
                 let form = this.form;
                 let data = await this.$api.configM.productadd({
                     channelNo: form.channelNo,
@@ -159,6 +166,7 @@
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
                 }
+                this.isSubmit = false;
             },
             async update() {
                 let form = this.form;

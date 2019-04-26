@@ -102,7 +102,8 @@
                     label: '禁用'
                 }],
                 trueVal: true,
-                updateId: ''
+                updateId: '',
+                isSubmit: false // 是否正在提交，防止多次提交
             }
         },
         computed: {
@@ -117,8 +118,10 @@
                 this.updateId = params.updateId; //设置更新id，判断是新增还是修改
                 this.query(params.updateId);
             } else { // 当没有数据的时候说明该页面是新增，从vuex中取数据
+                this.updateId = '';
                 this.form.inputUser = this.userInfo.username;
             }
+            this.isSubmit = false;
         },
         methods: {
             async query(channelNo) { // 查询
@@ -143,6 +146,10 @@
                 }
             },
             async add() { // 新增数据
+                if (this.isSubmit) {
+                    return;
+                }
+                this.isSubmit = true;
                 let form = this.form;
                 let data = await this.$api.configM.channeladd({
                     channelNo: form.channelNo,
@@ -155,6 +162,7 @@
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
                 }
+                this.isSubmit = false;
             },
             async update() { // 修改数据
                 let form = this.form;
