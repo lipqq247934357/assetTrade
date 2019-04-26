@@ -47,6 +47,8 @@ import outputDetail from '@/views/configM/cashOutput/outputDetail';
  *  hidden:如果存在hidden说明这个路由是在左侧树中不展示的
  *}
  *
+ *  注:这个方法在使用后端传过来的树结构之后只是面包屑使用这套语法，左侧树不走这套了
+ *
  */
 
 export default [

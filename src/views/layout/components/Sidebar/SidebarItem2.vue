@@ -2,7 +2,7 @@
     <div class="menu-wrapper">
         <template v-if="hasOneShowingChild(item.children,item)">
             <router-link :to="item.menuUrl">
-                <el-menu-item :index="item.menuId">
+                <el-menu-item :index="item.menuUrl">
                     <i v-if="isNest" class="el-icon-tickets svg-icon"></i>
                     <i v-else class="el-icon-menu svg-icon"></i>
                     <span slot="title">{{item.menuName}}</span>
