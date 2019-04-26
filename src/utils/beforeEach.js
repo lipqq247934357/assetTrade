@@ -7,8 +7,12 @@ import {getToken, setToken} from './auth';
 import Vue from 'vue';
 import {urlParse4Search} from './utils';
 
+// const ucenterLoginUrl = process.env.UCENTER_LOGIN_URL;
+const ucenterLoginUrl = process.env.VUE_APP_UCENTER_LOGIN_URL;
+
 const whiteList = ['/login', '/regist', '/403', '/404'];
 NProgress.configure({showSpinner: false})// NProgress Configuration
+
 router.beforeEach((to, from, next) => {
     NProgress.start();
     // 在免登录白名单，直接进入
@@ -19,31 +23,35 @@ router.beforeEach((to, from, next) => {
         next();
     } else {
         let ticket = urlParse4Search().ticket;
-        if (getToken() || ticket) { // determine if there has token
-            if (!getToken()) setToken(ticket);
-            // 校验是否有权限树
+        let token = getToken();
+        if (ticket) {
+            setToken(ticket);
+            store.commit('SET_TREE', []);
+            //url上删除 ticket
+            window.location.href = window.location.href.split('?')[0] + '#/assetmanage/assetlist';
+        } else if (token || 1) {
             if (store.getters.tree.length === 0) { // 是否已经获取当前用户信息和权限树等
                 Vue.prototype.$api.common.privilegeInfo({
-                    ticket: getToken(),
+                    ticket: token,
                     systemId: 's000008',
                     isReturn: 1
                 }).then(res => {
                     let ticketStatus = res.data.ticketStatus;
                     if (ticketStatus !== '01') { // 无效票据
                         NProgress.done();
-                        next(`/login?redirect=${to.path}`) // 否则全部重定向到登录页
+                        window.location.href = ucenterLoginUrl;
                     } else {
                         //添加store中的tree和userInfo
                         store.commit('SET_TREE', res.data.menuPrivList);
                         store.commit('SET_BTN', res.data.buttonPrivList);
                         store.commit('SET_USERINFO', res.data.userPriv);
-                        // 强制刷新路由
-                        next({...to, replace: true});
                         NProgress.done();
+                        next();
                     }
                 }).catch(function (error) {
                     NProgress.done();
-                    Message.error({message: error.toLocaleString(), duration: 5 * 1000});
+                    Message.error({message: error.toLocaleString(), duration: 3 * 1000});
+                    setTimeout(function(){window.location.href = ucenterLoginUrl;},3000)
                 });
             } else { // 如果用户已经有权限树和用户信息
                 // 通过请求路径设置menuId,btnArr
@@ -62,8 +70,7 @@ router.beforeEach((to, from, next) => {
                 NProgress.done();
             }
         } else {
-            NProgress.done();
-            next(`/login?redirect=${to.path}`) // 否则全部重定向到登录页
+            window.location.href = ucenterLoginUrl;
         }
     }
 });

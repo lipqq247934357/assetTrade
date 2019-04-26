@@ -46,8 +46,9 @@
                 this.$store.dispatch('ToggleSideBar')
             },
             logout() {
+                console.log('pp')
                 this.$store.dispatch('LogOut').then(() => {
-                    window.location.href = window.location.href.split('?')[0];
+                    window.location.reload();
                 })
             },
             userInfoPop() {
