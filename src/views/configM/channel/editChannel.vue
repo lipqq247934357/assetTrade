@@ -73,6 +73,7 @@
 <script>
     import {urlParse} from '@/utils/utils';
     import {mapGetters} from 'vuex'
+    import schema from 'async-validator';
 
     export default {
         name: 'editChannel',
@@ -86,6 +87,13 @@
                     useYn: '', //是否启用
                     inputUser: '', // 创建用户
                     updateUser: '' // 创建时间
+                },
+                rules: {
+                    channelNo: [{required: true, message: '请输入渠道编码'}],
+                    channelName: [{required: true, message: '请输入渠道名称'}],
+                    channelType: [{required: true, message: '请选择渠道类型'}],
+                    channelSymbol: [{required: true, message: '请输入渠道标识'}],
+                    useYn: [{required: true, message: '请选择是否启用'}],
                 },
                 "channelTypeList": [{
                     value: "1",
@@ -139,11 +147,18 @@
                 this.$router.go(-1);
             },
             submit() { // 提交表单
-                if (this.updateId) { //如果updateId不为空，是更新，否则是新增
-                    this.update();
-                } else {
-                    this.add();
-                }
+                let validator = new schema(this.rules);
+                validator.validate(this.form, (errors) => {
+                    if (errors) {
+                        this.$message.warning({message:errors[0].message,duration:2000});
+                    } else {
+                        if (this.updateId) { //如果updateId不为空，是更新，否则是新增
+                            this.update();
+                        } else {
+                            this.add();
+                        }
+                    }
+                })
             },
             async add() { // 新增数据
                 if (this.isSubmit) {

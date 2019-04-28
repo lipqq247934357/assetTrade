@@ -86,6 +86,7 @@
 <script>
     import {urlParse} from '@/utils/utils';
     import {mapGetters} from 'vuex'
+    import schema from 'async-validator';
 
     export default {
         name: 'editSplitRules',
@@ -100,7 +101,13 @@
                     inputUser: '',
                     updateUser: ''
                 },
-                rules: {},
+                rules: {
+                    assetSplitWay: [{required: true, message: '请选择拆分方式'}],
+                    assetSplitValue: [{required: true, message: '请输入拆分值'}],
+                    contributiveNo: [{required: true, message: '请选择资金方编码'}],
+                    pennyDifferenceBelongs: [{required: true, message: '请选择尾差归属方'}],
+                    useYn: [{required: true, message: '请选择是否启用'}],
+                },
                 "useYnList": [{
                     value: "Y",
                     label: '启用'
@@ -118,7 +125,7 @@
                 assetProvider: [],
                 trueVal: true,
                 updateId: '',
-                isSubmit:false
+                isSubmit: false
             }
         },
         activated() {
@@ -173,15 +180,21 @@
                 this.$router.go(-1);
             },
             submit() {
-                //如果updateId不为空，是更新，否则是新增
-                if (this.updateId) {
-                    this.update();
-                } else {
-                    this.add();
-                }
+                let validator = new schema(this.rules);
+                validator.validate(this.form, (errors) => {
+                    if (errors) {
+                        this.$message.warning({message:errors[0].message,duration:2000});
+                    } else {
+                        if (this.updateId) { //如果updateId不为空，是更新，否则是新增
+                            this.update();
+                        } else {
+                            this.add();
+                        }
+                    }
+                })
             },
             async add() {
-                if(this.isSubmit){
+                if (this.isSubmit) {
                     return;
                 }
                 this.isSubmit = true;

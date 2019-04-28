@@ -66,6 +66,7 @@
 <script>
     import {urlParse} from '@/utils/utils';
     import {mapGetters} from 'vuex';
+    import schema from 'async-validator';
 
     export default {
         name: 'editProvider',
@@ -79,7 +80,12 @@
                     inputUser: '',
                     updateUser: ''
                 },
-                rules: {},
+                rules: {
+                    contributiveNo: [{required: true, message: '请输入资金方编码'}],
+                    contributiveName: [{required: true, message: '请输入资金方名称'}],
+                    outputTemNo: [{required: true, message: '请选择输出模板编码'}],
+                    useYn: [{required: true, message: '请选择是否启用'}],
+                },
                 dicts: [],
                 "useYnList": [{
                     value: "Y",
@@ -137,12 +143,18 @@
                 this.$router.go(-1);
             },
             submit() {
-                //如果updateId不为空，是更新，否则是新增
-                if (this.updateId) {
-                    this.update();
-                } else {
-                    this.add();
-                }
+                let validator = new schema(this.rules);
+                validator.validate(this.form, (errors) => {
+                    if (errors) {
+                        this.$message.warning({message: errors[0].message, duration: 2000});
+                    } else {
+                        if (this.updateId) { //如果updateId不为空，是更新，否则是新增
+                            this.update();
+                        } else {
+                            this.add();
+                        }
+                    }
+                })
             },
             async add() {
                 if (this.isSubmit) {

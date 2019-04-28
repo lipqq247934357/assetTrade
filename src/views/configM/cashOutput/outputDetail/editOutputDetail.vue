@@ -2,7 +2,7 @@
     <div class="edit-out-detail app-container" v-show="show">
         <div class="edit-content">
             <div class="content-border">
-                <el-form :model="form" :rules="rules" ref="form">
+                <el-form :model="form" ref="form">
                     <div class="row">
                         <div class="name must-choose">输出模版编号</div>
                         <div class="content">
@@ -79,21 +79,28 @@
 
 <script>
     import {mapGetters} from 'vuex';
+    import schema from 'async-validator';
 
     export default {
         name: 'editOutDetail',
         data() {
             return {
                 form: {
-                    "outputTemNo": '',
-                    "fileName": '',
-                    "fileDesc": '',
-                    "fileWordCode": '',
-                    "colSplitSymbol": '',
-                    "sqlSentence": '',
+                    "outputTemNo": '', // 输出模板编号
+                    "fileName": '', // 文件名称
+                    "fileDesc": '', // 文件描述
+                    "fileWordCode": '', // 文件字符编码
+                    "colSplitSymbol": '', // SQL语句
+                    "sqlSentence": '', // 列分隔符
                     "inputUser": ''
                 },
-                rules: {},
+                rules: {
+                    outputTemNo: [{required: true, message: '请输入输出模板编号'}],
+                    fileName: [{required: true, message: '请输入文件名称'}],
+                    fileWordCode: [{required: true, message: '请选择文件字符编码'}],
+                    colSplitSymbol: [{required: true, message: '请输入列分隔符'}],
+                    sqlSentence: [{required: true, message: '请输入SQL语句'}],
+                },
                 fileWordCode: [{
                     value: "utf-8",
                     label: 'utf-8'
@@ -145,12 +152,18 @@
                 this.updateShow();
             },
             submit() {
-                //如果updateId不为空，是更新，否则是新增
-                if (this.updateId) {
-                    this.update();
-                } else {
-                    this.add();
-                }
+                let validator = new schema(this.rules);
+                validator.validate(this.form, (errors) => {
+                    if (errors) {
+                        this.$message.warning({message: errors[0].message, duration: 2000});
+                    } else {
+                        if (this.updateId) { //如果updateId不为空，是更新，否则是新增
+                            this.update();
+                        } else {
+                            this.add();
+                        }
+                    }
+                })
             },
             async add() {
                 let data = await this.$api.configM.outdetailadd({
