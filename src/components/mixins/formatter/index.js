@@ -19,6 +19,31 @@ export default {
                     return data[i].codeName
                 }
             }
+        },
+        formatRate(row, column, cellValue){
+            return this.formatNumber(cellValue,6);
+        },
+        formatAmount(row, column, cellValue){
+            return this.formatNumber(cellValue,2);
+        },
+        /**
+         * 格式化金额
+         */
+        /**
+         * 格式化数字千分位逗号分割(可限制小数位保留位数)
+         * s  金额
+         * n  保留位数
+         */
+        formatNumber(s, n) {
+            if (s === undefined) return;
+            n = n > 0 && n <= 20 ? n : 2;
+            s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+            var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+            var t = "";
+            for (var i = 0; i < l.length; i++) {
+                t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+            }
+            return t.split("").reverse().join("") + "." + r;
         }
     }
 }

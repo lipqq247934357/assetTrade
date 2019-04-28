@@ -12,7 +12,7 @@
                         </div>
                         <div class="name must-choose">是否启用</div>
                         <div class="content last-box">
-                            <el-form-item prop="status">
+                            <el-form-item prop="useYn">
                                 <el-select placeholder="请选择" size="max" v-model="form.useYn">
                                     <el-option
                                             :key="item.value"

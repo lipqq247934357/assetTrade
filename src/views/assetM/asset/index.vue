@@ -85,6 +85,7 @@
                             prop="idNo">
                     </el-table-column>
                     <el-table-column
+                            :formatter="formatAmount"
                             label="借款金额"
                             prop="loanAmount">
                     </el-table-column>
@@ -94,9 +95,11 @@
                     </el-table-column>
                     <el-table-column
                             label="日利率"
+                            :formatter="formatRate"
                             prop="interestType">
                     </el-table-column>
                     <el-table-column
+                            :formatter="formatAmount"
                             label="贷款余额"
                             prop="Bal">
                     </el-table-column>
@@ -158,11 +161,13 @@
     import pagination from '@/components/Pagination';
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
+    import formatter from '@/components/mixins/formatter';
 
     export default {
         name: 'asset',
         components: {pagination, blockTitle, collapse},
         directives: {waves},
+        mixins: [formatter],
         data() {
             return {
                 form: {
