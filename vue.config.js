@@ -1,13 +1,15 @@
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 // vue.config.js
 // 获取mock数据
-// const mock = require('./mock/index.js');
+const mock = require('./mock/index.js');
 
 module.exports = {
     // 选项...
     devServer: {
-        // before(app) {
-        //     mock(app);
-        // },
+        before(app) {
+            mock(app);
+        },
         proxy: {
             '/api': {
                 // target: 'http://172.16.131.67:8005',
@@ -28,5 +30,10 @@ module.exports = {
                 pathRewrite: {}
             }
         }
-    }
+    },
+    // configureWebpack: {
+    //     plugins: [
+    //         new BundleAnalyzerPlugin()
+    //     ]
+    // }
 }
