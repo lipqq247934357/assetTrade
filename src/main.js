@@ -31,10 +31,6 @@ Vue.use(ElementUI, {locale});
 
 Vue.config.productionTip = false;
 
-import {Message} from 'element-ui';
-
-Vue.prototype.$msg = Message;
-
 new Vue({
     el: '#app',
     router,
