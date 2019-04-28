@@ -1,6 +1,6 @@
 import {post} from "./config/getData";
 
-let prefix = '/AssetWeb/list';
+let prefix = '/list';
 const assetM = {
 
 

@@ -1,6 +1,6 @@
 import {post} from "./config/getData";
 
-let prefix = '/AssetWeb/asset/pages/config';
+let prefix = '/asset/pages/config';
 const configM = {
 
 
