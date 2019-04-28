@@ -96,26 +96,29 @@
                     <el-table-column
                             label="日利率"
                             :formatter="formatRate"
-                            prop="interestType">
+                            prop="interestRate">
                     </el-table-column>
                     <el-table-column
                             :formatter="formatAmount"
                             label="贷款余额"
-                            prop="Bal">
+                            prop="bal">
                     </el-table-column>
                     <el-table-column
                             label="还款期限"
                             prop="loanTerm">
                     </el-table-column>
                     <el-table-column
+                            :formatter="formatterData"
                             label="放款日"
                             prop="beginDate">
                     </el-table-column>
                     <el-table-column
+                            :formatter="formatterData"
                             label="到期日"
                             prop="endDate">
                     </el-table-column>
                     <el-table-column
+                            :formatter="formatterData"
                             label="起息日"
                             prop="endDate">
                     </el-table-column>

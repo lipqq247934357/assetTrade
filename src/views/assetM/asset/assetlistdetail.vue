@@ -32,15 +32,15 @@
                 </li>
                 <li>
                     <span>借款金额</span>
-                    <span>{{info.loanAmount}}</span>
+                    <span>{{formatAmount(0,0,info.loanAmount)}}</span>
                 </li>
                 <li>
                     <span>日利率</span>
-                    <span>{{info.interestType}}</span>
+                    <span>{{formatRate(0,0,info.interestRate)}}</span>
                 </li>
                 <li>
                     <span>贷款余额</span>
-                    <span>{{info.bal}}</span>
+                    <span>{{formatAmount(0,0,info.bal)}}</span>
                 </li>
                 <li>
                     <span>还款期限</span>
@@ -48,15 +48,15 @@
                 </li>
                 <li>
                     <span>放款日</span>
-                    <span>{{info.beginDate}}</span>
+                    <span>{{formatterData(0,0,info.beginDate)}}</span>
                 </li>
                 <li>
                     <span>到期日</span>
-                    <span>{{info.endDate}}</span>
+                    <span>{{formatterData(0,0,info.endDate)}}</span>
                 </li>
                 <li>
                     <span>起息日</span>
-                    <span>{{info.endDate}}</span>
+                    <span>{{formatterData(0,0,info.endDate)}}</span>
                 </li>
                 <li>
                     <span>拆分方式</span>
@@ -77,8 +77,12 @@
 </template>
 
 <script>
+
+    import formatter from '@/components/mixins/formatter';
+
     export default {
         name: 'assetDetail',
+        mixins: [formatter],
         data() {
             return {
                 info: {}// 列表详情数据

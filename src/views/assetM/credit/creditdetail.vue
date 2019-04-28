@@ -28,7 +28,7 @@
                 </li>
                 <li>
                     <span>授信额度</span>
-                    <span>{{info.InitialAmount}}</span>
+                    <span>{{formatAmount(0,0,info.InitialAmount)}}</span>
                 </li>
                 <li>
                     <span>额度编号</span>
@@ -40,19 +40,19 @@
                 </li>
                 <li>
                     <span>额度签署日期</span>
-                    <span>{{info.startDt}}</span>
+                    <span>{{formatterData(0,0,info.startDt)}}</span>
                 </li>
                 <li>
                     <span>额度生效日期</span>
-                    <span>{{info.startDt}}</span>
+                    <span>{{formatterData(0,0,info.startDt)}}</span>
                 </li>
                 <li>
                     <span>额度到期日期</span>
-                    <span>{{info.endDt}}</span>
+                    <span>{{formatterData(0,0,info.endDt)}}</span>
                 </li>
                 <li>
                     <span>创建时间</span>
-                    <span>{{info.curDate}}</span>
+                    <span>{{formatterData(0,0,info.curDate)}}</span>
                 </li>
             </ul>
         </div>
@@ -60,8 +60,12 @@
 </template>
 
 <script>
+
+
+    import formatter from '@/components/mixins/formatter';
     export default {
         name: 'creditDetail',
+        mixins:[formatter],
         data() {
             return {
                 info: {}

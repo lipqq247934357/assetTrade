@@ -64,6 +64,7 @@
                     >
                     </el-table-column>
                     <el-table-column
+                            :formatter="formatterData"
                             label="申请日期"
                             prop="curDate"
                     >
@@ -89,11 +90,13 @@
                     >
                     </el-table-column>
                     <el-table-column
+                            :formatter="formatAmount"
                             label="额度状况"
                             prop="InitialAmount"
                     >
                     </el-table-column>
                     <el-table-column
+                            :formatter="formatterData"
                             label="创建时间"
                             prop="createTime"
                     >
@@ -128,11 +131,13 @@
     import pagination from '@/components/Pagination';
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
+    import formatter from '@/components/mixins/formatter';
 
     export default {
         name: 'credit',
         components: {pagination, blockTitle, collapse},
         directives: {waves},
+        mixins:[formatter],
         data() {
             return {
                 form: {

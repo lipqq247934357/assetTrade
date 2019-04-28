@@ -64,6 +64,7 @@
                     >
                     </el-table-column>
                     <el-table-column
+                            :formatter="formatterSex"
                             label="性别"
                             prop="gender"
                     >
@@ -79,6 +80,7 @@
                     >
                     </el-table-column>
                     <el-table-column
+                            :formatter="formatterData"
                             label="创建时间"
                             prop="curDate"
                     >
@@ -113,11 +115,13 @@
     import pagination from '@/components/Pagination';
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
+    import formatter from '@/components/mixins/formatter';
 
     export default {
         name: 'customer',
         components: {pagination, blockTitle, collapse},
         directives: {waves},
+        mixins:[formatter],
         data() {
             return {
                 form: {
@@ -147,7 +151,6 @@
                     },
                     body: this.form
                 });
-                console.log(data.data.list);
                 this.list = data.data.list || [];
                 this.pagInfo.total = Number(data.data.pager ? data.data.pager.totalNum : 0);
                 this.loading = false;
