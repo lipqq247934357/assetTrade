@@ -56,8 +56,8 @@
             <div class="table-content">
                 <el-table
                         :data="list"
+                        :empty-text="emptyText"
                         border
-                        empty-text="暂无数据"
                         header-cell-class-name="header-cell-class-name"
                         style="width: 100%"
                         v-loading="loading">
@@ -189,7 +189,8 @@
                 },
                 loading: false,
                 list: [], // 列表数据
-                trueVal: true
+                trueVal: true,
+                emptyText: ' '// 当没有数据的时候展示的文案
             };
         },
         created() {
@@ -209,6 +210,7 @@
                 });
                 this.list = data.data.list || [];
                 this.pagInfo.total = Number(data.data.pager ? data.data.pager.totalNum : 0);
+                this.list.length === 0 && (this.emptyText = '无数据');
                 this.loading = false;
             },
             search() { // 点击查询按钮
