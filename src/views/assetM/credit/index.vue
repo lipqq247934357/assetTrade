@@ -54,6 +54,7 @@
                 <el-table
                         :data="list"
                         border
+                        empty-text="暂无数据"
                         header-cell-class-name="header-cell-class-name"
                         style="width: 100%"
                         v-loading="loading">
@@ -137,7 +138,7 @@
         name: 'credit',
         components: {pagination, blockTitle, collapse},
         directives: {waves},
-        mixins:[formatter],
+        mixins: [formatter],
         data() {
             return {
                 form: {
@@ -196,7 +197,7 @@
 
     .search {
         .el-form {
-            margin: 20px 20px 50px;
+            margin: 20px 20px 0;
         }
 
         .el-form-item {

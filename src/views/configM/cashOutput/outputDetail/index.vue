@@ -38,6 +38,7 @@
                 <el-table
                         :data="data"
                         border
+                        empty-text="暂无数据"
                         header-cell-class-name="header-cell-class-name"
                         style="width: 100%"
                         v-loading="loading">
@@ -202,7 +203,7 @@
     .search {
 
         .el-form {
-            margin: 20px 20px 50px;
+            margin: 20px 20px 60px;
         }
 
         .el-form-item {

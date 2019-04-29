@@ -57,6 +57,7 @@
                 <el-table
                         :data="list"
                         border
+                        empty-text="暂无数据"
                         header-cell-class-name="header-cell-class-name"
                         style="width: 100%"
                         v-loading="loading">
@@ -94,8 +95,8 @@
                             prop="repayMethod">
                     </el-table-column>
                     <el-table-column
-                            label="日利率"
                             :formatter="formatRate"
+                            label="日利率"
                             prop="interestRate">
                     </el-table-column>
                     <el-table-column
@@ -234,7 +235,7 @@
 
     .search {
         .el-form {
-            margin: 20px 20px 50px;
+            margin: 20px 20px 0;
         }
 
         .el-form-item {
