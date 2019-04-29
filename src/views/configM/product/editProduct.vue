@@ -86,7 +86,7 @@
                     useYn: '',
                     inputUser: ''
                 },
-                rules: {
+                rules: { // 校验规则
                     channelNo: [{required: true, message: '请选择渠道'}],
                     prodNo: [{required: true, message: '请输入金融产品编号'}],
                     prodName: [{required: true, message: '请输入金融产品名称'}],
@@ -99,10 +99,10 @@
                     value: "N",
                     label: '禁用'
                 }],
-                channelList: [],
+                channelList: [], // 渠道列表
                 trueVal: true,
-                updateId: '',
-                isSubmit: false
+                updateId: '', //如果是要更新，这里放到更新id
+                isSubmit: false // 是否正在提交
             }
         },
         activated() {

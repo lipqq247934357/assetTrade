@@ -123,13 +123,13 @@
                     channelNo: '', // 渠道编码
                     channelName: '', // 渠道名称
                 },
-                pagInfo: {
+                pagInfo: { // 分页数据
                     total: '',
                     currentPage: 1,
                     pageSize: 10
                 },
                 loading: false,
-                data: [],
+                data: [], // 表格数据
                 trueVal: true
             };
         },

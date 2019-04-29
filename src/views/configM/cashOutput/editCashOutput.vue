@@ -77,7 +77,7 @@
                     label: '禁用'
                 }],
                 trueVal: true,
-                updateId: '',
+                updateId: '', // 如果有值就是更新
                 isSubmit: false // 是否正在提交，防止多次提交
             }
         },

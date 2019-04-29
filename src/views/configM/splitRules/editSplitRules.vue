@@ -122,9 +122,9 @@
                     value: "02",
                     label: '按固定值拆分'
                 }],
-                assetProvider: [],
+                assetProvider: [], // 资金方数组
                 trueVal: true,
-                updateId: '',
+                updateId: '', // 如果有值就是更新操作
                 isSubmit: false
             }
         },

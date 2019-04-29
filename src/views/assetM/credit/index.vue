@@ -148,13 +148,13 @@
                     startDate: '', // 申请开始时间
                     endDate: '' // 申请结束时间
                 },
-                pagInfo: {
-                    total: '',
-                    currentPage: 1,
-                    pageSize: 10
+                pagInfo: { // 分页数据
+                    total: '', // 总条数
+                    currentPage: 1, // 当夜是第几页
+                    pageSize: 10 // 每页的大小
                 },
                 loading: false,
-                list: [],
+                list: [], // 列表数据
                 trueVal: true,
                 emptyText: ' '// 没有数据的时候展示的文案
             };

@@ -126,7 +126,7 @@
                 form: {
                     assetSplitWay: '' // 拆分方式
                 },
-                pagInfo: {
+                pagInfo: { // 分页数据
                     total: '',
                     currentPage: 1,
                     pageSize: 10
@@ -134,7 +134,7 @@
                 loading: false,
                 data: [],
                 trueVal: true,
-                chashProivderDicts: []
+                chashProivderDicts: [] // 资金方字典 {code:xx,codeName:xx}
             };
         },
         activated() {

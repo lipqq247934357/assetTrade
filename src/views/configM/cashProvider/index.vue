@@ -123,7 +123,7 @@
                 loading: false,
                 data: [],
                 trueVal: true,
-                outputTempDicts:[]
+                outputTempDicts:[] // 输出模板字典 {code:xx,codeName:xx}
             };
         },
         activated() {

@@ -125,15 +125,15 @@
                     channelName: '', // 渠道名称
                     prodName: '', // 金融产品名称
                 },
-                pagInfo: {
+                pagInfo: { // 分页数据
                     total: '',
                     currentPage: 1,
                     pageSize: 10
                 },
                 loading: false,
-                data: [],
+                data: [], // 表格数据
                 trueVal: true, // 可以被优化，暂时没动
-                channelDicts: []
+                channelDicts: [] // 渠道字典 {code:xx,codeName:xx}
             };
         },
         activated() {

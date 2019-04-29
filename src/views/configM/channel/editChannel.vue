@@ -88,7 +88,7 @@
                     inputUser: '', // 创建用户
                     updateUser: '' // 创建时间
                 },
-                rules: {
+                rules: { // 校验规则
                     channelNo: [{required: true, message: '请输入渠道编码'}],
                     channelName: [{required: true, message: '请输入渠道名称'}],
                     channelType: [{required: true, message: '请选择渠道类型'}],
@@ -110,7 +110,7 @@
                     label: '禁用'
                 }],
                 trueVal: true,
-                updateId: '',
+                updateId: '', // 如果是更新数据，这里放置更新id
                 isSubmit: false // 是否正在提交，防止多次提交
             }
         },

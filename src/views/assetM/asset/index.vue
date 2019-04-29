@@ -183,11 +183,11 @@
                     endDate: '' // 放款结束时间
                 },
                 pagInfo: { // 分页数据
-                    total: '',
-                    currentPage: 1,
-                    pageSize: 10
+                    total: '', // 总条数
+                    currentPage: 1, // 当前是第几页
+                    pageSize: 10 // 每页几行
                 },
-                loading: false,
+                loading: false, // 是否正在加载中
                 list: [], // 列表数据
                 trueVal: true,
                 emptyText: ' '// 当没有数据的时候展示的文案

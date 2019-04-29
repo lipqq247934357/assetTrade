@@ -86,7 +86,7 @@
                     outputTemNo: [{required: true, message: '请选择输出模板编码'}],
                     useYn: [{required: true, message: '请选择是否启用'}],
                 },
-                dicts: [],
+                dicts: [], // 资金方字典 {code:xx,codeName:xx}
                 "useYnList": [{
                     value: "Y",
                     label: '启用'

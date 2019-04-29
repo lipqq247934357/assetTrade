@@ -126,16 +126,16 @@
         data() {
             return {
                 form: {
-                    idNo: '',
-                    custName: ''
+                    idNo: '', // 用户编号
+                    custName: '' // 用户姓名
                 },
-                pagInfo: {
+                pagInfo: { // 分页数据
                     total: '',
                     currentPage: 1,
                     pageSize: 10
                 },
                 loading: false,
-                list: [],
+                list: [], // 表格内容
                 trueVal: true,
                 emptyText:' ' // 没有数据的时候展示的文案
             };
