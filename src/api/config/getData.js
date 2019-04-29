@@ -5,9 +5,9 @@ import {requestConf} from './requestConf';
 // axios 配置
 axios.defaults.timeout = 6969;
 if (process.env.NODE_ENV === 'development') {// 根据不同的环境使用不同的接口
-    axios.defaults.baseURL = '/api';
+    axios.defaults.baseURL = '/AssetWeb';
 } else {
-    axios.defaults.baseURL = '/api';
+    axios.defaults.baseURL = '/AssetWeb';
 }
 axios.defaults.headers['Content-Type'] = 'application/json; charset=utf-8';
 
@@ -15,7 +15,6 @@ axios.interceptors.request.use(function (config) {
     if (config.url.endsWith('/ucenter/service/validate/ticket')) {
         config.baseURL = '';
         config.headers['Content-Type'] = 'text/plain;charset=UTF-8';
-
     }
     return requestConf(config);
 }, err => {
