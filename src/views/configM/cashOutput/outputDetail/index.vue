@@ -38,7 +38,7 @@
                 <el-table
                         :data="data"
                         border
-                        empty-text="暂无数据"
+                        empty-text="无数据"
                         header-cell-class-name="header-cell-class-name"
                         style="width: 100%"
                         v-loading="loading">
