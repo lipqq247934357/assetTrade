@@ -158,12 +158,22 @@
                         this.$message.warning({message: errors[0].message, duration: 2000});
                     } else {
                         if (this.updateId) { //如果updateId不为空，是更新，否则是新增
-                            this.update();
+                            this.confirmSubmit();
                         } else {
                             this.add();
                         }
                     }
                 })
+            },
+            confirmSubmit() {
+                this.$confirm('是否确认修改?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.update();
+                }).catch(() => {
+                });
             },
             async add() {
                 let data = await this.$api.configM.outdetailadd({
