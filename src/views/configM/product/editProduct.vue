@@ -73,9 +73,11 @@
     import {urlParse} from '@/utils/utils';
     import {mapGetters} from 'vuex'
     import schema from 'async-validator';
+    import alert from '../../../components/mixins/alert';
 
     export default {
         name: 'editProduct',
+        mixins: [alert],
         data() {
             return {
                 form: {
@@ -133,7 +135,11 @@
                 });
                 if (data.data.resultCode === '0000') {
                     data = data.data;
-                    this.form = data.data[0];
+                    if (data.data.length === 0) {
+                        this.alertParamterError();
+                    } else {
+                        this.form = data.data[0];
+                    }
                 }
             },
             async getDict() {

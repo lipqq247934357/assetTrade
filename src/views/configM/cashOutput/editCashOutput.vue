@@ -48,9 +48,11 @@
     import {urlParse} from '@/utils/utils';
     import {mapGetters} from 'vuex';
     import schema from 'async-validator';
+    import alert from '../../../components/mixins/alert';
 
     export default {
         name: 'editCashOutput',
+        mixins: [alert],
         data() {
             return {
                 form: {
@@ -111,7 +113,12 @@
                     pageSize: 10
                 });
                 if (data.data.resultCode === '0000') {
-                    this.form = data.data.data[0];
+                    data = data.data;
+                    if (data.data.length === 0) {
+                        this.alertParamterError();
+                    } else {
+                        this.form = data.data[0];
+                    }
                 }
             },
             back() {

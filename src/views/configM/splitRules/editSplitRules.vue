@@ -87,9 +87,11 @@
     import {urlParse} from '@/utils/utils';
     import {mapGetters} from 'vuex'
     import schema from 'async-validator';
+    import alert from '../../../components/mixins/alert';
 
     export default {
         name: 'editSplitRules',
+        mixins: [alert],
         data() {
             return {
                 form: {
@@ -162,9 +164,13 @@
                 });
                 if (data.data.resultCode === '0000') {
                     data = data.data;
-                    let item = data.data[0];
-                    item.contributiveNo = item.contributiveNo.split(',');
-                    Object.assign(this.form, data.data[0]);
+                    if (data.data.length === 0) {
+                        this.alertParamterError();
+                    } else {
+                        let item = data.data[0];
+                        item.contributiveNo = item.contributiveNo.split(',');
+                        Object.assign(this.form, data.data[0]);
+                    }
                 }
             },
             async getDict() {
@@ -183,7 +189,7 @@
                 let validator = new schema(this.rules);
                 validator.validate(this.form, (errors) => {
                     if (errors) {
-                        this.$message.warning({message:errors[0].message,duration:2000});
+                        this.$message.warning({message: errors[0].message, duration: 2000});
                     } else {
                         if (this.updateId) { //如果updateId不为空，是更新，否则是新增
                             this.confirmSubmit();
