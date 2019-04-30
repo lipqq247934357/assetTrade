@@ -21,21 +21,29 @@
                             <el-input placeholder="请输入身份证号" v-model="form.idNo"></el-input>
                         </el-form-item>
                         <el-form-item label="放款日期">
-                            <el-date-picker
-                                    class="datetime"
-                                    placeholder="请选择日期"
-                                    type="date"
-                                    v-model="form.startDate"
-                                    value-format="yyyy-MM-dd">
-                            </el-date-picker>
-                            &nbsp;-&nbsp;
-                            <el-date-picker
-                                    class="datetime"
-                                    placeholder="请选择日期"
-                                    type="date"
-                                    v-model="form.endDate"
-                                    value-format="yyyy-MM-dd">
-                            </el-date-picker>
+                            <el-col :span="11">
+                                <el-form-item prop="startDate">
+                                    <el-date-picker
+                                            class="datetime"
+                                            placeholder="请选择日期"
+                                            type="date"
+                                            v-model="form.startDate"
+                                            value-format="yyyy-MM-dd">
+                                    </el-date-picker>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="1">&nbsp;-&nbsp;</el-col>
+                            <el-col :span="11">
+                                <el-form-item prop="endDate">
+                                    <el-date-picker
+                                            class="datetime"
+                                            placeholder="请选择日期"
+                                            type="date"
+                                            v-model="form.endDate"
+                                            value-format="yyyy-MM-dd">
+                                    </el-date-picker>
+                                </el-form-item>
+                            </el-col>
                         </el-form-item>
                     </el-form>
                     <div class="search-btn-box">
