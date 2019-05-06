@@ -71,7 +71,6 @@
 </template>
 
 <script>
-    import {urlParse} from '@/utils/utils';
     import {mapGetters} from 'vuex'
     import schema from 'async-validator';
     import alert from '../../../components/mixins/alert';
@@ -121,8 +120,8 @@
         },
         activated() {
             this.form = {}; // 每次进入页面重置表单内容
-            // 获取updateId,如果有值说明是更新,使用vue-router的path也可以获取
-            let params = urlParse();
+            // 获取updateId
+            let params = this.$route.query;
             // 主键查询 设置内容，没有对数据为空情况的处理
             if (params.updateId) {
                 this.updateId = params.updateId; //设置更新id，判断是新增还是修改
@@ -214,7 +213,7 @@
 
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" rel="stylesheet/scss" scoped>
 
 
     .edit-content {

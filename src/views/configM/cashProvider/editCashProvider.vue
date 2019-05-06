@@ -64,7 +64,6 @@
 </template>
 
 <script>
-    import {urlParse} from '@/utils/utils';
     import {mapGetters} from 'vuex';
     import schema from 'async-validator';
     import alert from '../../../components/mixins/alert';
@@ -106,7 +105,7 @@
             this.getDict();
             this.form = {};
             // 获取updateId,如果有值说明是更新
-            let params = urlParse();
+            let params = this.$route.query;
             // 主键查询，有值是修改，将主键保存，否则设置增加人为自己
             if (params.updateId) {
                 this.updateId = params.updateId;
