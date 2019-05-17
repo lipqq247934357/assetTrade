@@ -15,7 +15,7 @@
                             <el-input placeholder="请输入身份证号" v-model="form.idNo"></el-input>
                         </el-form-item>
                     </el-form>
-                    <div :class="$style['search-btn-box']">
+                    <div :class="[$style['search-btn-box'],$style['top60']]">
                         <el-button @click="search" icon="el-icon-search" size="medium" type="primary" v-waves>查询
                         </el-button>
                         <el-button @click="resetForm('form')" icon="el-icon-refresh" size="medium" type="primary"
@@ -175,6 +175,14 @@
 <style lang="scss" module>
 
     @import '../../../styles/asset-list';
+
+    div.top60 {
+        :global {
+            .el-button {
+                margin: 60px 25px 0 !important;
+            }
+        }
+    }
 
     :global {
         .asset {

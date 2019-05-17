@@ -1,0 +1,64 @@
+.search, .content {
+  background: #fff;
+  border-radius: 5px;
+}
+
+.search {
+  :global {
+    .el-form {
+      margin: 20px 20px 0;
+    }
+
+    .el-form-item {
+      width: 32%;
+
+      &:last-child {
+        width: 60%;
+      }
+    }
+
+    .el-input {
+      width: 100%;
+    }
+
+    .el-date-editor--date {
+      display: inline-block;
+    }
+  }
+
+  .datetime {
+    display: inline-block;
+    width: 180px;
+  }
+
+  .search-btn-box {
+    text-align: center;
+
+    :global {
+      .el-button {
+        margin: 0 25px;
+      }
+    }
+  }
+
+}
+
+.content {
+  margin-top: 50px;
+
+  .table-content {
+    width: 98%;
+    margin: 19px auto 0;
+    padding-bottom: 20px;
+  }
+
+  :global {
+    /*给配置按钮定位*/
+    .el-button--mini {
+      margin-left: 10px;
+      position: absolute !important;
+      top: 4px;
+    }
+  }
+
+}
