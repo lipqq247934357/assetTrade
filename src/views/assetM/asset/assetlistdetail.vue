@@ -107,5 +107,5 @@
 </script>
 
 <style lang="scss" module>
-    @import '../../../styles/asset-detail';
+    @import '../../../styles/common/asset-detail';
 </style>

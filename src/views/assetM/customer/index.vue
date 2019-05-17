@@ -174,7 +174,7 @@
 
 <style lang="scss" module>
 
-    @import '../../../styles/asset-list';
+    @import '../../../styles/common/asset-list';
 
     div.top60 {
         :global {
