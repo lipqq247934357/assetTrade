@@ -1,7 +1,7 @@
 <template>
     <div class="customer app-container">
         <!--search-->
-        <collapse class="search">
+        <collapse :class="$style['search']">
             <template v-slot:title>
                 筛选条件
             </template>
@@ -15,7 +15,7 @@
                             <el-input placeholder="请输入身份证号" v-model="form.idNo"></el-input>
                         </el-form-item>
                     </el-form>
-                    <div class="search-btn-box">
+                    <div :class="$style['search-btn-box']">
                         <el-button @click="search" icon="el-icon-search" size="medium" type="primary" v-waves>查询
                         </el-button>
                         <el-button @click="resetForm('form')" icon="el-icon-refresh" size="medium" type="primary"
@@ -26,15 +26,15 @@
             </template>
         </collapse>
         <!--table-->
-        <div class="content">
+        <div :class="$style['content']">
             <blockTitle :hide="trueVal">
                 资产列表
             </blockTitle>
-            <div class="table-content">
+            <div :class="$style['table-content']">
                 <el-table
                         :data="list"
-                        border
                         :empty-text="emptyText"
+                        border
                         header-cell-class-name="header-cell-class-name"
                         style="width: 100%"
                         v-loading="loading">
@@ -137,7 +137,7 @@
                 loading: false,
                 list: [], // 表格内容
                 trueVal: true,
-                emptyText:' ' // 没有数据的时候展示的文案
+                emptyText: ' ' // 没有数据的时候展示的文案
             };
         },
         created() {
@@ -172,84 +172,32 @@
     }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" module>
 
+    @import '../../../styles/asset-list';
 
-    .search, .content {
-        background: #fff;
-        border-radius: 5px;
-    }
+    :global {
+        .asset {
+            /*操作的宽度太高*/
+            .operate {
+                padding: 6px 0;
+            }
 
-    .search {
-        .el-form {
-            margin: 20px 20px 60px;
-        }
+            /*修改标题默认字体*/
+            .header-cell-class-name {
+                background: #f4f4f5;
+            }
 
-        .el-form-item {
-            width: 32%;
+            // 取消校验成功绿色样式
+            .is-success .el-input__inner {
+                border-color: #DCDFE6 !important;
+            }
 
-            &:last-child {
-                width: 60%;
+            // 修改校验成功获取焦点的颜色
+            .is-success .el-input__inner:focus {
+                border-color: #409EFF !important;
             }
         }
-
-        .el-input {
-            width: 100%;
-        }
-
-        .datetime {
-            display: inline-block;
-            width: 180px;
-        }
-
-        .el-date-editor--date {
-            display: inline-block;
-        }
-
-        .search-btn-box {
-            text-align: center;
-
-            .el-button {
-                margin: 0 25px;
-            }
-        }
-    }
-
-    .content {
-        margin-top: 50px;
-
-        .table-content {
-            width: 98%;
-            margin: 19px auto 0;
-            padding-bottom: 20px;
-        }
-
-        /*给配置按钮定位*/
-        .el-button--mini {
-            margin-left: 10px;
-            position: absolute !important;
-            top: 4px;
-        }
-    }
-
-    /*操作的宽度太高*/
-    /deep/ .operate {
-        padding: 6px 0;
-    }
-
-    /*修改标题默认字体*/
-    /deep/ .header-cell-class-name {
-        background: #f4f4f5;
-    }
-
-    // 取消校验成功绿色样式
-    .is-success /deep/ .el-input__inner {
-        border-color: #DCDFE6 !important;
-    }
-
-    // 修改校验成功获取焦点的颜色
-    .is-success /deep/ .el-input__inner:focus {
-        border-color: #409EFF !important;
     }
 
 </style>

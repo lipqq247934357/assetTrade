@@ -1,7 +1,6 @@
 <template>
     <div class="asset app-container">
-        <!--search-->
-        <collapse class="search">
+        <collapse :class="$style['search']">
             <template v-slot:title>
                 筛选条件
             </template>
@@ -24,7 +23,7 @@
                             <el-col :span="11">
                                 <el-form-item prop="startDate">
                                     <el-date-picker
-                                            class="datetime"
+                                            :class="$style['datetime']"
                                             placeholder="请选择日期"
                                             type="date"
                                             v-model="form.startDate"
@@ -36,7 +35,7 @@
                             <el-col :span="11">
                                 <el-form-item prop="endDate">
                                     <el-date-picker
-                                            class="datetime"
+                                            :class="$style['datetime']"
                                             placeholder="请选择日期"
                                             type="date"
                                             v-model="form.endDate"
@@ -46,7 +45,7 @@
                             </el-col>
                         </el-form-item>
                     </el-form>
-                    <div class="search-btn-box">
+                    <div :class="$style['search-btn-box']">
                         <el-button @click="search" icon="el-icon-search" size="medium" type="primary" v-waves>查询
                         </el-button>
                         <el-button @click="resetForm('form')" icon="el-icon-refresh" size="medium" type="primary"
@@ -57,11 +56,11 @@
             </template>
         </collapse>
         <!--table-->
-        <div class="content">
+        <div :class="$style['content']">
             <blockTitle :hide="trueVal">
                 资产列表
             </blockTitle>
-            <div class="table-content">
+            <div :class="$style['table-content']">
                 <el-table
                         :data="list"
                         :empty-text="emptyText"
@@ -235,84 +234,32 @@
     }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" module>
+    @import '../../../styles/asset-list';
 
-
-    .search, .content {
-        background: #fff;
-        border-radius: 5px;
-    }
-
-    .search {
-        .el-form {
-            margin: 20px 20px 0;
-        }
-
-        .el-form-item {
-            width: 32%;
-
-            &:last-child {
-                width: 60%;
+    :global {
+        .asset {
+            /*操作的宽度太高*/
+            .operate {
+                padding: 6px 0;
             }
-        }
 
-        .el-input {
-            width: 100%;
-        }
+            /*修改标题默认字体*/
+            .header-cell-class-name {
+                background: #f4f4f5;
+            }
 
-        .datetime {
-            display: inline-block;
-            width: 180px;
-        }
+            // 取消校验成功绿色样式
+            .is-success .el-input__inner {
+                border-color: #DCDFE6 !important;
+            }
 
-        .el-date-editor--date {
-            display: inline-block;
-        }
-
-        .search-btn-box {
-            text-align: center;
-
-            .el-button {
-                margin: 0 25px;
+            // 修改校验成功获取焦点的颜色
+            .is-success .el-input__inner:focus {
+                border-color: #409EFF !important;
             }
         }
     }
 
-    .content {
-        margin-top: 50px;
-
-        .table-content {
-            width: 98%;
-            margin: 19px auto 0;
-            padding-bottom: 20px;
-        }
-
-        /*给配置按钮定位*/
-        .el-button--mini {
-            margin-left: 10px;
-            position: absolute !important;
-            top: 4px;
-        }
-    }
-
-    /*操作的宽度太高*/
-    /deep/ .operate {
-        padding: 6px 0;
-    }
-
-    /*修改标题默认字体*/
-    /deep/ .header-cell-class-name {
-        background: #f4f4f5;
-    }
-
-    // 取消校验成功绿色样式
-    .is-success /deep/ .el-input__inner {
-        border-color: #DCDFE6 !important;
-    }
-
-    // 修改校验成功获取焦点的颜色
-    .is-success /deep/ .el-input__inner:focus {
-        border-color: #409EFF !important;
-    }
 
 </style>
