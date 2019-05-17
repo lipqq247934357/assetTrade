@@ -184,28 +184,4 @@
         }
     }
 
-    :global {
-        .asset {
-            /*操作的宽度太高*/
-            .operate {
-                padding: 6px 0;
-            }
-
-            /*修改标题默认字体*/
-            .header-cell-class-name {
-                background: #f4f4f5;
-            }
-
-            // 取消校验成功绿色样式
-            .is-success .el-input__inner {
-                border-color: #DCDFE6 !important;
-            }
-
-            // 修改校验成功获取焦点的颜色
-            .is-success .el-input__inner:focus {
-                border-color: #409EFF !important;
-            }
-        }
-    }
-
 </style>
