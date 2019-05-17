@@ -1,5 +1,5 @@
 <template>
-    <section class="app-main">
+    <section :class="$style['app-main']">
         <transition name="fade-transform" mode="out-in">
             <!-- or name="fade" -->
             <!-- <router-view :key="key"></router-view> -->
@@ -21,7 +21,7 @@
     }
 </script>
 
-<style scoped>
+<style module lang="scss">
     .app-main {
         /*50 = navbar  */
         min-height: calc(100vh - 50px);

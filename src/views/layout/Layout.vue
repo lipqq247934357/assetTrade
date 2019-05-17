@@ -1,6 +1,6 @@
 <template>
-    <div :class="classObj" class="app-wrapper">
-        <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
+    <div :class="[classObj,$style['app-wrapper']]">
+        <div :class="$style['drawer-bg']" @click="handleClickOutside" v-if="device==='mobile'&&sidebar.opened"/>
         <sidebar class="sidebar-container"/>
         <div class="main-container">
             <navbar/>
@@ -45,11 +45,9 @@
     }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-    @import "../../styles/mixin.scss";
+<style lang="scss" module>
 
     .app-wrapper {
-        @include clearfix;
         position: relative;
         height: 100%;
         width: 100%;

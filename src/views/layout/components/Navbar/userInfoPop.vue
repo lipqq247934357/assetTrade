@@ -4,7 +4,7 @@
                 :visible.sync="vis"
                 title="个人信息"
                 width="25%">
-            <div class="cc">
+            <div :class="$style['cc']">
                 <table>
                     <tr>
                         <td>用户名:</td>
@@ -53,51 +53,40 @@
     }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" module>
 
 
     .cc {
         overflow: hidden;
         margin-top: -50px;
-    }
 
-    .name {
-        float: left;
-        width: 30%;
-        text-align: right;
-    }
+        tr {
 
-    .content {
-        float: right;
-        width: 67%;
-        text-align: left;
-    }
+            td:nth-child(1) {
+                width: 90px;
+                text-align: right;
+            }
 
+            td:nth-child(2) {
+                border-left: 40px solid #ffffff;
+            }
 
-    tr {
-
-        td:nth-child(1) {
-            width: 90px;
-            text-align: right;
+            line-height: 24px;
+            height: 10px;
         }
 
-        td:nth-child(2) {
-            border-left: 40px solid #ffffff;
+    }
+
+    :global {
+        /*修改个人信息标题和x号水平*/
+        .el-dialog__header {
+            padding: 5px 20px 10px;
         }
 
-        line-height: 24px;
-        height: 10px;
-    }
-
-
-    /*修改个人信息标题和x号水平*/
-    /deep/ .el-dialog__header {
-        padding: 5px 20px 10px;
-    }
-
-    /*修改弹框body部分*/
-    /deep/ .el-dialog__body {
-        padding: 30px 20px 10px;
+        /*修改弹框body部分*/
+        .el-dialog__body {
+            padding: 30px 20px 10px;
+        }
     }
 
 </style>

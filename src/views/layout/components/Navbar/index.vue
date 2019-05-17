@@ -1,13 +1,13 @@
 <template>
-    <div class="navbar">
-        <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
+    <div :class="$style.navbar">
+        <hamburger :class="$style['hamburger-container']" :is-active="sidebar.opened" :toggle-click="toggleSideBar"/>
         <breadcrumb/>
-        <el-dropdown class="avatar-container" trigger="click">
-            <div class="avatar-wrapper">
-                <img src="/touxiang.jpg" class="user-avatar">
+        <el-dropdown :class="$style['avatar-container']" trigger="click">
+            <div :class="$style['avatar-wrapper']">
+                <img :class="$style['user-avatar']" src="/touxiang.jpg">
                 <i class="el-icon-caret-bottom"/>
             </div>
-            <el-dropdown-menu slot="dropdown" class="user-dropdown">
+            <el-dropdown-menu class="user-dropdown" slot="dropdown">
                 <el-dropdown-item @click.native="userInfoPop">
                     <div>个人信息</div>
                 </el-dropdown-item>
@@ -19,7 +19,6 @@
         <userInfoPop :dialogVisible.sync="dialogVisible"></userInfoPop>
     </div>
 </template>
-
 <script>
     import {mapGetters} from 'vuex'
     import Breadcrumb from '@/components/Breadcrumb'
@@ -58,7 +57,7 @@
     }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" module>
     .navbar {
         height: 50px;
         line-height: 50px;
