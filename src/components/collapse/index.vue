@@ -1,6 +1,6 @@
 <template>
     <div>
-        <blockTitle @click.native="isActive=!isActive" :isActive="isActive">
+        <blockTitle :isActive="isActive" @click.native="isActive=!isActive">
             <slot name="title"></slot>
         </blockTitle>
         <collapseTrans>
@@ -8,7 +8,7 @@
                  v-show="isActive">
                 <!-- @slot default -->
                 <slot></slot>
-                <hr class="bottom-line"/>
+                <hr :class="$style['bottom-line']"/>
             </div>
         </collapseTrans>
     </div>
@@ -28,7 +28,7 @@
     }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" module>
 
     .bottom-line {
         background-color: #fff;

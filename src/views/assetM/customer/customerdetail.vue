@@ -1,6 +1,6 @@
 <template>
     <div class="detail app-container">
-        <div class="detail-list">
+        <div :class="$style['detail-list']">
             <ul>
                 <li>
                     <span>渠道</span>
@@ -106,6 +106,6 @@
 
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" module>
     @import '../../../styles/asset-detail';
 </style>

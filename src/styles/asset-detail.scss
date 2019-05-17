@@ -32,15 +32,18 @@
       }
     }
   }
-}
 
-li span {
-  width: 30%;
-  display: inline-block;
-  border-right: 1px solid #909399;
+  li span {
+    width: 30%;
+    display: inline-block;
+    border-right: 1px solid #909399;
 
-  &:nth-child(even) {
-    border-right: 0;
-    width: 70%;
+    &:nth-child(even) {
+      border-right: 0;
+      width: 70%;
+    }
   }
+
 }
+
+

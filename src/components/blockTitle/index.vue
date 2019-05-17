@@ -1,9 +1,9 @@
 <template>
-    <div class="content-top-title">
+    <div :class="$style['content-top-title']">
         <slot></slot>
         <div v-if="hide !== true">
-            <i v-if="isActive" class="el-icon-arrow-down"></i>
-            <i v-else class="el-icon-arrow-down rotate90"></i>
+            <i class="el-icon-arrow-down" :class="$style['icon-trans']" v-if="isActive"></i>
+            <i class="el-icon-arrow-down" :class="[$style['icon-trans'],$style.rotate90]" v-else></i>
         </div>
     </div>
 </template>
@@ -16,7 +16,7 @@
     }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" module>
     .content-top-title {
         position: relative;
         height: 40px;
@@ -27,15 +27,16 @@
         border-top: 2px solid #83c5fc;
         border-radius: 2px 2px 5px 5px;
         font-weight: 500;
+
+        i {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+
     }
 
-    i {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-    }
-
-    .el-icon-arrow-down {
+    .icon-trans {
         transition: transform .3s;
     }
 

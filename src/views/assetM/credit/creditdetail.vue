@@ -1,6 +1,6 @@
 <template>
     <div class="detail app-container">
-        <div class="detail-list">
+        <div :class="$style['detail-list']">
             <ul>
                 <li>
                     <span>申请编号</span>
@@ -63,9 +63,10 @@
 
 
     import formatter from '@/components/mixins/formatter';
+
     export default {
         name: 'creditDetail',
-        mixins:[formatter],
+        mixins: [formatter],
         data() {
             return {
                 info: {}
@@ -89,6 +90,6 @@
 
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" module>
     @import '../../../styles/asset-detail';
 </style>
