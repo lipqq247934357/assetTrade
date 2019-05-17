@@ -1,15 +1,15 @@
 <template>
-    <div :class="{'hidden':hidden}" class="pagination-container">
+    <div :class="[{[$style.hide]:hidden},$style['pagination-container']]">
         <el-pagination
                 :background="background"
                 :current-page.sync="currentPage"
-                :page-size.sync="pageSize"
                 :layout="layout"
+                :page-size.sync="pageSize"
                 :page-sizes="pageSizes"
                 :total="total"
-                v-bind="$attrs"
+                @current-change="handleCurrentChange"
                 @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"/>
+                v-bind="$attrs"/>
     </div>
 </template>
 
@@ -89,7 +89,7 @@
     }
 </script>
 
-<style scoped>
+<style module lang="scss">
     .pagination-container {
         background: #fff;
         padding: 32px 16px;
