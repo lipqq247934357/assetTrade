@@ -1,7 +1,7 @@
 <template>
     <div class="output-detail app-container">
         <!--search-->
-        <collapse class="search" v-show.sync="!detail.show">
+        <collapse :class="$style['search']" v-show.sync="!detail.show">
             <template v-slot:title>
                 筛选条件
             </template>
@@ -15,7 +15,7 @@
                             <el-input placeholder="文件名称" v-model="form.fileName"></el-input>
                         </el-form-item>
                     </el-form>
-                    <div class="search-btn-box">
+                    <div :class="$style['search-btn-box']">
                         <el-button @click="search" icon="el-icon-search" size="medium" type="primary" v-waves>查询
                         </el-button>
                         <el-button @click="resetForm('form')" icon="el-icon-refresh" size="medium" type="primary"
@@ -26,7 +26,7 @@
             </template>
         </collapse>
         <!--table-->
-        <div class="content" v-show="!detail.show">
+        <div :class="$style['content']" v-show="!detail.show">
             <blockTitle :hide="trueVal">
                 资产输出配置列表
                 <el-button @click="add" size="mini" type="primary" v-waves>配置明细
@@ -34,7 +34,7 @@
                 <el-button @click="back" class="back-btn" size="mini" type="primary" v-waves>返回
                 </el-button>
             </blockTitle>
-            <div class="table-content">
+            <div :class="$style['table-content']">
                 <el-table
                         :data="data"
                         border
@@ -192,79 +192,7 @@
     }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" module>
 
-
-    .search, .content {
-        background: #fff;
-        border-radius: 5px;
-    }
-
-    .search {
-
-        .el-form {
-            margin: 20px 20px 60px;
-        }
-
-        .el-form-item {
-            width: 32%;
-        }
-
-        .el-input {
-            width: 100%;
-        }
-
-        .search-btn-box {
-            text-align: center;
-
-            .el-button {
-                margin: 0 25px;
-            }
-        }
-    }
-
-    .content {
-        margin-top: 50px;
-
-        .table-content {
-            width: 98%;
-            margin: 19px auto 0;
-            padding-bottom: 20px;
-        }
-
-        /*给配置按钮定位*/
-        .el-button--mini {
-            margin-left: 10px;
-            position: absolute !important;
-            top: 4px;
-        }
-
-        /*给配置按钮定位*/
-        .el-button--mini.back-btn {
-            margin-left: 100px;
-            position: absolute !important;
-            top: 4px;
-        }
-    }
-
-    /*操作的宽度太高*/
-    /deep/ .operate {
-        padding: 6px 0;
-    }
-
-    /*修改标题默认字体*/
-    /deep/ .header-cell-class-name {
-        background: #f4f4f5;
-    }
-
-    // 取消校验成功绿色样式
-    .is-success /deep/ .el-input__inner {
-        border-color: #DCDFE6 !important;
-    }
-
-    // 修改校验成功获取焦点的颜色
-    .is-success /deep/ .el-input__inner:focus {
-        border-color: #409EFF !important;
-    }
-
+    @import '../../../../styles/common/config-list';
 </style>
