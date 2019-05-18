@@ -1,31 +1,31 @@
 <template>
-    <div class="edit-out-detail app-container" v-show="show">
-        <div class="edit-content">
-            <div class="content-border">
+    <div :class="$style['edit-out-detail']" class="edit-out-detail app-container" v-show="show">
+        <div :class="$style['edit-content']">
+            <div :class="$style['content-border']">
                 <el-form :model="form" ref="form">
-                    <div class="row">
-                        <div class="name must-choose">输出模版编号</div>
-                        <div class="content">
+                    <div :class="$style['row']">
+                        <div :class="$style['name']" class="must-choose">输出模版编号</div>
+                        <div :class="$style['content']">
                             <el-form-item prop="outputTemNo">
                                 <el-input v-model="form.outputTemNo"></el-input>
                             </el-form-item>
                         </div>
-                        <div class="name must-choose">文件名称</div>
-                        <div class="content last-box">
+                        <div :class="$style['name']" class="must-choose">文件名称</div>
+                        <div :class="[$style['content'],$style['last-box']]">
                             <el-form-item prop="fileName">
                                 <el-input v-model="form.fileName"></el-input>
                             </el-form-item>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="name must-choose">列分隔符</div>
-                        <div class="content">
+                    <div :class="$style['row']">
+                        <div :class="$style['name']" class="must-choose">列分隔符</div>
+                        <div :class="$style['content']">
                             <el-form-item prop="colSplitSymbol">
                                 <el-input v-model="form.colSplitSymbol"></el-input>
                             </el-form-item>
                         </div>
-                        <div class="name must-choose">文件字符编码</div>
-                        <div class="content last-box">
+                        <div :class="$style['name']" class="must-choose">文件字符编码</div>
+                        <div :class="[$style['content'],$style['last-box']]">
                             <el-form-item prop="fileWordCode">
                                 <el-select placeholder="请选择" size="max" v-model="form.fileWordCode">
                                     <el-option
@@ -39,35 +39,35 @@
 
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="name sql-name must-choose">SQL语句</div>
-                        <div class="content sql-content last-box">
-                            <el-form-item class="sql-textarea" prop="sqlSentence">
+                    <div :class="$style['row']">
+                        <div :class="[$style['name'],$style['sql-name']]" class="must-choose">SQL语句</div>
+                        <div :class="[$style['content'],$style['sql-content'],$style['last-box']]">
+                            <el-form-item :class="$style['sql-textarea']" prop="sqlSentence">
                                 <el-input rows="5" type="textarea" v-model="form.sqlSentence"></el-input>
                             </el-form-item>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="name">文件描述</div>
-                        <div class="content last-box desc">
+                    <div :class="$style['row']">
+                        <div :class="$style['name']">文件描述</div>
+                        <div :class="[$style['content'],$style['last-box'],$style['desc']]">
                             <el-form-item prop="fileDesc">
                                 <el-input v-model="form.fileDesc"></el-input>
                             </el-form-item>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="name">创建人</div>
-                        <div class="content">
+                    <div :class="$style['row']">
+                        <div :class="$style['name']">创建人</div>
+                        <div :class="$style['content']">
                             <el-form-item prop="inputUser">
                                 <el-input :disabled="trueVal" v-model="form.inputUser"></el-input>
                             </el-form-item>
                         </div>
-                        <div class="name last-box"></div>
-                        <div class="content last-box">
+                        <div :class="[$style['name'],$style['last-box']]"></div>
+                        <div :class="[$style['content'],$style['last-box']]">
                         </div>
                     </div>
                 </el-form>
-                <div class="btn-action">
+                <div :class="$style['btn-action']">
                     <el-button @click="back" size="medium" type="primary">返回</el-button>
                     <el-button @click="submit('form')" size="medium" type="primary" v-if="type !== 'detail'">提交
                     </el-button>
@@ -215,7 +215,7 @@
 
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" module>
 
 
     .edit-out-detail {
@@ -225,98 +225,105 @@
         bottom: 0;
         right: 0;
         z-index: 1;
-    }
-
-    .edit-content {
-        min-height: calc(100vh - 90px);
-        border-top: 3px solid #83c5fc;
-        border-radius: 4px 2px 0 0;
-        background: #fff;
-        padding: 20px 0;
-        position: relative;
-    }
 
 
-    .content-border {
-        border: 1px solid #f4f4f5;
-        width: 94%;
-        margin: 0 auto;
-        min-height: calc(100vh - 130px);
-
-        .btn-action {
-            position: absolute;
-            right: 60px;
-            bottom: 40px;
-        }
-
-        .el-button {
-            margin-left: 60px;
-        }
-
-    }
-
-    .row {
-        overflow: hidden;
-        text-align: right;
-        line-height: 40px;
-        font-size: 14px;
-
-        .name, .content {
-            float: left;
-            border-right: 1px solid #f4f4f5;
-            border-bottom: 1px solid #f4f4f5;
-            height: 40px;
+        .edit-content {
+            min-height: calc(100vh - 90px);
+            border-top: 3px solid #83c5fc;
+            border-radius: 4px 2px 0 0;
+            background: #fff;
+            padding: 20px 0;
+            position: relative;
         }
 
 
-        .name.sql-name, .content.sql-content {
-            height: 140px;
+        .content-border {
+            border: 1px solid #f4f4f5;
+            width: 94%;
+            margin: 0 auto;
+            min-height: calc(100vh - 130px);
+
+            .btn-action {
+                position: absolute;
+                right: 60px;
+                bottom: 40px;
+            }
+
+            :global {
+                .el-button {
+                    margin-left: 60px;
+                }
+            }
+
         }
 
-        .content.sql-content, .content.desc {
-            width: 82%;
+        .row {
+            overflow: hidden;
+            text-align: right;
+            line-height: 40px;
+            font-size: 14px;
+
+            .name, .content {
+                float: left;
+                border-right: 1px solid #f4f4f5;
+                border-bottom: 1px solid #f4f4f5;
+                height: 40px;
+            }
+
+
+            .name.sql-name, .content.sql-content {
+                height: 140px;
+            }
+
+            .content.sql-content, .content.desc {
+                width: 82%;
+            }
+
+            .sql-textarea {
+                margin-top: 10px;
+            }
+
+            .name {
+                width: 18%;
+                padding-right: 30px;
+            }
+
+            .content {
+                width: 32%;
+                text-align: center;
+                padding: 0 20px;
+            }
+
+            div.last-box {
+                border-right: 0;
+            }
         }
 
-        .sql-textarea {
-            margin-top: 10px;
+        :global {
+
+            /*修改input框的默认样式*/
+            .el-input__inner, .el-select-dropdown__list {
+                height: 28px;
+                font-size: 14px;
+            }
+
+            /*选择框宽度*/
+            .el-select--max {
+                width: 100%;
+            }
+
+            /*修改下拉框的字体*/
+            .el-select-dropdown__item {
+                font-size: 14px;
+            }
+
+            /*选择框右侧箭头*/
+            .el-select__caret {
+                font-size: 12px;
+            }
+
         }
 
-        .name {
-            width: 18%;
-            padding-right: 30px;
-        }
-
-        .content {
-            width: 32%;
-            text-align: center;
-            padding: 0 20px;
-        }
-
-        div.last-box {
-            border-right: 0;
-        }
-    }
-
-
-    /*修改input框的默认样式*/
-    /deep/ .el-input__inner, .el-select-dropdown__list {
-        height: 28px;
-        font-size: 14px;
-    }
-
-    /*选择框宽度*/
-    .el-select--max {
-        width: 100%;
-    }
-
-    /*修改下拉框的字体*/
-    .el-select-dropdown__item {
-        font-size: 14px;
-    }
-
-    /*选择框右侧箭头*/
-    .el-select__caret {
-        font-size: 12px;
     }
 
 

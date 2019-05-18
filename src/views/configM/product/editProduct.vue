@@ -1,11 +1,11 @@
 <template>
     <div class="edit-product app-container">
-        <div class="edit-content">
-            <div class="content-border">
+        <div :class="$style['edit-content']">
+            <div :class="$style['content-border']">
                 <el-form :model="form" ref="form">
-                    <div class="row">
-                        <div class="name must-choose">渠道</div>
-                        <div class="content">
+                    <div :class="$style['row']">
+                        <div :class="$style['name']" class="must-choose">渠道</div>
+                        <div :class="$style['content']">
                             <el-form-item prop="channelNo">
                                 <el-select placeholder="请选择" size="max" v-model="form.channelNo">
                                     <el-option
@@ -17,22 +17,22 @@
                                 </el-select>
                             </el-form-item>
                         </div>
-                        <div class="name must-choose">金融产品编号</div>
-                        <div class="content last-box">
+                        <div :class="$style['name']" class="must-choose">金融产品编号</div>
+                        <div :class="[$style['content'],$style['last-box']]">
                             <el-form-item prop="prodNo">
                                 <el-input v-model="form.prodNo"></el-input>
                             </el-form-item>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="name must-choose">金融产品名称</div>
-                        <div class="content last-box">
+                    <div :class="$style['row']">
+                        <div :class="$style['name']" class="must-choose">金融产品名称</div>
+                        <div :class="[$style['content']]">
                             <el-form-item prop="prodName">
                                 <el-input v-model="form.prodName"></el-input>
                             </el-form-item>
                         </div>
-                        <div class="name must-choose">是否启用</div>
-                        <div class="content">
+                        <div :class="$style['name']" class="must-choose">是否启用</div>
+                        <div :class="[$style['content'],$style['last-box']]">
                             <el-form-item prop="status">
                                 <el-select placeholder="请选择" size="max" v-model="form.useYn">
                                     <el-option
@@ -45,22 +45,22 @@
                             </el-form-item>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="name">产品描述</div>
-                        <div class="content">
+                    <div :class="$style['row']">
+                        <div :class="$style['name']">产品描述</div>
+                        <div :class="$style['content']">
                             <el-form-item prop="prodDesc">
                                 <el-input v-model="form.prodDesc"></el-input>
                             </el-form-item>
                         </div>
-                        <div class="name must-choose">创建人</div>
-                        <div class="content last-box">
+                        <div :class="$style['name']" class="must-choose">创建人</div>
+                        <div :class="[$style['content'],$style['last-box']]">
                             <el-form-item prop="inputUser">
                                 <el-input disabled v-model="form.inputUser"></el-input>
                             </el-form-item>
                         </div>
                     </div>
                 </el-form>
-                <div class="btn-action">
+                <div :class="$style['btn-action']">
                     <el-button @click="back" size="medium" type="primary">返回</el-button>
                     <el-button @click="submit('form')" size="medium" type="primary">提交</el-button>
                 </div>
@@ -215,87 +215,7 @@
 
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" module>
 
-
-    .edit-content {
-        min-height: calc(100vh - 90px);
-        border-top: 3px solid #83c5fc;
-        border-radius: 4px 2px 0 0;
-        background: #fff;
-        padding: 20px 0;
-        position: relative;
-    }
-
-
-    .content-border {
-        border: 1px solid #f4f4f5;
-        width: 94%;
-        margin: 0 auto;
-        min-height: calc(100vh - 130px);
-
-        .btn-action {
-            position: absolute;
-            right: 60px;
-            bottom: 40px;
-        }
-
-        .el-button {
-            margin-left: 60px;
-        }
-
-    }
-
-    .row {
-        overflow: hidden;
-        text-align: right;
-        line-height: 40px;
-        font-size: 14px;
-
-        .name, .content {
-            float: left;
-            border-right: 1px solid #f4f4f5;
-            border-bottom: 1px solid #f4f4f5;
-            height: 40px;
-        }
-
-        .name {
-            width: 18%;
-            padding-right: 30px;
-        }
-
-        .content {
-            width: 32%;
-            text-align: center;
-            padding: 0 20px;
-        }
-
-        div.last-box {
-            border-right: 0;
-        }
-    }
-
-
-    /*修改input框的默认样式*/
-    /deep/ .el-input__inner, .el-select-dropdown__list {
-        height: 28px;
-        font-size: 14px;
-    }
-
-    /*选择框宽度*/
-    .el-select--max {
-        width: 100%;
-    }
-
-    /*修改下拉框的字体*/
-    .el-select-dropdown__item {
-        font-size: 14px;
-    }
-
-    /*选择框右侧箭头*/
-    .el-select__caret {
-        font-size: 12px;
-    }
-
-
+    @import '../../../styles/common/config-detail';
 </style>
