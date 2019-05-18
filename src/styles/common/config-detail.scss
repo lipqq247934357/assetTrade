@@ -1,0 +1,86 @@
+.edit-content {
+  min-height: calc(100vh - 90px);
+  border-top: 3px solid #83c5fc;
+  border-radius: 4px 2px 0 0;
+  background: #fff;
+  padding: 20px 0;
+  position: relative;
+
+  .content-border {
+    border: 1px solid #f4f4f5;
+    width: 94%;
+    margin: 0 auto;
+    min-height: calc(100vh - 130px);
+
+    .btn-action {
+      position: absolute;
+      right: 60px;
+      bottom: 40px;
+    }
+
+    :global {
+      .el-button {
+        margin-left: 60px;
+      }
+    }
+
+  }
+
+
+  .row {
+    overflow: hidden;
+    text-align: right;
+    line-height: 40px;
+    font-size: 14px;
+
+    .name, .content {
+      float: left;
+      border-right: 1px solid #f4f4f5;
+      border-bottom: 1px solid #f4f4f5;
+      height: 40px;
+    }
+
+    .name {
+      width: 18%;
+      padding-right: 30px;
+    }
+
+    .content {
+      width: 32%;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    div.last-box {
+      border-right: 0;
+    }
+  }
+
+  :global {
+
+    /*修改input框的默认样式*/
+    .el-input__inner, .el-select-dropdown__list {
+      height: 28px;
+      font-size: 14px;
+    }
+
+    /*选择框宽度*/
+    .el-select--max {
+      width: 100%;
+    }
+
+    /*修改下拉框的字体*/
+    .el-select-dropdown__item {
+      font-size: 14px;
+    }
+
+    /*选择框右侧箭头*/
+    .el-select__caret {
+      font-size: 12px;
+    }
+
+  }
+
+}
+
+
