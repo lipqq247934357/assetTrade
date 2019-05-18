@@ -44,7 +44,7 @@ function mock(app) {
         });
     });
 
-    app.post('/mock/service/validate/ticket', function (req, res) {
+    app.post('/mock/ucenter/service/validate/ticket', function (req, res) {
         res.json(privilegeInfo);
     });
 
