@@ -95,11 +95,13 @@
                     border-radius: 10px;
                 }
 
-                .el-icon-caret-bottom {
-                    position: absolute;
-                    right: -20px;
-                    top: 25px;
-                    font-size: 12px;
+                :global {
+                    .el-icon-caret-bottom {
+                        position: absolute;
+                        right: -20px;
+                        top: 25px;
+                        font-size: 12px;
+                    }
                 }
             }
         }
