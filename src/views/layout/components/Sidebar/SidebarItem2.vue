@@ -3,24 +3,24 @@
         <template v-if="hasOneShowingChild(item.children,item)">
             <router-link :to="item.menuUrl">
                 <el-menu-item :index="item.menuUrl">
-                    <i v-if="isNest" class="el-icon-tickets svg-icon"></i>
-                    <i v-else class="el-icon-menu svg-icon"></i>
+                    <i class="el-icon-tickets svg-icon" v-if="isNest"></i>
+                    <i class="el-icon-menu svg-icon" v-else></i>
                     <span slot="title">{{item.menuName}}</span>
                 </el-menu-item>
             </router-link>
         </template>
 
-        <el-submenu v-else ref="subMenu" :index="item.menuId" popper-append-to-body>
+        <el-submenu :index="item.menuId" popper-append-to-body ref="subMenu" v-else>
             <template slot="title">
                 <i class="el-icon-menu svg-icon"></i>
                 <span slot="title">{{item.menuName}}</span>
             </template>
             <sidebar-item
-                    v-for="child in item.children"
-                    :item="child"
                     :isNest="true"
+                    :item="child"
                     :key="child.menuId"
-                    class="nest-menu"/>
+                    class="nest-menu"
+                    v-for="child in item.children"/>
         </el-submenu>
     </div>
 </template>
