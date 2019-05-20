@@ -28,7 +28,9 @@
                         <div :class="$style['name']" class="must-choose">资金方</div>
                         <div :class="$style['content']">
                             <el-form-item prop="contributiveNo">
-                                <el-select multiple placeholder="请选择" size="max" v-model="form.contributiveNo">
+                                <el-select :collapse-tags="showOver" @change="onCashProivderChange" multiple
+                                           placeholder="请选择" size="max"
+                                           v-model="form.contributiveNo">
                                     <el-option
                                             :key="item.value"
                                             :label="item.label"
@@ -126,7 +128,8 @@
                 assetProvider: [], // 资金方数组
                 trueVal: true,
                 updateId: '', // 如果有值就是更新操作
-                isSubmit: false
+                isSubmit: false,
+                showOver: true
             }
         },
         activated() {
@@ -241,6 +244,13 @@
                     this.$router.go(-1);
                 }
             },
+            onCashProivderChange(val) {
+                if (val.length >= 3) {
+                    this.showOver = true;
+                } else {
+                    this.showOver = false;
+                }
+            }
         }
     }
 
