@@ -17,15 +17,6 @@
     }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-    .dashboard {
-        &-container {
-            margin: 30px;
-        }
+<style lang="scss" module>
 
-        &-text {
-            font-size: 30px;
-            line-height: 46px;
-        }
-    }
 </style>
