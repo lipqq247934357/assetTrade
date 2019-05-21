@@ -26,7 +26,7 @@
                     </div>
                     <div :class="$style['row']">
                         <div :class="$style['name']" class="must-choose">资金方</div>
-                        <div :class="$style['content']">
+                        <div :class="[$style['content'],$style['cash-provider']]">
                             <el-form-item prop="contributiveNo">
                                 <el-select multiple
                                            placeholder="请选择" size="max"
@@ -251,4 +251,20 @@
 <style lang="scss" module>
 
     @import '../../../styles/common/config-detail';
+
+    .cash-provider {
+        :global {
+            .el-select__tags {
+                overflow: hidden;
+                display: block;
+                text-align: left;
+                > span {
+                    > span {
+                        display: inline;
+                    }
+                }
+            }
+        }
+    }
+
 </style>
