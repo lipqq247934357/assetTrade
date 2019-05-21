@@ -9,11 +9,17 @@
   :global {
 
     .el-form {
-      margin: 20px 20px 60px;
+      margin: 15px 20px 54px;
     }
 
     .el-form-item {
       width: 32%;
+      margin-bottom: 15px;
+
+      .el-form-item {
+        margin-bottom: 0;
+      }
+
     }
 
     .el-input {
@@ -37,7 +43,7 @@
 }
 
 .content {
-  margin-top: 50px;
+  margin-top: 20px;
 
   .table-content {
     width: 98%;

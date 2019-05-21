@@ -32,7 +32,7 @@
 
     .bottom-line {
         background-color: #fff;
-        height: 20px;
+        height: 5px;
         border: none;
     }
 
