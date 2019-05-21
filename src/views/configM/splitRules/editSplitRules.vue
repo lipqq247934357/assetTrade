@@ -129,7 +129,7 @@
                 trueVal: true,
                 updateId: '', // 如果有值就是更新操作
                 isSubmit: false,
-                showOver: true
+                showOver: false
             }
         },
         activated() {
@@ -171,6 +171,7 @@
                     } else {
                         let item = data.data[0];
                         item.contributiveNo = item.contributiveNo.split(',');
+                        this.showOver = item.contributiveNo.length >= 3;
                         Object.assign(this.form, data.data[0]);
                     }
                 }
@@ -245,11 +246,7 @@
                 }
             },
             onCashProivderChange(val) {
-                if (val.length >= 3) {
-                    this.showOver = true;
-                } else {
-                    this.showOver = false;
-                }
+                    this.showOver = val.length >= 3;
             }
         }
     }
