@@ -300,11 +300,15 @@
         }
 
         :global {
-
             /*修改input框的默认样式*/
-            .el-input__inner, .el-select-dropdown__list {
-                height: 28px;
-                font-size: 14px;
+            .el-input, .el-input__inner, .el-select-dropdown__list {
+                line-height: 28px;
+                height: 28px !important;
+                font-size: 14px !important;
+            }
+
+            .el-input__icon {
+                line-height: 28px;
             }
 
             /*选择框宽度*/
