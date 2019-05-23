@@ -4,7 +4,7 @@
             <ul>
                 <li>
                     <span>渠道</span>
-                    <span>{{info.channelNo}}</span>
+                    <span>{{info.channelName}}</span>
                 </li>
                 <li>
                     <span>借款人姓名</span>
