@@ -70,7 +70,7 @@
                         v-loading="loading">
                     <el-table-column
                             label="渠道"
-                            prop="channelNo">
+                            prop="channelName">
                     </el-table-column>
                     <el-table-column
                             label="借据编码"
