@@ -4,7 +4,7 @@
             <div :class="$style['content-border']">
                 <el-form :model="form" ref="form">
                     <div :class="$style['row']">
-                        <div :class="$style['name']" class="must-choose">渠道</div>
+`                        <div :class="$style['name']" class="must-choose">渠道名称</div>
                         <div :class="$style['content']">
                             <el-form-item prop="channelNo">
                                 <el-select placeholder="请选择" size="max" v-model="form.channelNo">
