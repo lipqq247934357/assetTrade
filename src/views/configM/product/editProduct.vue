@@ -46,17 +46,28 @@
                         </div>
                     </div>
                     <div :class="$style['row']">
-                        <div :class="$style['name']">产品描述</div>
+                        <div :class="$style['name']">文件类型</div>
                         <div :class="$style['content']">
+                            <el-form-item prop="fileType">
+                                <el-input v-model="form.fileType"></el-input>
+                            </el-form-item>
+                        </div>
+                        <div :class="$style['name']">产品描述</div>
+                        <div :class="[$style['content'],$style['last-box']]">
                             <el-form-item prop="prodDesc">
                                 <el-input v-model="form.prodDesc"></el-input>
                             </el-form-item>
                         </div>
+                    </div>
+                    <div :class="$style['row']">
                         <div :class="$style['name']" class="must-choose">创建人</div>
-                        <div :class="[$style['content'],$style['last-box']]">
+                        <div :class="$style['content']">
                             <el-form-item prop="inputUser">
                                 <el-input disabled v-model="form.inputUser"></el-input>
                             </el-form-item>
+                        </div>
+                        <div :class="$style['name']"></div>
+                        <div :class="[$style['content'],$style['last-box']]">
                         </div>
                     </div>
                 </el-form>
@@ -83,6 +94,7 @@
                     channelNo: '', // 渠道编号
                     prodNo: '', // 金融产品编号
                     prodName: '', // 金融产品名称
+                    fileType: '', // 文件类型
                     prodDesc: '', // 产品描述
                     useYn: '',
                     inputUser: ''
@@ -91,6 +103,7 @@
                     channelNo: [{required: true, message: '请选择渠道'}],
                     prodNo: [{required: true, message: '请输入金融产品编号'}],
                     prodName: [{required: true, message: '请输入金融产品名称'}],
+                    fileType: [{required: true, message: '请输入文件类型'}],
                     useYn: [{required: true, message: '请选择是否启用'}],
                 },
                 "useYnList": [{
@@ -107,6 +120,7 @@
             }
         },
         activated() {
+            this.form = {};
             this.channelList = [];
             this.getDict();
             // 获取updateId,如果有值说明是更新
@@ -157,7 +171,7 @@
                 let validator = new schema(this.rules);
                 validator.validate(this.form, (errors) => {
                     if (errors) {
-                        this.$message.warning({message:errors[0].message,duration:2000});
+                        this.$message.warning({message: errors[0].message, duration: 2000});
                     } else {
                         if (this.updateId) { //如果updateId不为空，是更新，否则是新增
                             this.confirmSubmit();
@@ -187,6 +201,7 @@
                     channelNo: form.channelNo,
                     prodNo: form.prodNo,
                     prodName: form.prodName,
+                    fileType: form.fileType,
                     prodDesc: form.prodDesc,
                     useYn: form.useYn,
                     inputUser: form.inputUser
@@ -202,6 +217,7 @@
                     channelNo: form.channelNo,
                     prodNo: form.prodNo,
                     prodName: form.prodName,
+                    fileType: form.fileType,
                     prodDesc: form.prodDesc,
                     useYn: form.useYn,
                     updateUser: this.userInfo.username
