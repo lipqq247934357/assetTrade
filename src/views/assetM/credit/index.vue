@@ -56,7 +56,7 @@
         <!--table-->
         <div :class="$style['content']">
             <blockTitle :hide="trueVal">
-                资产列表
+                授信信息列表
             </blockTitle>
             <div :class="$style['table-content']">
                 <el-table
