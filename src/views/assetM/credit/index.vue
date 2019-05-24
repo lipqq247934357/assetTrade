@@ -101,7 +101,7 @@
                     <el-table-column
                             :formatter="formatAmount"
                             label="额度状况"
-                            prop="InitialAmount"
+                            prop="initialAmount"
                     >
                     </el-table-column>
                     <el-table-column
