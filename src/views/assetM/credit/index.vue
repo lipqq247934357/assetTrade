@@ -8,8 +8,8 @@
             <template>
                 <div>
                     <el-form :model="form" inline label-width="100px" ref="form">
-                        <el-form-item label="渠道名称" prop="channelNo">
-                            <el-input placeholder="请输入渠道名称" v-model="form.channelNo"></el-input>
+                        <el-form-item label="渠道名称" prop="channelName">
+                            <el-input placeholder="请输入渠道名称" v-model="form.channelName"></el-input>
                         </el-form-item>
                         <el-form-item label="借款人姓名" prop="custName">
                             <el-input placeholder="请输入借款人姓名" v-model="form.custName"></el-input>
@@ -152,7 +152,7 @@
                 form: {
                     custName: '', // 借款人姓名
                     idNo: '', // 身份证号
-                    channelNo: '', // 渠道编号
+                    channelName: '', // 渠道名称
                     startDate: '', // 申请开始时间
                     endDate: '' // 申请结束时间
                 },
