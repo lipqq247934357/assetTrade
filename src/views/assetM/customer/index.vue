@@ -41,7 +41,7 @@
                     >
                     <el-table-column
                             label="渠道"
-                            prop="channelNo"
+                            prop="channelName"
                     >
                     </el-table-column>
                     <el-table-column
