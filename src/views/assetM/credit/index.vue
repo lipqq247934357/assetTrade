@@ -180,7 +180,9 @@
                 });
                 this.list = data.data.list;
                 this.pagInfo.total = Number(data.data.pager ? data.data.pager.totalNum : 0);
-                this.list.length === 0 && (this.emptyText = '无数据');
+                if (!this.list || this.list.length === 0) {
+                    this.emptyText = '无数据'
+                }
                 this.loading = false;
             },
             search() {
