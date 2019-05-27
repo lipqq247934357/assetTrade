@@ -142,7 +142,7 @@
             async query(productNo) { // 查询用户信息
                 //发起ajax请求，更改数据
                 let data = await this.$api.configM.productquery({
-                    productNo: productNo,
+                    prodNo: productNo,
                     pageNum: 1,
                     pageSize: 10
                 });
