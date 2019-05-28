@@ -9,7 +9,7 @@
                             <el-form-item prop="outputTemName">
                                 <el-input v-model="form.outputTemName"></el-input>
                             </el-form-item>
-                            a             </div>
+                        </div>
                         <div :class="$style['name']" class="must-choose">是否启用</div>
                         <div :class="[$style['content'],$style['last-box']]">
                             <el-form-item prop="useYn">
