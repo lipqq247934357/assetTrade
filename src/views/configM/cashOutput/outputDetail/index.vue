@@ -9,7 +9,7 @@
                 <div>
                     <el-form :model="form" inline ref="form">
                         <el-form-item label="文件编号" prop="fileNo">
-                            <el-input placeholder="渠道编码" v-model.number="form.fileNo"></el-input>
+                            <el-input placeholder="渠道编码" v-model="form.fileNo"></el-input>
                         </el-form-item>
                         <el-form-item label="文件名称" prop="fileName">
                             <el-input placeholder="文件名称" v-model="form.fileName"></el-input>

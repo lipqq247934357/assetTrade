@@ -9,7 +9,7 @@
                 <div>
                     <el-form :model="form" inline ref="form">
                         <el-form-item label="模板输出名称" prop="outputTemName">
-                            <el-input placeholder="模板输出名称" v-model.number="form.outputTemName"></el-input>
+                            <el-input placeholder="模板输出名称" v-model="form.outputTemName"></el-input>
                         </el-form-item>
                     </el-form>
                     <div :class="$style['search-btn-box']">

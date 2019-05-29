@@ -9,7 +9,7 @@
                 <div>
                     <el-form :model="form" inline ref="form">
                         <el-form-item label="拆分方式" prop="assetSplitWay">
-                            <el-input placeholder="拆分方式" v-model.number="form.assetSplitWay"></el-input>
+                            <el-input placeholder="拆分方式" v-model="form.assetSplitWay"></el-input>
                         </el-form-item>
                     </el-form>
                     <div :class="$style['search-btn-box']">

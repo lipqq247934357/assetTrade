@@ -9,7 +9,7 @@
                 <div>
                     <el-form :model="form" inline ref="form">
                         <el-form-item label="渠道名称" prop="channelName">
-                            <el-input placeholder="渠道名称" v-model.number="form.channelName"></el-input>
+                            <el-input placeholder="渠道名称" v-model="form.channelName"></el-input>
                         </el-form-item>
                         <el-form-item label="金融产品名称" prop="prodName">
                             <el-input placeholder="金融产品名称" v-model="form.prodName"></el-input>

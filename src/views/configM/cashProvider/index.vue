@@ -9,7 +9,7 @@
                 <div>
                     <el-form :model="form" inline ref="form">
                         <el-form-item label="资金方名称" prop="contributiveName">
-                            <el-input placeholder="资金方名称" v-model.number="form.contributiveName"></el-input>
+                            <el-input placeholder="资金方名称" v-model="form.contributiveName"></el-input>
                         </el-form-item>
                     </el-form>
                     <div :class="$style['search-btn-box']">
