@@ -28,7 +28,7 @@
                 </li>
                 <li>
                     <span>授信额度</span>
-                    <span>{{formatAmount(0,0,info.InitialAmount)}}</span>
+                    <span>{{formatAmount(0,0,info.initialAmount)}}</span>
                 </li>
                 <li>
                     <span>额度编号</span>
