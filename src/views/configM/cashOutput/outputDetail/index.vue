@@ -119,6 +119,7 @@
                 form: {
                     fileNo: '', // 文件编号
                     fileName: '', // 文件名称
+                    outputTemNo: '' // 资产输出模板编号
                 },
                 pagInfo: {
                     total: '',
@@ -136,12 +137,16 @@
             };
         },
         activated() {
+            this.form = {};
+            // 获得资产输出模板编码
+            this.form.outputTemNo = this.$route.query && this.$route.query.updateId;
             this.getoutDetail();
         },
         methods: {
             async getoutDetail() { //发起ajax请求，更改数据
                 this.loading = true;
                 let data = await this.$api.configM.outdetailquery({
+                    outputTemNo: this.form.outputTemNo,
                     fileNo: this.form.fileNo,
                     fileName: this.form.fileName,
                     pageNum: this.pagInfo.currentPage,

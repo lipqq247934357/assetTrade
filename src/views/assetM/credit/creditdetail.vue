@@ -7,8 +7,8 @@
                     <span>{{info.applyId}}</span>
                 </li>
                 <li>
-                    <span>渠道</span>
-                    <span>{{info.channelNo}}</span>
+                    <span>渠道名称</span>
+                    <span>{{info.channelName}}</span>
                 </li>
                 <li>
                     <span>借款人编号</span>
