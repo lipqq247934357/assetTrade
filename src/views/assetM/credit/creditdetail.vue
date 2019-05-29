@@ -79,7 +79,7 @@
             async getInfo() {
                 let data = await this.$api.assetM.creditDetail({
                     body: {
-                        listId: this.$route.query.updateId // 获取updateId,然后查找内容
+                        applyId: this.$route.query.updateId // 获取updateId,然后查找内容
                     }
                 });
                 this.info = data.data.detail;

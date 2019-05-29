@@ -8,7 +8,9 @@ const configM = {
      * 配置管理相关接口
      */
 
-//金融产品配置
+    /**
+     * 金融产品配置
+     */
 
     productquery(p) {
         return post(prefix + '/finProduct/query', p);
