@@ -42,7 +42,12 @@
                     <span>{{ formatAmount(0, 0, info.loanAmount) }}</span>
                 </li>
 
-                <li><span>日利率</span></li>
+                <li><span>利率类型</span></li>
+                <li>
+                    <span>{{info.interestType}}</span>
+                </li>
+
+                <li><span>利率</span></li>
                 <li>
                     <span>{{ formatRate(0, 0, info.interestRate) }}</span>
                 </li>
@@ -77,8 +82,8 @@
                     <span>{{ info.assetSpiltWay }}</span>
                 </li>
 
-                <li><span>拆分比例</span></li>
-                <li>
+                <li :class="$style['bottom-0']"><span>拆分比例</span></li>
+                <li :class="$style['bottom-0']">
                     <span>{{ info.assetSpiltValue }}</span>
                 </li>
 

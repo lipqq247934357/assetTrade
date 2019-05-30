@@ -102,8 +102,12 @@
                             prop="repayMethod">
                     </el-table-column>
                     <el-table-column
+                            label="利率类型"
+                            prop="interestType">
+                    </el-table-column>
+                    <el-table-column
                             :formatter="formatRate"
-                            label="日利率"
+                            label="利率"
                             prop="interestRate">
                     </el-table-column>
                     <el-table-column
