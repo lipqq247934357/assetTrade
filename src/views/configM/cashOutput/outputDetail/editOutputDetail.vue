@@ -7,7 +7,7 @@
                         <div :class="$style['name']" class="must-choose">输出模版编号</div>
                         <div :class="$style['content']">
                             <el-form-item prop="outputTemNo">
-                                <el-input v-model="form.outputTemNo"></el-input>
+                                <el-input v-model="form.outputTemNo" :disabled="true"></el-input>
                             </el-form-item>
                         </div>
                         <div :class="$style['name']" class="must-choose">文件名称</div>
@@ -86,7 +86,7 @@
         data() {
             return {
                 form: {
-                    "outputTemNo": '', // 输出模板编号
+                    "outputTemNo": this.outputTemNo, // 输出模板编号
                     "fileName": '', // 文件名称
                     "fileDesc": '', // 文件描述
                     "fileWordCode": '', // 文件字符编码
@@ -114,7 +114,7 @@
                 trueVal: true,
             }
         },
-        props: ['show', 'type', 'updateId']
+        props: ['show', 'type', 'updateId','outputTemNo']
         ,
         computed: {
             ...mapGetters(['userInfo'])
@@ -126,7 +126,7 @@
             updateId: async function (val) {
                 if (!val) {
                     this.form = {
-                        outputTemNo: '', // 输出模板编号
+                        outputTemNo: this.outputTemNo, // 输出模板编号
                         fileName: '', // 文件名称
                         fileDesc: '', // 文件描述
                         fileWordCode: '', // 文件字符编码

@@ -95,8 +95,12 @@
                 ></pagination>
             </div>
         </div>
-        <editOutputDetail :show.sync="detail.show" :type="detail.type" :updateId="detail.updateId"
-                          @clearUpdateId="clearUpdateId" @updateData="updateData"></editOutputDetail>
+        <editOutputDetail :outputTemNo="form.outputTemNo"
+                          :show.sync="detail.show"
+                          :type="detail.type"
+                          :updateId="detail.updateId"
+                          @clearUpdateId="clearUpdateId"
+                          @updateData="updateData"></editOutputDetail>
     </div>
 </template>
 
@@ -136,8 +140,7 @@
                 }
             };
         },
-        activated() {
-            this.form = {};
+        created() {
             // 获得资产输出模板编码
             this.form.outputTemNo = this.$route.query && this.$route.query.updateId;
             this.getoutDetail();
