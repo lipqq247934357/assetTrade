@@ -2,74 +2,91 @@
     <div class="detail app-container">
         <div :class="$style['detail-list']">
             <ul>
+                <li><span>渠道</span></li>
                 <li>
-                    <span>渠道</span>
-                    <span>{{info.channelName}}</span>
+                    <span>{{ info.channelName }}</span>
                 </li>
+
+                <li><span>借据编码</span></li>
                 <li>
-                    <span>借据编码</span>
-                    <span>{{info.listId}}</span>
+                    <span>{{ info.listId }}</span>
                 </li>
+
+                <li><span>借款人编号</span></li>
                 <li>
-                    <span>借款人编号</span>
-                    <span>{{info.custId}}</span>
+                    <span>{{ info.custId }}</span>
                 </li>
+
+                <li><span>金融产品</span></li>
                 <li>
-                    <span>金融产品</span>
-                    <span>{{info.prodName}}</span>
+                    <span>{{ info.prodName }}</span>
                 </li>
+
+                <li><span>借款人姓名</span></li>
                 <li>
-                    <span>借款人姓名</span>
-                    <span>{{info.custName}}</span>
+                    <span>{{ info.custName }}</span>
                 </li>
+
+                <li><span>身份号</span></li>
                 <li>
-                    <span>身份号</span>
-                    <span>{{info.idNo}}</span>
+                    <span>{{ info.idNo }}</span>
                 </li>
+
+                <li><span>还款方式</span></li>
                 <li>
-                    <span>还款方式</span>
-                    <span>{{info.repayMethod}}</span>
+                    <span>{{ info.repayMethod }}</span>
                 </li>
+
+                <li><span>借款金额</span></li>
                 <li>
-                    <span>借款金额</span>
-                    <span>{{formatAmount(0,0,info.loanAmount)}}</span>
+                    <span>{{ formatAmount(0, 0, info.loanAmount) }}</span>
                 </li>
+
+                <li><span>日利率</span></li>
                 <li>
-                    <span>日利率</span>
-                    <span>{{formatRate(0,0,info.interestRate)}}</span>
+                    <span>{{ formatRate(0, 0, info.interestRate) }}</span>
                 </li>
+
+                <li><span>贷款余额</span></li>
                 <li>
-                    <span>贷款余额</span>
-                    <span>{{formatAmount(0,0,info.bal)}}</span>
+                    <span>{{ formatAmount(0, 0, info.bal) }}</span>
                 </li>
+
+                <li><span>还款期限</span></li>
                 <li>
-                    <span>还款期限</span>
-                    <span>{{info.loanTerm}}</span>
+                    <span>{{ info.loanTerm }}</span>
                 </li>
+
+                <li><span>放款日</span></li>
                 <li>
-                    <span>放款日</span>
-                    <span>{{formatterData(0,0,info.beginDate)}}</span>
+                    <span>{{ formatterData(0, 0, info.beginDate) }}</span>
                 </li>
+
+                <li><span>到期日</span></li>
                 <li>
-                    <span>到期日</span>
-                    <span>{{formatterData(0,0,info.endDate)}}</span>
+                    <span>{{ formatterData(0, 0, info.endDate) }}</span>
                 </li>
+
+                <li><span>起息日</span></li>
                 <li>
-                    <span>起息日</span>
-                    <span>{{formatterData(0,0,info.endDate)}}</span>
+                    <span>{{ formatterData(0, 0, info.endDate) }}</span>
                 </li>
+
+                <li><span>拆分方式</span></li>
                 <li>
-                    <span>拆分方式</span>
-                    <span>{{info.assetSpiltWay}}</span>
+                    <span>{{ info.assetSpiltWay }}</span>
                 </li>
+
+                <li><span>拆分比例</span></li>
                 <li>
-                    <span>拆分比例</span>
-                    <span>{{info.assetSpiltValue}}</span>
+                    <span>{{ info.assetSpiltValue }}</span>
                 </li>
-                <li>
-                    <span>出资方</span>
-                    <span>{{info.contributiveName}}</span>
+
+                <li :class="$style['bottom-0']"><span>出资方</span></li>
+                <li :class="$style['bottom-0']">
+                    <span>{{ info.contributiveName }}</span>
                 </li>
+
             </ul>
         </div>
 

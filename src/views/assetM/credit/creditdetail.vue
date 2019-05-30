@@ -2,59 +2,72 @@
     <div class="detail app-container">
         <div :class="$style['detail-list']">
             <ul>
+                <li><span>申请编号</span></li>
                 <li>
-                    <span>申请编号</span>
-                    <span>{{info.applyId}}</span>
+                    <span>{{ info.applyId }}</span>
                 </li>
+
+                <li><span>渠道名称</span></li>
                 <li>
-                    <span>渠道名称</span>
-                    <span>{{info.channelName}}</span>
+                    <span>{{ info.channelName }}</span>
                 </li>
+
+                <li><span>借款人编号</span></li>
                 <li>
-                    <span>借款人编号</span>
-                    <span>{{info.custId}}</span>
+                    <span>{{ info.custId }}</span>
                 </li>
+
+                <li><span>借款人姓名</span></li>
                 <li>
-                    <span>借款人姓名</span>
-                    <span>{{info.custName}}</span>
+                    <span>{{ info.custName }}</span>
                 </li>
+
+                <li><span>证件类型</span></li>
                 <li>
-                    <span>证件类型</span>
-                    <span>{{info.custIdType}}</span>
+                    <span>{{ info.custIdType }}</span>
                 </li>
+
+                <li><span>证件号码</span></li>
                 <li>
-                    <span>证件号码</span>
-                    <span>{{info.idNo}}</span>
+                    <span>{{ info.idNo }}</span>
                 </li>
+
+                <li><span>授信额度</span></li>
                 <li>
-                    <span>授信额度</span>
-                    <span>{{formatAmount(0,0,info.initialAmount)}}</span>
+                    <span>{{ formatAmount(0, 0, info.initialAmount) }}</span>
                 </li>
+
+                <li><span>额度编号</span></li>
                 <li>
-                    <span>额度编号</span>
-                    <span>{{info.limitNo}}</span>
+                    <span>{{ info.limitNo }}</span>
                 </li>
+
+                <li><span>额度类型</span></li>
                 <li>
-                    <span>额度类型</span>
-                    <span>{{info.limitType}}</span>
+                    <span>{{ info.limitType }}</span>
                 </li>
+
+                <li><span>额度签署日期</span></li>
                 <li>
-                    <span>额度签署日期</span>
-                    <span>{{formatterData(0,0,info.startDt)}}</span>
+                    <span>{{ formatterData(0, 0, info.startDt) }}</span>
                 </li>
+
+                <li><span>额度生效日期</span></li>
                 <li>
-                    <span>额度生效日期</span>
-                    <span>{{formatterData(0,0,info.startDt)}}</span>
+                    <span>{{ formatterData(0, 0, info.startDt) }}</span>
                 </li>
+
+                <li><span>额度到期日期</span></li>
                 <li>
-                    <span>额度到期日期</span>
-                    <span>{{formatterData(0,0,info.endDt)}}</span>
+                    <span>{{ formatterData(0, 0, info.endDt) }}</span>
                 </li>
-                <li>
-                    <span>创建时间</span>
-                    <span>{{formatterData(0,0,info.curDate)}}</span>
+
+                <li :class="$style['bottom-0']"><span>创建时间</span></li>
+                <li :class="$style['bottom-0']">
+                    <span>{{ formatterData(0, 0, info.curDate) }}</span>
                 </li>
             </ul>
+
         </div>
     </div>
 </template>
