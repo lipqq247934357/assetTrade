@@ -7,7 +7,7 @@
                         <div :class="$style['name']" class="must-choose">输出模版编号</div>
                         <div :class="$style['content']">
                             <el-form-item prop="outputTemNo">
-                                <el-input v-model="form.outputTemNo" :disabled="true"></el-input>
+                                <el-input :disabled="true" v-model="form.outputTemNo"></el-input>
                             </el-form-item>
                         </div>
                         <div :class="$style['name']" class="must-choose">文件名称</div>
@@ -114,7 +114,7 @@
                 trueVal: true,
             }
         },
-        props: ['show', 'type', 'updateId','outputTemNo']
+        props: ['show', 'type', 'updateId', 'outputTemNo']
         ,
         computed: {
             ...mapGetters(['userInfo'])
@@ -124,17 +124,7 @@
         },
         watch: {
             updateId: async function (val) {
-                if (!val) {
-                    this.form = {
-                        outputTemNo: this.outputTemNo, // 输出模板编号
-                        fileName: '', // 文件名称
-                        fileDesc: '', // 文件描述
-                        fileWordCode: '', // 文件字符编码
-                        colSplitSymbol: '', // 列分隔符
-                        sqlSentence: '', // sql语句
-                        inputUser: this.userInfo.username
-                    }
-                } else {
+                if (val) {
                     let data = await this.$api.configM.outdetailquery({
                         fileNo: val,
                         pageNum: 1,
@@ -143,6 +133,19 @@
                     if (data.data.resultCode === '0000') {
                         data = data.data;
                         this.form = data.data[0];
+                    }
+                }
+            },
+            type: function (val) {
+                if (val === 'add') {
+                    this.form = {
+                        outputTemNo: this.outputTemNo, // 输出模板编号
+                        fileName: '', // 文件名称
+                        fileDesc: '', // 文件描述
+                        fileWordCode: '', // 文件字符编码
+                        colSplitSymbol: '', // 列分隔符
+                        sqlSentence: '', // sql语句
+                        inputUser: this.userInfo.username
                     }
                 }
             }
@@ -209,6 +212,15 @@
             updateShow() {
                 this.$emit('update:show', !this.show);
                 this.$emit('clearUpdateId');
+                this.form = {
+                    outputTemNo: this.outputTemNo, // 输出模板编号
+                    fileName: '', // 文件名称
+                    fileDesc: '', // 文件描述
+                    fileWordCode: '', // 文件字符编码
+                    colSplitSymbol: '', // 列分隔符
+                    sqlSentence: '', // sql语句
+                    inputUser: this.userInfo.username
+                }
             }
         }
     }
