@@ -135,19 +135,6 @@
                         this.form = data.data[0];
                     }
                 }
-            },
-            type: function (val) {
-                if (val === 'add') {
-                    this.form = {
-                        outputTemNo: this.outputTemNo, // 输出模板编号
-                        fileName: '', // 文件名称
-                        fileDesc: '', // 文件描述
-                        fileWordCode: '', // 文件字符编码
-                        colSplitSymbol: '', // 列分隔符
-                        sqlSentence: '', // sql语句
-                        inputUser: this.userInfo.username
-                    }
-                }
             }
         },
         methods: {
