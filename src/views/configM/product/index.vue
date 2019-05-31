@@ -8,8 +8,15 @@
             <template>
                 <div>
                     <el-form :model="form" inline ref="form">
-                        <el-form-item label="渠道名称" prop="channelName">
-                            <el-input placeholder="渠道名称" v-model="form.channelName"></el-input>
+                        <el-form-item label="渠道名称" prop="channelNo">
+                            <el-select placeholder="请选择" size="max" v-model="form.channelNo">
+                                <el-option
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                        v-for="item in channeSelect">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item label="金融产品名称" prop="prodName">
                             <el-input placeholder="金融产品名称" v-model="form.prodName"></el-input>
@@ -122,7 +129,7 @@
         data() {
             return {
                 form: {
-                    channelName: '', // 渠道名称
+                    channelNo: '', // 渠道编号
                     prodName: '', // 金融产品名称
                 },
                 pagInfo: { // 分页数据
@@ -133,10 +140,13 @@
                 loading: false,
                 data: [], // 表格数据
                 trueVal: true, // 可以被优化，暂时没动
-                channelDicts: [] // 渠道字典 {code:xx,codeName:xx}
+                channelDicts: [], // 渠道字典 {code:xx,codeName:xx}
+                channeSelect: [], // 渠道列表
+                firstIncome: true
             };
         },
         activated() {
+            this.firstIncome = true;
             this.getProduct();
         },
         methods: {
@@ -144,8 +154,8 @@
                 //发起ajax请求，更改数据
                 this.loading = true;
                 let data = await this.$api.configM.productquery({
-                    qdNo: this.form.qdNo,
-                    qdName: this.form.qdName,
+                    channelNo: this.form.channelNo,
+                    prodName: this.form.prodName,
                     pageNum: this.pagInfo.currentPage,
                     pageSize: this.pagInfo.pageSize
                 });
@@ -153,10 +163,15 @@
                     data = data.data;
                     this.data = data.data;
                     this.channelDicts = data.dicts; // 字典
+                    if (this.firstIncome === true) {
+                        this.firstIncome = false;
+                        this.channelList(this.channelDicts);
+                    }
                     this.pagInfo.total = data.dataCount;
                 }
                 this.loading = false;
             },
+
             search() {
                 this.pagInfo.currentPage = 1;
                 this.getProduct();
@@ -175,7 +190,16 @@
             },
             formatterChannelName(row, column, cellValue) {
                 return this.getName(this.channelDicts, cellValue)
-            }
+            },
+            channelList(channelDicts) {
+                this.channeSelect = [];
+                for (let item of channelDicts) {
+                    let obj = {};
+                    obj.value = item.code;
+                    obj.label = item.codeName;
+                    this.channeSelect.push(obj);
+                }
+            },
         }
     }
 </script>
