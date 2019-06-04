@@ -9,7 +9,14 @@
                 <div>
                     <el-form :model="form" inline ref="form">
                         <el-form-item label="拆分方式" prop="assetSplitWay">
-                            <el-input placeholder="拆分方式" v-model="form.assetSplitWay"></el-input>
+                            <el-select placeholder="请选择" size="max" v-model="form.assetSplitWay">
+                                <el-option
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                        v-for="item in assetSplitWayArray">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                     </el-form>
                     <div :class="$style['search-btn-box']">
@@ -132,6 +139,7 @@
                     pageSize: 10
                 },
                 loading: false,
+                assetSplitWayArray: [{value: '01', label: '按比例拆分'}, {value: '02', label: '按固定值拆分'}],
                 data: [],
                 trueVal: true,
                 chashProivderDicts: [] // 资金方字典 {code:xx,codeName:xx}
