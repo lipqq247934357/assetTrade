@@ -7,8 +7,8 @@
             <template>
                 <div>
                     <el-form :model="form" inline label-width="100px" ref="form">
-                        <el-form-item label="渠道" prop="channelNo">
-                            <el-input placeholder="请输入渠道" v-model="form.channelNo"></el-input>
+                        <el-form-item label="渠道" prop="channelName">
+                            <el-input placeholder="请输入渠道" v-model="form.channelName"></el-input>
                         </el-form-item>
                         <el-form-item label="借据编号" prop="listId">
                             <el-input placeholder="请输入借据编号" v-model="form.listId"></el-input>
@@ -186,7 +186,7 @@
         data() {
             return {
                 form: {
-                    channelNo: '', // 渠道编号
+                    channelName: '', // 渠道名称
                     listId: '', //结局编号
                     custName: '', // 借款人姓名
                     idNo: '', // 身份证号
