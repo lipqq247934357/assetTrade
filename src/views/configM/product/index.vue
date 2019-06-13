@@ -177,7 +177,7 @@
                 this.getProduct();
             },
             getInfo() {
-                this.productquery();
+                this.getProduct();
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();

@@ -20,7 +20,8 @@
                         <div :class="$style['name']" class="must-choose">金融产品编号</div>
                         <div :class="[$style['content'],$style['last-box']]">
                             <el-form-item prop="prodNo">
-                                <el-input v-model="form.prodNo"></el-input>
+                                <el-input disabled v-if="updateId" v-model="form.prodNo"></el-input>
+                                <el-input v-else v-model="form.prodNo"></el-input>
                             </el-form-item>
                         </div>
                     </div>
