@@ -7,7 +7,8 @@
                         <div :class="$style['name']" class="must-choose">渠道编码</div>
                         <div :class="$style['content']">
                             <el-form-item prop="channelNo">
-                                <el-input v-model="form.channelNo"></el-input>
+                                <el-input :disabled="trueVal" v-if="updateId" v-model="form.channelNo"></el-input>
+                                <el-input v-else v-model="form.channelNo"></el-input>
                             </el-form-item>
                         </div>
                         <div :class="$style['name']" class="must-choose">渠道名称</div>

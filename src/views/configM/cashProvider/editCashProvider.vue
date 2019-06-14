@@ -7,7 +7,8 @@
                         <div :class="$style['name']" class="must-choose">资金方编码</div>
                         <div :class="$style['content']">
                             <el-form-item prop="contributiveNo">
-                                <el-input v-model="form.contributiveNo"></el-input>
+                                <el-input disabled v-if="updateId" v-model="form.contributiveNo"></el-input>
+                                <el-input v-else v-model="form.contributiveNo"></el-input>
                             </el-form-item>
                         </div>
                         <div :class="$style['name']" class="must-choose">资金方名称</div>
@@ -70,7 +71,7 @@
 
     export default {
         name: 'editProvider',
-        mixins:[alert],
+        mixins: [alert],
         data() {
             return {
                 form: {
