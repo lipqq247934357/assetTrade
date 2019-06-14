@@ -27,7 +27,7 @@
                     <span>{{ info.custName }}</span>
                 </li>
 
-                <li><span>身份号</span></li>
+                <li><span>身份证号</span></li>
                 <li>
                     <span>{{ info.idNo }}</span>
                 </li>
