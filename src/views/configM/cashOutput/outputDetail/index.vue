@@ -147,6 +147,11 @@
         },
         methods: {
             async getoutDetail() { //发起ajax请求，更改数据
+                let mRex = /^[0-9]*$/;
+                if (!mRex.test(this.form.fileNo)) {
+                    this.$message.warning({message: '文件编号无效数字', duration: 2000});
+                    return;
+                }
                 this.loading = true;
                 let data = await this.$api.configM.outdetailquery({
                     outputTemNo: this.form.outputTemNo,
