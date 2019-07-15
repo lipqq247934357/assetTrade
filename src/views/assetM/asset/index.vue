@@ -132,7 +132,7 @@
                     <el-table-column
                             :formatter="formatterData"
                             label="起息日"
-                            prop="endDate">
+                            prop="beginDate">
                     </el-table-column>
                     <el-table-column
                             label="拆分方式"
