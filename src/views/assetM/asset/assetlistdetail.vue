@@ -74,7 +74,7 @@
 
                 <li><span>起息日</span></li>
                 <li>
-                    <span>{{ formatterData(0, 0, info.endDate) }}</span>
+                    <span>{{ formatterData(0, 0, info.beginDate) }}</span>
                 </li>
 
                 <li><span>拆分方式</span></li>
