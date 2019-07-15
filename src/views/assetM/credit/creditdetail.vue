@@ -68,6 +68,12 @@
                 </li>
             </ul>
 
+            <div style="position: absolute;bottom: 25%;left: 50%;transform:translate(-50%)">
+                <el-button @click="back" size="small" style="width: 100px;" type="primary">
+                    <span style="font-size: 14px;">返&nbsp;回</span>
+                </el-button>
+            </div>
+
         </div>
     </div>
 </template>
@@ -96,6 +102,9 @@
                     }
                 });
                 this.info = data.data.detail;
+            },
+            back() {
+                this.$router.go(-1);
             }
         }
     }
