@@ -47,28 +47,40 @@
                         </div>
                     </div>
                     <div :class="$style['row']">
-                        <div :class="$style['name']">文件类型</div>
+                        <div :class="$style['name']">是否征信报送</div>
                         <div :class="$style['content']">
+                            <el-form-item prop="fileType">
+                                <el-select placeholder="请选择" size="max" v-model="form.isSubmitPCI">
+                                    <el-option
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value"
+                                            v-for="item in isSubmitPCIList">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+
+                        <div :class="$style['name']">文件类型</div>
+                        <div :class="[$style['content'],$style['last-box']]">
                             <el-form-item prop="fileType">
                                 <el-input v-model="form.fileType"></el-input>
                             </el-form-item>
                         </div>
+                    </div>
+                    <div :class="$style['row']">
                         <div :class="$style['name']">产品描述</div>
-                        <div :class="[$style['content'],$style['last-box']]">
+                        <div :class="$style['content']">
                             <el-form-item prop="prodDesc">
                                 <el-input v-model="form.prodDesc"></el-input>
                             </el-form-item>
                         </div>
-                    </div>
-                    <div :class="$style['row']">
+
                         <div :class="$style['name']" class="must-choose">创建人</div>
-                        <div :class="$style['content']">
+                        <div :class="[$style['content'],$style['last-box']]">
                             <el-form-item prop="inputUser">
                                 <el-input disabled v-model="form.inputUser"></el-input>
                             </el-form-item>
-                        </div>
-                        <div :class="$style['name']"></div>
-                        <div :class="[$style['content'],$style['last-box']]">
                         </div>
                     </div>
                 </el-form>
@@ -98,6 +110,7 @@
                     fileType: '', // 文件类型
                     prodDesc: '', // 产品描述
                     useYn: '',
+                    isSubmitPCI: '', // 是否报送
                     inputUser: ''
                 },
                 rules: { // 校验规则
@@ -113,6 +126,13 @@
                 }, {
                     value: "N",
                     label: '禁用'
+                }],
+                "isSubmitPCIList": [{
+                    value: "1",
+                    label: '是'
+                }, {
+                    value: "0",
+                    label: '否'
                 }],
                 channelList: [], // 渠道列表
                 trueVal: true,
@@ -132,7 +152,7 @@
                 this.query(params.updateId);
             } else {
                 this.updateId = '';
-                this.form.inputUser = this.userInfo.username;
+                this.form.inputUser = this.userInfo.username = 'YiGeDaShuaiBi';
             }
             this.isSubmit = false;
         },
@@ -204,6 +224,7 @@
                     prodName: form.prodName,
                     fileType: form.fileType,
                     prodDesc: form.prodDesc,
+                    isSubmitPCI: form.isSubmitPCI,
                     useYn: form.useYn,
                     inputUser: form.inputUser
                 });
@@ -220,6 +241,7 @@
                     prodName: form.prodName,
                     fileType: form.fileType,
                     prodDesc: form.prodDesc,
+                    isSubmitPCI: form.isSubmitPCI,
                     useYn: form.useYn,
                     updateUser: this.userInfo.username
                 });

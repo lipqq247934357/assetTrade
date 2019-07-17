@@ -72,6 +72,11 @@
                             prop="useYn">
                     </el-table-column>
                     <el-table-column
+                            :formatter="formatterPCI"
+                            label="是否征信报送"
+                            prop="isSubmitPCI">
+                    </el-table-column>
+                    <el-table-column
                             label="创建人"
                             prop="inputUser">
                     </el-table-column>

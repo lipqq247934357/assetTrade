@@ -25,6 +25,9 @@ const assetM = {
     },
     creditDetail(p) {
         return post(prefix + '/queryApplyCreditInfoDetail', p);
+    },
+    assetPayoffList(p) {
+        return post(prefix + '/queryAssetPayoffList', p);
     }
 };
 

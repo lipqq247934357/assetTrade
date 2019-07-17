@@ -12,6 +12,8 @@ import customerdetail from '@/views/assetM/customer/customerdetail';
 import credit from '@/views/assetM/credit';
 import creditdetail from '@/views/assetM/credit/creditdetail';
 
+import payoff from '@/views/assetM/payoff/index';
+
 /**
  * 配置管理
  */
@@ -120,6 +122,15 @@ export default [
                     title: '授信信息列表'
                 }
             },
+            {
+                path: 'payofflist',
+                name: 'payofflist',
+                component: payoff,
+                meta: {
+                    title: '资产结清列表'
+                }
+            }
+
         ],
         meta: {
             title: "资产管理"

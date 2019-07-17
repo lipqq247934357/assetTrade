@@ -15,6 +15,9 @@ export default {
         formatterSplitWay(row, column, cellValue) {
             return cellValue === '01' ? '按比例拆分' : '按固定值拆分';
         },
+        formatterPCI(row, column, cellValue) {
+            return cellValue === '1' ? '是' : '否';
+        },
         getName(data, code) {
             let len = data.length;
             for (let i = 0; i < len; i++) {
