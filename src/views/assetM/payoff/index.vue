@@ -33,7 +33,7 @@
         <!--table-->
         <div :class="$style['content']">
             <blockTitle :hide="trueVal">
-                客户信息列表
+                资产结清列表
             </blockTitle>
             <div :class="$style['table-content']">
                 <el-table
