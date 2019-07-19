@@ -129,7 +129,7 @@
                 </li>
             </ul>
 
-            <div style="position: absolute;bottom: 25%;left: 50%;transform:translate(-50%)">
+            <div style="width: 100%;text-align: center;padding-top: 30px;">
                 <el-button @click="back" size="small" style="width: 100px;" type="primary">
                     <span style="font-size: 14px;">返&nbsp;回</span>
                 </el-button>

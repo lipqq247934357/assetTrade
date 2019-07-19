@@ -13,7 +13,7 @@
                         <div :class="$style['name']" class="must-choose">文件名称</div>
                         <div :class="[$style['content'],$style['last-box']]">
                             <el-form-item prop="fileName">
-                                <el-input v-model="form.fileName"></el-input>
+                                <el-input :disabled="type === 'detail'" v-model="form.fileName"></el-input>
                             </el-form-item>
                         </div>
                     </div>
@@ -21,13 +21,13 @@
                         <div :class="$style['name']" class="must-choose">列分隔符</div>
                         <div :class="$style['content']">
                             <el-form-item prop="colSplitSymbol">
-                                <el-input v-model="form.colSplitSymbol"></el-input>
+                                <el-input :disabled="type === 'detail'" v-model="form.colSplitSymbol"></el-input>
                             </el-form-item>
                         </div>
                         <div :class="$style['name']" class="must-choose">文件字符编码</div>
                         <div :class="[$style['content'],$style['last-box']]">
                             <el-form-item prop="fileWordCode">
-                                <el-select placeholder="请选择" size="max" v-model="form.fileWordCode">
+                                <el-select :disabled="type === 'detail'" placeholder="请选择" size="max" v-model="form.fileWordCode">
                                     <el-option
                                             :key="item.value"
                                             :label="item.label"
@@ -43,7 +43,7 @@
                         <div :class="[$style['name'],$style['sql-name']]" class="must-choose">SQL语句</div>
                         <div :class="[$style['content'],$style['sql-content'],$style['last-box']]">
                             <el-form-item :class="$style['sql-textarea']" prop="sqlSentence">
-                                <el-input rows="5" type="textarea" v-model="form.sqlSentence"></el-input>
+                                <el-input :disabled="type === 'detail'" rows="5" type="textarea" v-model="form.sqlSentence"></el-input>
                             </el-form-item>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                         <div :class="$style['name']">文件描述</div>
                         <div :class="[$style['content'],$style['last-box'],$style['desc']]">
                             <el-form-item prop="fileDesc">
-                                <el-input v-model="form.fileDesc"></el-input>
+                                <el-input :disabled="type === 'detail'" v-model="form.fileDesc"></el-input>
                             </el-form-item>
                         </div>
                     </div>
