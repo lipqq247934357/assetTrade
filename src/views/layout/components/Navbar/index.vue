@@ -45,7 +45,7 @@
                 this.$store.dispatch('ToggleSideBar')
             },
             logout() {
-                console.log('pp')
+                // console.log('pp')
                 this.$store.dispatch('LogOut').then(() => {
                     window.location.reload();
                 })

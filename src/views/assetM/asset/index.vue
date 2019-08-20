@@ -205,8 +205,8 @@
             };
         },
         created() {
-            console.log(this.$store.getters.btn);
-            console.log(this.$store.getters.buttonArr);
+            // console.log(this.$store.getters.btn);
+            // console.log(this.$store.getters.buttonArr);
         },
         methods: {
             async assetList() { // 查询资产列表
