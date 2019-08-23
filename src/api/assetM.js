@@ -1,8 +1,9 @@
 import {post} from "./config/getData";
 
-let prefix = '/list';
-const assetM = {
+let basePath = '/AssetWeb'; // 资产管理平台前缀
 
+let prefix = basePath + '/list';
+const assetM = {
 
     // 查询资产列表
     assetList(p) {

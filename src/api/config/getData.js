@@ -5,9 +5,9 @@ import {requestConf} from './requestConf';
 // axios 配置
 axios.defaults.timeout = 6969;
 if (process.env.NODE_ENV === 'development') {// 根据不同的环境使用不同的接口
-    axios.defaults.baseURL = '/AssetWeb';
+    axios.defaults.baseURL = '';
 } else {
-    axios.defaults.baseURL = '/AssetWeb';
+    axios.defaults.baseURL = '';
 }
 axios.defaults.headers['Content-Type'] = 'application/json; charset=utf-8';
 

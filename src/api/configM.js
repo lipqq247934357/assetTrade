@@ -1,6 +1,8 @@
 import {post} from "./config/getData";
 
-let prefix = '/asset/pages/config';
+let basePath = '/AssetWeb'; // 资产管理平台前缀
+
+let prefix = basePath +'/asset/pages/config';
 const configM = {
 
 

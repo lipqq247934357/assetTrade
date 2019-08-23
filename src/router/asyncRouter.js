@@ -37,6 +37,15 @@ import outputDetail from '@/views/configM/cashOutput/outputDetail';
 
 
 /**
+ * 还款管理
+ */
+
+import repaymentList from '@/views/repaymentM/index';
+import repaymentDetail from '@/views/repaymentM/detail';
+import repaymentRecordList from '@/views/repaymentM/recordList';
+
+
+/**
  *
  * 配置说明：
  *{
@@ -284,6 +293,41 @@ export default [
         ],
         meta: {
             title: "配置管理"
+        }
+    },
+    {
+        path: '/repayment',
+        name: 'repayment',
+        component: layout,
+        redirect: 'noredirect',
+        children: [
+            {
+                path: 'list',
+                name: 'repaymentlist',
+                component: repaymentList,
+                meta: {
+                    title: '还款管理'
+                }
+            },
+            {
+                path: 'detail',
+                name: 'repaymentdetail',
+                component: repaymentDetail,
+                meta: {
+                    title: '还款详情'
+                }
+            },
+            {
+                path: 'recordlist',
+                name: 'repaymentrecordlist',
+                component: repaymentRecordList,
+                meta: {
+                    title: '还款明细'
+                }
+            }
+        ],
+        meta: {
+            title: "还款管理"
         }
     },
     {path: '*', redirect: '/404', hidden: true}

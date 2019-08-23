@@ -53,6 +53,39 @@ export default {
         },
         formatterSex(row, column, cellValue) {
             return cellValue;
+        },
+        formatAcFlag(row, column, cellValue) { // 借据状态格式化
+            if (cellValue === 'a') {
+                return '正常'
+            } else if (cellValue === 'e') {
+                return '逾期'
+            } else {
+                return '非应计'
+            }
+        },
+        formatRepayMethod(row, column, cellValue) { // 还款方式格式化
+            let obj = {
+                '01': '等额本金',
+                '02': '等额本息',
+                '03': '等本等费',
+                '04': '先息后本'
+            };
+            return obj[cellValue];
+        },
+        formatterListType(row, column, cellValue) {
+            let obj = {
+                '1': '携程扣款',
+                '01': '携程扣款',
+                '2': '携程扣款',
+                '02': '携程扣款',
+                '3': '携程扣款',
+                '03': '携程扣款',
+                '4': '携程扣款',
+                '04': '携程扣款',
+                '06': '人工还款',
+                '07': '人工减免'
+            }
+            return obj[cellValue];
         }
     }
 }
