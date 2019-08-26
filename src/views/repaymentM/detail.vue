@@ -140,8 +140,8 @@
                                 label="操作"
                                 min-width="200px">
                             <template slot-scope="scope">
-                                <el-button @click="reduce(scope.row)" size="small" type="primary">息费减免</el-button>
-                                <el-button @click="settle(scope.row)" size="small" type="primary">按期还款</el-button>
+                                <el-button v-if="scope.row.payoffflag === '00'" @click="reduce(scope.row)" size="small" type="primary">息费减免</el-button>
+                                <el-button v-if="scope.row.payoffflag === '00'" @click="settle(scope.row)" size="small" type="primary">按期还款</el-button>
                             </template>
                         </el-table-column>
                     </el-table>

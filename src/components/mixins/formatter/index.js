@@ -65,7 +65,7 @@ export default {
         },
         formatRepayMethod(row, column, cellValue) { // 还款方式格式化
             let obj = {
-                '01': '等额本金',
+                '01': '等额本息',
                 '02': '等额本息',
                 '03': '等本等费',
                 '04': '先息后本'

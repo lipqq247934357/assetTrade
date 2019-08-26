@@ -197,7 +197,7 @@
                     return;
                 }
 
-                if (Number(this.reduceLX) === 0 || Number(this.reduceFX) === 0) {
+                if (Number(this.reduceLX) === 0 && Number(this.reduceFX) === 0) {
                     this.$message.warning({message: '金额不能为0', duration: 2000});
                     return;
                 }
