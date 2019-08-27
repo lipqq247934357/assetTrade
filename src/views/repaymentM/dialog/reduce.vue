@@ -74,7 +74,7 @@
                             <span>减免后需还利息</span>
                         </li>
 
-                        <li :class="$style['bottom-0']"><span>{{ info.sTerm }}11</span></li>
+                        <li :class="$style['bottom-0']"><span>{{ info.sTerm }}</span></li>
                         <li :class="$style['bottom-0']">
                             <span>{{ info.sDate }}</span>
                         </li>
