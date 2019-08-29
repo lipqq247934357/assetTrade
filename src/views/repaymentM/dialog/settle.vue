@@ -38,12 +38,12 @@
 
                         <li><span>应还利息</span></li>
                         <li>
-                            <span>{{ info.sInte }}</span>
+                            <span>{{ info.sInte - info.dInte}}</span>
                         </li>
 
-                        <li><span>应还提前还款违约金</span></li>
+                        <li><span>应还罚息</span></li>
                         <li>
-                            <span>{{ info.sOtherFee }}</span>
+                            <span>{{ info.saFine -info.dFine}}</span>
                         </li>
 
                         <li :class="$style['bottom-0']"><span>本次应还总额</span></li>
@@ -113,6 +113,7 @@
                     sTerm: this.sTerm
                 });
                 if (data.data.resultCode === '0000') {
+                    console.log(data.data.bills[0]);
                     this.info = data.data.bills[0];
                 }
             },
