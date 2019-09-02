@@ -119,6 +119,8 @@
 
     import {mapGetters} from 'vuex'
 
+    import {sub} from "@/utils/utils";
+
     export default {
         props: ['show', 'listId', 'sTerm'], // 是否展示,key,期数
         data() {
@@ -206,8 +208,8 @@
                     this.$message.warning({message: '减免后的利息和罚息不能小于0', duration: 2000});
                     return;
                 }
-                this.newLX = this.info.sInte - this.reduceLX;
-                this.newFX = this.info.saFine - this.reduceFX;
+                this.newLX = sub(this.info.sInte,this.reduceLX);
+                this.newFX = sub(this.info.saFine,this.reduceFX);
             },
             reset() { // 重置弹框和内容
                 this.reduceLX = this.reduceFX = 0;

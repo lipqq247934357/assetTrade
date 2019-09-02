@@ -140,8 +140,12 @@
                                 label="操作"
                                 min-width="200px">
                             <template slot-scope="scope">
-                                <el-button v-if="scope.row.payoffflag === '00'" @click="reduce(scope.row)" size="small" type="primary">息费减免</el-button>
-                                <el-button v-if="scope.row.payoffflag === '00'" @click="settle(scope.row)" size="small" type="primary">按期还款</el-button>
+                                <el-button @click="reduce(scope.row)" size="small" type="primary"
+                                           v-if="scope.row.payoffflag === '00'">息费减免
+                                </el-button>
+                                <el-button @click="settle(scope.row)" size="small" type="primary"
+                                           v-if="scope.row.payoffflag === '00'">按期还款
+                                </el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -157,7 +161,8 @@
         </div>
         <!--提前结清-->
         <!--    key,重新加载，弹框展示    -->
-        <prepayDialog :listId="listId" :reloadPlan.sync="reloadPlan" :show.sync="showPrepay" :perpayBtnShow.sync="prepayBtnShow"/>
+        <prepayDialog :listId="listId" :perpayBtnShow.sync="prepayBtnShow" :reloadPlan.sync="reloadPlan"
+                      :show.sync="showPrepay"/>
         <!--按期还款-->
         <!--  sTerm:期数     -->
         <settleDialog :listId="listId" :reloadPlan.sync="reloadPlan" :sTerm="sTerm" :show.sync="showSettle"/>
@@ -203,6 +208,7 @@
         },
         watch: {
             reloadPlan(val) {
+                console.log(val);
                 if (val) { // 当弹框提交的内容发生改变重新加载数据
                     this.getRepaymentdetail();
                     this.reloadPlan = false;
@@ -241,8 +247,10 @@
                 this.loading = false;
             },
             settle(row) { // 按期还款
-                this.sTerm = row.sTerm;
-                this.showSettle = true;
+                if (this.isCurrentsTerm(row)) {
+                    this.sTerm = row.sTerm;
+                    this.showSettle = true;
+                }
             },
             reduce(row) { // 息费减免
                 this.sTerm = row.sTerm;
@@ -271,6 +279,19 @@
                             item.compreStatus = '提前结清';
                         } else {
                             item.compreStatus = '逾期结清';
+                        }
+                    }
+                }
+            },
+            isCurrentsTerm(row) {
+                let sTerm = row.sTerm;
+                for (let i = 0; i < this.data.length; i++) {
+                    if (sTerm === this.data[i].sTerm) { // 是这一期
+                        if (i > 0 && this.data[i - 1].payoffflag === '00') { // 上一期不是未结清的
+                            this.$message.warning({message: "不可跨期操作还款！", duration: 1000});
+                            return false;
+                        } else {
+                            return true;
                         }
                     }
                 }
