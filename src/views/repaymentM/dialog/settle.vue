@@ -38,12 +38,12 @@
 
                         <li><span>应还利息</span></li>
                         <li>
-                            <span>{{ info.sInte - info.dInte}}</span>
+                            <span>{{ sub(info.sInte,info.dInte)}}</span>
                         </li>
 
                         <li><span>应还罚息</span></li>
                         <li>
-                            <span>{{ info.saFine -info.dFine}}</span>
+                            <span>{{ sub(info.saFine,info.dFine)}}</span>
                         </li>
 
                         <li :class="$style['bottom-0']"><span>本次应还总额</span></li>
@@ -73,7 +73,7 @@
     </div>
 </template>
 <script>
-
+    import {sub} from "@/utils/utils";
     import {mapGetters} from 'vuex'
 
     export default {
@@ -149,7 +149,8 @@
             },
             closePop() {
                 this.centerDialogVisible = false;
-            }
+            },
+            sub:sub
         }
     }
 
