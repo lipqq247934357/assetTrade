@@ -48,7 +48,11 @@ axios.interceptors.response.use(function (response) {
     } else {
         Message.error({message: '未知错误!', duration: 5 * 1000});
     }
-    return Promise.reject(err);
+    /**
+     * 使用Promise.reject接收一个异常，这个异常会直接抛出，不会执行后续的代码，所以注释掉，直接返回错误对象，在实际代码中进行处理
+     */
+    // return Promise.reject(err);
+    return err;
 });
 
 export const get = (url, data = {}) => {
