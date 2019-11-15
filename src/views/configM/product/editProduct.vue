@@ -83,7 +83,95 @@
                             </el-form-item>
                         </div>
                     </div>
+
+                    <div :class="$style['row']">
+                        <div :class="$style['name']">担保费率(年)</div>
+                        <div :class="$style['content']">
+                            <el-form-item prop="prodDesc">
+                                <el-input v-model="form.guarFeeRate"></el-input>
+                            </el-form-item>
+                        </div>
+
+                        <div :class="$style['name']">担保开始时间</div>
+                        <div :class="[$style['content'],$style['last-box']]">
+                            <el-form-item prop="inputUser">
+                                <el-date-picker
+                                        :class="$style['datetime']"
+                                        type="date"
+                                        v-model="form.startDate"
+                                        value-format="yyyy-MM-dd">
+                                </el-date-picker>
+                            </el-form-item>
+                        </div>
+                    </div>
+
+
+                    <div :class="$style['row']">
+                        <div :class="$style['name']">担保结束时间</div>
+                        <div :class="$style['content']">
+                            <el-form-item prop="prodDesc">
+                                <el-date-picker
+                                        :class="$style['datetime']"
+                                        type="date"
+                                        v-model="form.endDate"
+                                        value-format="yyyy-MM-dd">
+                                </el-date-picker>
+                            </el-form-item>
+                        </div>
+                    </div>
                 </el-form>
+
+                <div style="margin: 20px 0 80px;" v-show="this.updateId">
+                    <div style="margin-left: 10px;padding-bottom: 20px;font-size: 14px;">操作历史</div>
+                    <el-table
+                            :data="data"
+                            border
+                            empty-text="无数据"
+                            header-cell-class-name="header-cell-class-name"
+                            size="medium"
+                            style="width: 100%">
+                        <el-table-column
+                                label="序号"
+                                type="index"
+                                width="50">
+                        </el-table-column>
+                        <el-table-column
+                                :formatter="foramtChannel"
+                                label="渠道名称"
+                                prop="CHANNELNO">
+                        </el-table-column>
+                        <el-table-column
+                                label="渠道编码"
+                                prop="CHANNELNO">
+                        </el-table-column>
+                        <el-table-column
+                                label="产品名称"
+                                prop="PRODNAME">
+                        </el-table-column>
+                        <el-table-column
+                                label="担保费率(年)"
+                                prop="GUARFEERATE">
+                        </el-table-column>
+                        <el-table-column
+                                label="担保开始时间"
+                                prop="STARTDATE">
+                        </el-table-column>
+                        <el-table-column
+                                label="担保结束时间"
+                                prop="ENDDATE">
+                        </el-table-column>
+                        <el-table-column
+                                label="操作人"
+                                prop="INPUTUSER">
+                        </el-table-column>
+                        <el-table-column
+                                label="操作日期"
+                                prop="CREATETIME">
+                        </el-table-column>
+                    </el-table>
+                </div>
+
+
                 <div :class="$style['btn-action']">
                     <el-button @click="back" size="medium" type="primary">返回</el-button>
                     <el-button @click="submit('form')" size="medium" type="primary">提交</el-button>
@@ -97,6 +185,7 @@
     import {mapGetters} from 'vuex'
     import schema from 'async-validator';
     import alert from '../../../components/mixins/alert';
+    import {getProp} from '@/utils/utils'
 
     export default {
         name: 'editProduct',
@@ -111,8 +200,12 @@
                     prodDesc: '', // 产品描述
                     useYn: '',
                     isSubmitPCI: '', // 是否报送
-                    inputUser: ''
+                    inputUser: '', // 创建人
+                    guarFeeRate: '', // 担保费率
+                    startDate: '', // 担保开始时间
+                    endDate: '' // 担保结束时间
                 },
+                data: [], // 操作历史
                 rules: { // 校验规则
                     channelNo: [{required: true, message: '请选择渠道'}],
                     prodNo: [{required: true, message: '请输入金融产品编号'}],
@@ -162,7 +255,7 @@
         methods: {
             async query(productNo) { // 查询用户信息
                 //发起ajax请求，更改数据
-                let data = await this.$api.configM.productquery({
+                let data = await this.$api.configM.productqueryforUpdate({
                     prodNo: productNo,
                     pageNum: 1,
                     pageSize: 10
@@ -172,7 +265,22 @@
                     if (data.data.length === 0) {
                         this.alertParamterError();
                     } else {
-                        this.form = data.data[0];
+                        console.log(data.data);
+                        let propData = {};
+                        propData.channelNo = data.data.prodData[0].CHANNELNO;
+                        propData.prodNo = data.data.prodData[0].PRODNO;
+                        propData.prodName = data.data.prodData[0].PRODNAME;
+                        propData.useYn = data.data.prodData[0].USEYN;
+                        propData.isSubmitPCI = data.data.prodData[0].ISSUBMITPCT;
+                        propData.fileType = data.data.prodData[0].FILETYPE;
+                        propData.prodDesc = data.data.prodData[0].PRODDESC;
+                        propData.inputUser = data.data.prodData[0].INPUTUSER;
+                        propData.guarFeeRate = data.data.prodData[0].GUARFEERATE;
+                        propData.startDate = data.data.prodData[0].STARTDATE;
+                        propData.endDate = data.data.prodData[0].ENDDATE;
+
+                        this.form = propData;
+                        this.data = data.data.prodHisData;
                     }
                 }
             },
@@ -226,7 +334,10 @@
                     prodDesc: form.prodDesc,
                     isSubmitPCI: form.isSubmitPCI,
                     useYn: form.useYn,
-                    inputUser: form.inputUser
+                    inputUser: form.inputUser,
+                    guarFeeRate: form.guarFeeRate,
+                    startDate: form.startDate,
+                    endDate: form.endDate
                 });
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
@@ -243,12 +354,18 @@
                     prodDesc: form.prodDesc,
                     isSubmitPCI: form.isSubmitPCI,
                     useYn: form.useYn,
-                    updateUser: this.userInfo.username
+                    updateUser: this.userInfo.username,
+                    guarFeeRate: form.guarFeeRate,
+                    startDate: form.startDate,
+                    endDate: form.endDate
                 });
                 if (data.data.resultCode === '0000') {
                     this.$router.go(-1);
                 }
             },
+            foramtChannel(row, column, cellValue) {
+                return getProp(this.channelList, 'value', cellValue, 'label');
+            }
         }
     }
 

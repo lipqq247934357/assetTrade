@@ -45,6 +45,18 @@
       padding-right: 30px;
     }
 
+    .name.textarea-name, .content.textarea-content {
+      height: 140px;
+    }
+
+    .content.textarea-content, .content.desc {
+      width: 82%;
+    }
+
+    .textarea-mt10 {
+      margin-top: 10px;
+    }
+
     .content {
       width: 32%;
       text-align: center;
@@ -70,7 +82,7 @@
 
 
     /*选择框宽度*/
-    .el-select--max {
+    .el-select--max,.el-date-editor {
       width: 100%;
     }
 

@@ -19,7 +19,7 @@
                         <el-form-item label="身份证号" prop="idNo">
                             <el-input placeholder="请输入身份证号" v-model="form.idNo"></el-input>
                         </el-form-item>
-                        <el-form-item label="放款日期">
+                        <el-form-item label="放款日期" style="width: 60%">
                             <el-col :span="11">
                                 <el-form-item prop="startDate">
                                     <el-date-picker

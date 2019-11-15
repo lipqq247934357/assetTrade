@@ -34,6 +34,10 @@ import cashOutput from '@/views/configM/cashOutput';
 import editCashOutput from '@/views/configM/cashOutput/editCashOutput';
 //资产输出明细配置
 import outputDetail from '@/views/configM/cashOutput/outputDetail';
+//短信配置
+import sms from '@/views/configM/sms/index';
+import editSms from '@/views/configM/sms/editSms';
+
 
 
 /**
@@ -43,6 +47,16 @@ import outputDetail from '@/views/configM/cashOutput/outputDetail';
 import repaymentList from '@/views/repaymentM/index';
 import repaymentDetail from '@/views/repaymentM/detail';
 import repaymentRecordList from '@/views/repaymentM/recordList';
+
+/**
+ *
+ * 担保代偿管理
+ *
+ */
+import grtCpslist from '@/views/grtCpsM/grtCps/index';
+import grtDetail from '@/views/grtCpsM/grtCps/grtdetail';
+import grtFee from '@/views/grtCpsM/grtF/index';
+
 
 
 /**
@@ -289,6 +303,24 @@ export default [
                 meta: {
                     title: '模板明细配置'
                 }
+            },
+            {
+                path: 'sms',
+                name: 'sms',
+                hidden: true,
+                component: sms,
+                meta: {
+                    title: '短信配置'
+                }
+            },
+            {
+                path: 'updateSms',
+                name: 'updateSms',
+                hidden: true,
+                component: editSms,
+                meta: {
+                    title: '短信配置'
+                }
             }
         ],
         meta: {
@@ -328,6 +360,41 @@ export default [
         ],
         meta: {
             title: "还款管理"
+        }
+    },
+    {
+        path: '/guaranteeM',
+        name: 'guaranteeM',
+        component: layout,
+        redirect: 'noredirect',
+        children: [
+            {
+                path: 'list',
+                name: 'grtlist',
+                component: grtCpslist,
+                meta: {
+                    title: '担保代偿'
+                }
+            },
+            {
+                path: 'detail',
+                name: 'grtDetail',
+                component: grtDetail,
+                meta: {
+                    title: '担保代偿'
+                }
+            },
+            {
+                path: 'fee',
+                name: 'grtdetail',
+                component: grtFee,
+                meta: {
+                    title: '担保费汇总查询'
+                }
+            },
+        ],
+        meta: {
+            title: "担保代偿管理"
         }
     },
     {path: '*', redirect: '/404', hidden: true}

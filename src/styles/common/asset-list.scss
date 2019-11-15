@@ -16,10 +16,6 @@
       .el-form-item {
         margin-bottom: 0;
       }
-
-      &:last-child {
-        width: 60%;
-      }
     }
 
     .el-input {
@@ -28,12 +24,17 @@
 
     .el-date-editor--date {
       display: inline-block;
+      width: 178px;
+    }
+
+    .el-select {
+      width: 178px;
     }
   }
 
   .datetime {
     display: inline-block;
-    width: 180px;
+    width: 178px;
   }
 
   .search-btn-box {
@@ -45,6 +46,7 @@
       }
     }
   }
+
 
 }
 
