@@ -18,6 +18,10 @@ const configM = {
         return post(prefix + '/finProduct/query', p);
     },
 
+    productqueryforUpdate(p) {
+        return post(prefix + '/finProduct/queryForUpdate', p);
+    },
+
     productadd(p) {
         return post(prefix + '/finProduct/add', p);
     },
@@ -120,6 +124,11 @@ const configM = {
     dictQuery(p) {
         return post(prefix + '/dict/query', p);
     },
+
+    //担保费汇总查询
+    cpsDetail(p) {
+        return post(basePath + '/assure/assureSummaryQuery', p);
+    }
 
 };
 

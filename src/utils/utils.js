@@ -7,6 +7,8 @@
  *
  */
 
+import _ from 'lodash';
+
 export const urlParse4Search = function () {
     let url = window.location.search;
     let obj = {};
@@ -95,18 +97,34 @@ export const treeUtil = function (data) {
  *
  */
 //js加法
-export const add =function(arg1, arg2) {
+export const add = function (arg1, arg2) {
     let r1, r2, m;
-    try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
-    try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
+    try {
+        r1 = arg1.toString().split(".")[1].length
+    } catch (e) {
+        r1 = 0
+    }
+    try {
+        r2 = arg2.toString().split(".")[1].length
+    } catch (e) {
+        r2 = 0
+    }
     m = Math.pow(10, Math.max(r1, r2))
     return (arg1 * m + arg2 * m) / m
 };
 //js减法
-export const sub =function(arg1, arg2) {
+export const sub = function (arg1, arg2) {
     let r1, r2, m, n;
-    try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
-    try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
+    try {
+        r1 = arg1.toString().split(".")[1].length
+    } catch (e) {
+        r1 = 0
+    }
+    try {
+        r2 = arg2.toString().split(".")[1].length
+    } catch (e) {
+        r2 = 0
+    }
     m = Math.pow(10, Math.max(r1, r2));
     //last modify by deeka
     //动态控制精度长度
@@ -114,10 +132,16 @@ export const sub =function(arg1, arg2) {
     return ((arg1 * m - arg2 * m) / m).toFixed(n);
 };
 //js乘法
-export const mul =function(arg1, arg2) {
+export const mul = function (arg1, arg2) {
     let m = 0, s1 = arg1.toString(), s2 = arg2.toString();
-    try { m += s1.split(".")[1].length } catch (e) { }
-    try { m += s2.split(".")[1].length } catch (e) { }
+    try {
+        m += s1.split(".")[1].length
+    } catch (e) {
+    }
+    try {
+        m += s2.split(".")[1].length
+    } catch (e) {
+    }
     return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
 };
 // //js除法
@@ -131,3 +155,60 @@ export const mul =function(arg1, arg2) {
 //         return (r1 / r2) * pow(10, t2 - t1);
 //     }
 // };
+
+/**
+ * 提取数组中某个对象的属性为某个值的对象
+ * @param data 数据
+ * @param prop 属性
+ * @param val 值
+ * @returns Object || undefined
+ */
+
+function getObj(data, prop, val) {
+    let len = data.length;
+    for (let i = 0; i < len; i++) {
+        if (data[i][prop] === val) {
+            return data[i];
+        }
+    }
+}
+
+/**
+ *
+ * 提取数组中某个对象的属性为某个值的对象的几个属性
+ * @param data 数据
+ * @param prop 属性
+ * @param val 值
+ * @param needVal
+ */
+
+export const getProp = function (data, prop, val, needVal) {
+
+    let obj = getObj(data, prop, val);
+    if (obj) {
+        if (Array.isArray(needVal)) {
+            return _.values(_.pick(obj, needVal));
+        } else {
+            return obj[needVal];
+        }
+    }
+};
+
+/**
+ * 将url的参数解析成key,val的形式
+ * @param url
+ * @returns {{}}
+ */
+export const urlParams = function (url) {
+    let _url = url.split("?")[1];
+    if (!_url) {
+        return {};
+    }
+    let windowHref = _url.split("&");
+    let obj = {};
+    for (let i = 0; i < windowHref.length; i++) {
+        let arr = windowHref[i].split("=");
+        obj[arr[0]] = arr[1]
+    }
+    return obj;
+};
