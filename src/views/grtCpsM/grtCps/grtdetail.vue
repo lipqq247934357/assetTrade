@@ -9,25 +9,28 @@
                         header-cell-class-name="header-cell-class-name"
                         size="medium"
                         style="width: 100%">
-                    <el-table-column label="借据号" prop="listId">
+                    <el-table-column
+                            label="借据号"
+                            min-width="150px"
+                            prop="LISTID">
                     </el-table-column>
-                    <el-table-column label="期次" prop="term">
+                    <el-table-column label="期次" prop="TERM">
                     </el-table-column>
-                    <el-table-column label="应还日期" prop="sDate">
+                    <el-table-column label="应还日期" prop="SDATE">
                     </el-table-column>
-                    <el-table-column label="应还本金" prop="sCapi">
+                    <el-table-column label="应还本金" prop="SCAPI">
                     </el-table-column>
-                    <el-table-column label="应还利息" prop="sInte">
+                    <el-table-column label="应还利息" prop="SINTE">
                     </el-table-column>
-                    <el-table-column label="应收担保费" prop="sAssureAmt">
+                    <el-table-column label="应收担保费" prop="SASSUREAMT">
                     </el-table-column>
-                    <el-table-column label="实还日期" prop="rDate">
+                    <el-table-column label="实还日期" prop="RDATE">
                     </el-table-column>
-                    <el-table-column label="实还本金" prop="rCapi">
+                    <el-table-column label="实还本金" prop="RCAPI">
                     </el-table-column>
-                    <el-table-column label="实还利息" prop="rInte">
+                    <el-table-column label="实还利息" prop="RINTE">
                     </el-table-column>
-                    <el-table-column label="实收担保费" prop="rAssureAmt">
+                    <el-table-column label="实收担保费" prop="RASSUREAMT">
                     </el-table-column>
                 </el-table>
             </div>
@@ -57,7 +60,7 @@
             let listId = this.$route.query.listId;
             let channelId = this.$route.query.channelId;
             if (listId && channelId) {
-                this.getInfo(listId,channelId);
+                this.getInfo(listId, channelId);
             } else {
                 this.$message.warning({message: '参数异常', duration: 2000});
                 setTimeout(() => {
@@ -66,8 +69,8 @@
             }
         },
         methods: {
-            async getInfo(listId,channelId) { // 根据id获取数据
-                let res = await this.$api.grtCps.billsDetail({listId,channelId});
+            async getInfo(listId, channelId) { // 根据id获取数据
+                let res = await this.$api.grtCps.billsDetail({listId, channelId});
                 this.data = res.data.data;
             },
             back() {

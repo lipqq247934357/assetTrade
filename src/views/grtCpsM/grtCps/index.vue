@@ -558,7 +558,7 @@
                 }
 
                 // 3.所有数据的状态都应该是对的
-                if (!(assureStatus.has(0) && assureStatus.size === 1)) {
+                if (!(assureStatus.has('0') && assureStatus.size === 1)) {
                     this.$message.warning({message: '选中数据状态有误', duration: 2000});
                     return;
                 }
