@@ -329,6 +329,7 @@
     import collapse from '@/components/collapse';
     import formatter from '@/components/mixins/formatter';
     import {getProp} from '@/utils/utils';
+    import _ from 'lodash';
 
 
     export default {
@@ -470,10 +471,10 @@
                 let data = await this.$api.configM.dictQuery({dictType: "channel"});
                 this.channelDicts = data.data.dicts;
             },
-            search() { // 点击查询按钮
+            search: _.throttle(function () { // 点击查询按钮
                 this.pagInfo.currentPage = 1;
                 this.getDataInfo();
-            },
+            }, 1500),
             getRowKeys(row) { // 设置每一行的key
                 return row.LISTID;
             },
@@ -481,7 +482,6 @@
                 this.$refs[formName].resetFields();
             },
             exportExcelConfirm() {
-
                 let list = this.getIds(); // 获取id集合
                 if (list.length <= 0) { // 没有选中内容
                     let haveVal = false; // 表单至少有一项有值
