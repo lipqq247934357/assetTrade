@@ -1,0 +1,16 @@
+{
+  "id": "1517672",
+  "name": "assetTrade",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "11858226",
+      "name": "批量",
+      "font_class": "piliang-copy",
+      "unicode": "e6a0",
+      "unicode_decimal": 59040
+    }
+  ]
+}

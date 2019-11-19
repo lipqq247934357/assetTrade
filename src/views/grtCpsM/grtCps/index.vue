@@ -121,14 +121,17 @@
                                    size="medium" type="primary"
                                    v-waves>导出
                         </el-button>
-                        <el-button :loading="loadingBtn.declaration" @click="declarationConfirm" icon="el-icon-setting"
-                                   size="medium" type="primary"
+                        <el-button :loading="loadingBtn.declaration" @click="declarationConfirm"
+                                   class="iconfont icon-piliang-copy"
+                                   size="medium"
+                                   style="font-size: 14px;" type="primary"
                                    v-waves>批量申报
                         </el-button>
                         <el-button :loading="loadingBtn.compensation" @click="compensationConfirm"
-                                   icon="el-icon-setting" size="medium" type="primary"
-                                   v-waves>
-                            批量代偿
+                                   class="iconfont icon-piliang-copy"
+                                   size="medium"
+                                   style="font-size: 14px;" type="primary"
+                                   v-waves>批量代偿
                         </el-button>
                         <el-button @click="resetForm('form')" icon="el-icon-refresh" size="medium" type="primary"
                                    v-waves>重置
@@ -173,6 +176,7 @@
                     </el-table-column>
                     <el-table-column
                             label="证件号码"
+                            min-width="165px"
                             prop="IDNO">
                     </el-table-column>
                     <el-table-column
@@ -185,11 +189,12 @@
                     </el-table-column>
                     <el-table-column
                             label="放款日期"
+                            min-width="100px"
                             prop="BEGINDATE">
                     </el-table-column>
                     <el-table-column
                             label="担保费率"
-                            prop="ASSUREFEERATE"
+                            prop="GUARFEERATE"
                     ></el-table-column>
                     <el-table-column
                             label="借款费率（年）"
@@ -209,6 +214,7 @@
                     ></el-table-column>
                     <el-table-column
                             label="应还日期"
+                            min-width="100px"
                             prop="SDATE">
                     </el-table-column>
                     <el-table-column
@@ -264,8 +270,8 @@
                             prop="RSETTLEINTE"
                     ></el-table-column>
                     <el-table-column
-                            label="借据状态"
                             :formatter="formatAcFlag"
+                            label="借据状态"
                             prop="ACFLAG">
                     </el-table-column>
                     <el-table-column
@@ -275,10 +281,12 @@
                     ></el-table-column>
                     <el-table-column
                             label="申报日期"
+                            min-width="100px"
                             prop="DECLAREDATE"
                     ></el-table-column>
                     <el-table-column
                             label="代偿日期"
+                            min-width="100px"
                             prop="COMPENSATEDATE"
                     ></el-table-column>
                     <el-table-column
@@ -502,10 +510,10 @@
                 this.loadingBtn.export = true;
                 import('@/vendor/Export2Excel').then(async excel => {
                     const tHeader = ['借据号', '渠道名称', '产品名称', '姓名', '证件号码', '借款金额', '借款期限', '放款日期', '担保费率', '借款费率（年）', '应收担保费', '应付通道费', '实收担保费', '应还日期', '逾期天数', '逾期利息', '实还总金额', '实还本金', '实还利息', '实还罚息', '实还违约金', '贷款余额', '待赔付金额', '应收理赔本金', '应收理赔利息', '实收理赔本金', '实收理赔利息', '借据状态', '担保状态', '申报日期', '代偿日期'];
-                    const filterVal = ['listId', 'channelName', 'prodName', 'custName', 'idNo', 'loanAmount', 'loanTerm', 'beginDate', 'assureFeeRate', 'interestRate', 'sAssureAmount', 'sChannelAmount', 'rAssureAmount', 'sDate', 'overDays', 'bInte', 'rAmount', 'rCapi', 'rInte', 'rFine', 'rFoul', 'bal', 'sPaidAmount', 'sSettleBal', 'sSettleInte', 'rSettleBal', 'rSettleInte', 'acFlag', 'assureStatus', 'declareDate', 'compensateDate']
+                    const filterVal = ['LISTID', 'CHANNELNAME', 'PRODNAME', 'CUSTNAME', 'IDNO', 'LOANAMOUNT', 'LOANTERM', 'BEGINDATE', 'ASSUREFEERATE', 'INTERESTRATE', 'SASSUREAMOUNT', 'SCHANNELAMOUNT', 'RASSUREAMOUNT', 'SDATE', 'OVERDAYS', 'BINTE', 'RAMOUNT', 'RCAPI', 'RINTE', 'RFINE', 'RFOUL', 'BAL', 'SPAIDAMOUNT', 'SSETTLEBAL', 'SSETTLEINTE', 'RSETTLEBAL', 'RSETTLEINTE', 'ACFLAG', 'ASSURESTATUS', 'DECLAREDATE', 'COMPENSATEDATE']
                     let data = await this.$api.grtCps.exportExcel({...this.form, listIds: list});
                     try {
-                        data = this.formatJson(filterVal, data);
+                        data = this.formatJson(filterVal, data.data.data);
                         excel.export_json_to_excel({
                             header: tHeader,
                             data,
@@ -674,4 +682,11 @@
 
 <style lang="scss" module>
     @import '../../../styles/common/asset-list';
+
+    :global {
+        .icon-piliang-copy:before {
+            margin-right: 6px;
+            font-size: 12px;
+        }
+    }
 </style>
