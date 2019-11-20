@@ -12,7 +12,7 @@ const configM = {
      * @returns {AxiosPromise<any>}
      */
 
-    repaymentquery(p) {
+    repaymentquery(p: Object) {
         return post(prefix + '/getOverDueLoanInfo', p);
     },
 
@@ -23,7 +23,7 @@ const configM = {
      * @returns {AxiosPromise<any>}
      */
 
-    repaymentdetail(p) {
+    repaymentdetail(p: Object) {
         return post(prefix + '/queryBills', p);
     },
 
@@ -34,7 +34,7 @@ const configM = {
      * @returns {AxiosPromise<any>}
      */
 
-    repaymentrecord(p) {
+    repaymentrecord(p: Object) {
         return post(prefix + '/queryListRepay', p);
     },
 
@@ -45,7 +45,7 @@ const configM = {
      * @returns {AxiosPromise<any>}
      */
 
-    prepayTrial(p) {
+    prepayTrial(p: Object) {
         return post(prefix + '/prepayTrial', p);
     },
 
@@ -55,7 +55,7 @@ const configM = {
      * @returns {AxiosPromise<any>}
      */
 
-    repay(p) {
+    repay(p: Object) {
         return post(prefix + '/repayHandler', p);
     },
 
@@ -65,7 +65,7 @@ const configM = {
      * @returns {AxiosPromise<any>}
      */
 
-    repayRelief(p) {
+    repayRelief(p: Object) {
         return post(prefix + '/reliefHandler', p);
     },
 
@@ -76,7 +76,7 @@ const configM = {
      * @returns {*}
      */
 
-    dictQuery(p) {
+    dictQuery(p: Object) {
         return post(prefix + '/dict/query', p);
     },
 

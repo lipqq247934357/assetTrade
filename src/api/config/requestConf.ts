@@ -1,4 +1,4 @@
-import {getToken} from '../../utils/auth';
+import {getToken} from '@/utils/auth';
 import store from '../../store';
 
 export const requestConf = function (config) {

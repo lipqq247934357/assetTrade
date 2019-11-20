@@ -199,7 +199,7 @@ export const getProp = function (data, prop, val, needVal) {
  * @param url
  * @returns {{}}
  */
-export const urlParams = function (url) {
+export const urlParams = function (url: string) {
     let _url = url.split("?")[1];
     if (!_url) {
         return {};

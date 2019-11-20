@@ -6,28 +6,28 @@ let prefix = basePath + '/list';
 const assetM = {
 
     // 查询资产列表
-    assetList(p) {
+    assetList(p: Object) {
         return post(prefix + '/queryAssetList', p);
     },
     // 查询资产详情
-    assetDetail(p) {
+    assetDetail(p: Object) {
         return post(prefix + '/queryAssetDetail', p);
     },
 
-    customerList(p) {
+    customerList(p: Object) {
         return post(prefix + '/queryCustomerInfoList', p);
     },
-    customerDetail(p) {
+    customerDetail(p: Object) {
         return post(prefix + '/queryCustomerInfoDetail', p);
     },
 
-    creditList(p) {
+    creditList(p: Object) {
         return post(prefix + '/queryApplyCreditist', p);
     },
-    creditDetail(p) {
+    creditDetail(p: Object) {
         return post(prefix + '/queryApplyCreditInfoDetail', p);
     },
-    assetPayoffList(p) {
+    assetPayoffList(p: Object) {
         return post(prefix + '/queryAssetPayoffList', p);
     }
 };

@@ -55,11 +55,11 @@ axios.interceptors.response.use(function (response) {
     return err;
 });
 
-export const get = (url, data = {}) => {
+export const get = (url: string, data = {}) => {
     return axios.get(url, {params: data});
 }
 
 
-export const post = (url, data = {}) => {
+export const post = (url: string, data = {}) => {
     return axios.post(url, data);
 }

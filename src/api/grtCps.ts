@@ -6,23 +6,23 @@ let prefix = basePath + '/assure';
 const grtCps = {
 
     // 查询担保代偿
-    cpsList(p) {
+    cpsList(p: Object) {
         return post(prefix + '/compensationList', p);
     },
     // 查询担保代偿账单详情
-    billsDetail(p) {
+    billsDetail(p: Object) {
         return post(prefix + '/billsDetail', p);
     },
     //批量申报
-    declareList(p) {
+    declareList(p: Object) {
         return post(prefix + '/declareList', p);
     },
     //批量代偿
-    assureList(p) {
+    assureList(p: Object) {
         return post(prefix + '/assureList', p);
     },
     //导出
-    exportExcel(p) {
+    exportExcel(p: Object) {
         return post(prefix + '/download', p);
     }
 };

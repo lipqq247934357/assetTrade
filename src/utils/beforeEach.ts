@@ -48,10 +48,12 @@ router.beforeEach((to, from, next) => {
                         NProgress.done();
                         next();
                     }
-                }).catch(function (error) {
+                }).catch(function (error: Error) {
                     NProgress.done();
                     Message.error({message: error.toLocaleString(), duration: 3 * 1000});
-                    setTimeout(function(){window.location.href = ucenterLoginUrl;},3000)
+                    setTimeout(function () {
+                        window.location.href = ucenterLoginUrl;
+                    }, 3000)
                 });
             } else { // 如果用户已经有权限树和用户信息
                 // 通过请求路径设置menuId,btnArr
