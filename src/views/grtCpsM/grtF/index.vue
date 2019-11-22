@@ -112,7 +112,6 @@
         },
         methods: {
             async assetList() { // 查询资产列表
-                debugger;
                 //发起ajax请求，更改数据
                 this.loading = true;
                 let res = await this.$api.configM.cpsDetail({
