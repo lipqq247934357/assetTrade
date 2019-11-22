@@ -7,7 +7,8 @@
 module.exports = {
     // 选项...
     publicPath: process.env.NODE_ENV === 'production'
-        ? '/assettrade/'
+        // ? '/assettrade/' // 线上打包
+        ? '/' // 测试打包
         : '/',
     devServer: {
         // before(app) {

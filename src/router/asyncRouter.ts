@@ -1,42 +1,42 @@
-import layout from '../views/layout/Layout';
+import layout from '../views/layout/Layout.vue';
 /**
  * 资产管理
  */
 // 资产
-import asset from '@/views/assetM/asset';
-import assetlistdetail from '@/views/assetM/asset/assetlistdetail';
+import asset from '@/views/assetM/asset/index.vue';
+import assetlistdetail from '@/views/assetM/asset/assetlistdetail.vue';
 //客户信息
-import customer from '@/views/assetM/customer';
-import customerdetail from '@/views/assetM/customer/customerdetail';
+import customer from '@/views/assetM/customer/index.vue';
+import customerdetail from '@/views/assetM/customer/customerdetail.vue';
 //授权信息
-import credit from '@/views/assetM/credit';
-import creditdetail from '@/views/assetM/credit/creditdetail';
+import credit from '@/views/assetM/credit/index.vue';
+import creditdetail from '@/views/assetM/credit/creditdetail.vue';
 
-import payoff from '@/views/assetM/payoff/index';
+import payoff from '@/views/assetM/payoff/index.vue';
 
 /**
  * 配置管理
  */
 //渠道配置
-import channel from '@/views/configM/channel';// 渠道
-import editChannel from '@/views/configM/channel/editChannel';
+import channel from '@/views/configM/channel/index.vue';// 渠道
+import editChannel from '@/views/configM/channel/editChannel.vue';
 //资金方配置
-import cashProvider from '@/views/configM/cashProvider';
-import editCashProvider from '@/views/configM/cashProvider/editCashProvider';
+import cashProvider from '@/views/configM/cashProvider/index.vue';
+import editCashProvider from '@/views/configM/cashProvider/editCashProvider.vue';
 //拆分规则配置
-import product from '@/views/configM/product';
-import editProduct from '@/views/configM/product/editProduct';
+import product from '@/views/configM/product/index.vue';
+import editProduct from '@/views/configM/product/editProduct.vue';
 //金融产品配置
-import splitRules from '@/views/configM/splitRules';
-import editSplitRules from '@/views/configM/splitRules/editSplitRules';
+import splitRules from '@/views/configM/splitRules/index.vue';
+import editSplitRules from '@/views/configM/splitRules/editSplitRules.vue';
 //资产输出配置
-import cashOutput from '@/views/configM/cashOutput';
-import editCashOutput from '@/views/configM/cashOutput/editCashOutput';
+import cashOutput from '@/views/configM/cashOutput/index.vue';
+import editCashOutput from '@/views/configM/cashOutput/editCashOutput.vue';
 //资产输出明细配置
-import outputDetail from '@/views/configM/cashOutput/outputDetail';
+import outputDetail from '@/views/configM/cashOutput/outputDetail/index.vue';
 //短信配置
-import sms from '@/views/configM/sms/index';
-import editSms from '@/views/configM/sms/editSms';
+import sms from '@/views/configM/sms/index.vue';
+import editSms from '@/views/configM/sms/editSms.vue';
 
 
 
@@ -44,18 +44,18 @@ import editSms from '@/views/configM/sms/editSms';
  * 还款管理
  */
 
-import repaymentList from '@/views/repaymentM/index';
-import repaymentDetail from '@/views/repaymentM/detail';
-import repaymentRecordList from '@/views/repaymentM/recordList';
+import repaymentList from '@/views/repaymentM/index.vue';
+import repaymentDetail from '@/views/repaymentM/detail.vue';
+import repaymentRecordList from '@/views/repaymentM/recordList.vue';
 
 /**
  *
  * 担保代偿管理
  *
  */
-import grtCpslist from '@/views/grtCpsM/grtCps/index';
-import grtDetail from '@/views/grtCpsM/grtCps/grtdetail';
-import grtFee from '@/views/grtCpsM/grtF/index';
+import grtCpslist from '@/views/grtCpsM/grtCps/index.vue';
+import grtDetail from '@/views/grtCpsM/grtCps/grtdetail.vue';
+import grtFee from '@/views/grtCpsM/grtF/index.vue';
 
 
 

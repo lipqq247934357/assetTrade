@@ -1,15 +1,15 @@
 const getters = {
-    sidebar: state => state.app.sidebar,
-    device: state => state.app.device,
-    token: state => state.user.token,
-    avatar: state => state.user.avatar,
-    name: state => state.user.name,
-    roles: state => state.user.roles,
-    tree: state => state.user.tree,
-    btn: state => state.user.btn,
-    userInfo: state => state.user.userInfo,
-    menuId: state => state.user.menuId,
-    buttonArr: state => state.user.buttonArr,
-    btnId: state => state.user.btnId
+    sidebar: (state: any) => state.app.sidebar,
+    device: (state: any) => state.app.device,
+    token: (state: any) => state.user.token,
+    avatar: (state: any) => state.user.avatar,
+    name: (state: any) => state.user.name,
+    roles: (state: any) => state.user.roles,
+    tree: (state: any) => state.user.tree,
+    btn: (state: any) => state.user.btn,
+    userInfo: (state: any) => state.user.userInfo,
+    menuId: (state: any) => state.user.menuId,
+    buttonArr: (state: any) => state.user.buttonArr,
+    btnId: (state: any) => state.user.btnId
 }
 export default getters

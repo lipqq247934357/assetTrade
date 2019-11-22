@@ -16,61 +16,61 @@ const user = {
     },
 
     mutations: {
-        SET_TOKEN: (state, token) => {
+        SET_TOKEN: (state: any, token: any) => {
             state.token = token
         },
-        SET_NAME: (state, name) => {
+        SET_NAME: (state: any, name: any) => {
             state.name = name
         },
-        SET_AVATAR: (state, avatar) => {
+        SET_AVATAR: (state: any, avatar: any) => {
             state.avatar = avatar
         },
-        SET_ROLES: (state, roles) => {
+        SET_ROLES: (state: any, roles: any) => {
             state.roles = roles
         },
 
-        SET_TREE: (state, tree) => {
+        SET_TREE: (state: any, tree: any) => {
             state.tree = tree
         },
 
-        SET_BTN: (state, btn) => {
+        SET_BTN: (state: any, btn: any) => {
             state.btn = btn
         },
 
-        SET_USERINFO: (state, userInfo) => {
+        SET_USERINFO: (state: any, userInfo: any) => {
             state.userInfo = userInfo
         },
-        SET_MENUID: (state, menuId) => {
+        SET_MENUID: (state: any, menuId: any) => {
             state.menuId = menuId
         },
-        SET_BUTTONIDARR: (state, buttonArr) => {
+        SET_BUTTONIDARR: (state: any, buttonArr: any) => {
             state.buttonArr = buttonArr
         },
-        SET_BTNID: (state, btnId) => {
+        SET_BTNID: (state: any, btnId: any) => {
             state.btnId = btnId
         },
     },
 
     actions: {
         // 登录
-        Login({commit}, userInfo) {
+        Login({commit}: any, userInfo: any) {
             const username = userInfo.username.trim()
             return new Promise((resolve, reject) => {
-                vue.prototype.$api.common.login(username, userInfo.password).then(response => {
+                vue.prototype.$api.common.login(username, userInfo.password).then((response: any) => {
                     const data = response.data
                     setToken(data.token) // 设置token值
                     commit('SET_TOKEN', data.token)
                     resolve()
-                }).catch(error => {
+                }).catch((error: any) => {
                     reject(error)
                 })
             })
         },
 
         // 获取用户信息
-        GetInfo({commit, state}) {
+        GetInfo({commit, state}: any) {
             return new Promise((resolve, reject) => {
-                vue.prototype.$api.common.getInfo(state.token).then(response => {
+                vue.prototype.$api.common.getInfo(state.token).then((response: any) => {
                     const data = response.data
                     if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
                         commit('SET_ROLES', data.roles)
@@ -80,21 +80,21 @@ const user = {
                     commit('SET_NAME', data.name)
                     commit('SET_AVATAR', data.avatar)
                     resolve(response)
-                }).catch(error => {
+                }).catch((error: any) => {
                     reject(error)
                 })
             })
         },
 
         // 登出
-        LogOut({commit}) {
+        LogOut({commit}: any) {
             commit('SET_TOKEN', '')
             commit('SET_ROLES', [])
             removeToken()
         },
 
         // 前端 登出
-        FedLogOut({commit}) {
+        FedLogOut({commit}: any) {
             return new Promise(resolve => {
                 commit('SET_TOKEN', '')
                 removeToken()

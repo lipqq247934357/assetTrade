@@ -3,38 +3,38 @@ import Cookies from 'js-cookie'
 const app = {
     state: {
         sidebar: {
-            opened: !+Cookies.get('sidebarStatus'),
+            opened: !+(Cookies.get('sidebarStatus') || 0),
             withoutAnimation: false
         },
         device: 'desktop'
     },
     mutations: {
-        TOGGLE_SIDEBAR: state => {
+        TOGGLE_SIDEBAR: (state: any) => {
             if (state.sidebar.opened) {
-                Cookies.set('sidebarStatus', 1)
+                Cookies.set('sidebarStatus', '1')
             } else {
-                Cookies.set('sidebarStatus', 0)
+                Cookies.set('sidebarStatus', '0')
             }
             state.sidebar.opened = !state.sidebar.opened
             state.sidebar.withoutAnimation = false
         },
-        CLOSE_SIDEBAR: (state, withoutAnimation) => {
-            Cookies.set('sidebarStatus', 1)
+        CLOSE_SIDEBAR: (state: any, withoutAnimation: any) => {
+            Cookies.set('sidebarStatus', '1')
             state.sidebar.opened = false
             state.sidebar.withoutAnimation = withoutAnimation
         },
-        TOGGLE_DEVICE: (state, device) => {
+        TOGGLE_DEVICE: (state: any, device: any) => {
             state.device = device
         }
     },
     actions: {
-        ToggleSideBar: ({commit}) => {
+        ToggleSideBar: ({commit}: any) => {
             commit('TOGGLE_SIDEBAR')
         },
-        CloseSideBar({commit}, {withoutAnimation}) {
+        CloseSideBar({commit}: any, {withoutAnimation}: any) {
             commit('CLOSE_SIDEBAR', withoutAnimation)
         },
-        ToggleDevice({commit}, device) {
+        ToggleDevice({commit}: any, device: any) {
             commit('TOGGLE_DEVICE', device)
         }
     }

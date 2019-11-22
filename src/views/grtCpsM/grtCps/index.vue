@@ -270,7 +270,7 @@
                             prop="RSETTLEINTE"
                     ></el-table-column>
                     <el-table-column
-                            :formatter="formatAcFlag"
+                            :formatter="formatAcFlag4Detail"
                             label="借据状态"
                             prop="ACFLAG">
                     </el-table-column>
@@ -296,10 +296,10 @@
                     >
                         <template slot-scope="scope">
                             <el-button @click="detail(scope.row)" size="small" type="primary">查询</el-button>
-                            <el-button @click="declarationOne(scope.row)" size="small"
+                            <el-button @click="declarationOneConfirm(scope.row)" size="small"
                                        type="primary" v-if="scope.row.ASSURESTATUS == '0'">申报
                             </el-button>
-                            <el-button @click="compensationOne(scope.row)" size="small"
+                            <el-button @click="compensationOneConfirm(scope.row)" size="small"
                                        type="primary" v-if="scope.row.ASSURESTATUS == '2'">代偿
                             </el-button>
                         </template>
@@ -437,6 +437,7 @@
         },
         methods: {
             async getData() { //发起ajax请求，更改数据
+                this.$refs && this.$refs.singleTable && this.$refs.singleTable.clearSelection(); // 清除选中元素
                 this.loadingBtn.search = true;
                 this.loading = true;
 
@@ -510,11 +511,11 @@
                 this.loadingBtn.export = true;
                 import('@/vendor/Export2Excel').then(async excel => {
                     const tHeader = ['借据号', '渠道名称', '产品名称', '姓名', '证件号码', '借款金额', '借款期限', '放款日期', '担保费率', '借款费率（年）', '应收担保费', '应付通道费', '实收担保费', '应还日期', '逾期天数', '逾期利息', '实还总金额', '实还本金', '实还利息', '实还罚息', '实还违约金', '贷款余额', '待赔付金额', '应收理赔本金', '应收理赔利息', '实收理赔本金', '实收理赔利息', '借据状态', '担保状态', '申报日期', '代偿日期'];
-                    const filterVal = ['LISTID', 'CHANNELNAME', 'PRODNAME', 'CUSTNAME', 'IDNO', 'LOANAMOUNT', 'LOANTERM', 'BEGINDATE', 'ASSUREFEERATE', 'INTERESTRATE', 'SASSUREAMOUNT', 'SCHANNELAMOUNT', 'RASSUREAMOUNT', 'SDATE', 'OVERDAYS', 'BINTE', 'RAMOUNT', 'RCAPI', 'RINTE', 'RFINE', 'RFOUL', 'BAL', 'SPAIDAMOUNT', 'SSETTLEBAL', 'SSETTLEINTE', 'RSETTLEBAL', 'RSETTLEINTE', 'ACFLAG', 'ASSURESTATUS', 'DECLAREDATE', 'COMPENSATEDATE']
+                    const filterVal = ['LISTID', 'CHANNELNAME', 'PRODNAME', 'CUSTNAME', 'IDNO', 'LOANAMOUNT', 'LOANTERM', 'BEGINDATE', 'GUARFEERATE', 'INTERESTRATE', 'SASSUREAMOUNT', 'SCHANNELAMOUNT', 'RASSUREAMOUNT', 'SDATE', 'OVERDAYS', 'BINTE', 'RAMOUNT', 'RCAPI', 'RINTE', 'RFINE', 'RFOUL', 'BAL', 'SPAIDAMOUNT', 'SSETTLEBAL', 'SSETTLEINTE', 'RSETTLEBAL', 'RSETTLEINTE', 'ACFLAG', 'ASSURESTATUS', 'DECLAREDATE', 'COMPENSATEDATE']
                     let data = await this.$api.grtCps.exportExcel({...this.form, listIds: list});
                     data = data.data.data;
                     for (let item of data) {
-                        item.ACFLAG = this.formatAcFlag('', '', item.ACFLAG);
+                        item.ACFLAG = this.formatAcFlag4Detail('', '', item.ACFLAG);
                         item.ASSURESTATUS = this.formatAssureStatus('', '', item.ASSURESTATUS);
                     }
                     try {
@@ -591,7 +592,7 @@
                     this.loadingBtn.declaration = false;
                 }
             },
-            compensationConfirm() {
+            async compensationConfirm() {
                 let list = this.$refs.singleTable.store.states.selection; // 选中的元素
                 // 1.至少选择一项内容
                 if (list.length <= 0) {
@@ -619,17 +620,29 @@
                     this.$message.warning({message: '选中数据状态有误', duration: 2000});
                     return;
                 }
-                this.$confirm(`共选中${ids.length}条数据,是否确认代偿?`, '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.compensation(ids);
-                }).catch(() => {
-                });
+
+                this.loadingBtn.compensation = true;
+                let res = await this.$api.grtCps.getAssureAmt({listIds: ids});
+                try {
+                    if (res.data.resultCode === '0000') { // 更新成功，刷新数据
+                        let leftsAmt = res.data.leftsAmt; // 待赔付金额
+                        let leftGuarFee = res.data.leftGuarFee; // 剩余担保费
+                        this.$confirm(`共选中${ids.length}条数据,剩余担保费${leftGuarFee},待赔付金额${leftsAmt},是否确认代偿?`, '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            this.compensation(ids);
+                        }).catch(() => {
+                            this.loadingBtn.compensation = false;
+                        });
+                    }
+                    this.loadingBtn.compensation = false;
+                } catch (e) {
+                    this.loadingBtn.compensation = false;
+                }
             },
             async compensation(ids) { // 批量代偿
-                this.loadingBtn.compensation = true;
                 let res = await this.$api.grtCps.assureList({listIds: ids});
                 try {
                     if (res.data.resultCode === '0000') { // 更新成功，刷新数据
@@ -644,7 +657,18 @@
             detail(row) {
                 this.$router.push({path: "/guaranteeM/detail", query: {listId: row.LISTID, channelId: row.CHANNELID}});
             },
-            async declarationOne(row) { // 代偿按钮
+
+            declarationOneConfirm(row) {
+                this.$confirm(`是否单笔申报?`, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.declarationOne(row);
+                }).catch(() => {
+                });
+            },
+            async declarationOne(row) { // 申报按钮
                 this.loadingBtn.declarationOne = true;
                 let ids = [row.LISTID];
                 let res = await this.$api.grtCps.declareList({listIds: ids});
@@ -657,7 +681,17 @@
                     this.loadingBtn.declarationOne = false;
                 }
             },
-            async compensationOne(row) { // 申报按钮
+            compensationOneConfirm(row) {
+                this.$confirm(`是否单笔代偿?`, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.compensationOne(row);
+                }).catch(() => {
+                });
+            },
+            async compensationOne(row) { // 代偿按钮
                 this.loadingBtn.compensationOne = true;
                 let ids = [row.LISTID];
                 let res = await this.$api.grtCps.assureList({listIds: ids});
@@ -690,7 +724,9 @@
 
     :global {
         .icon-piliang-copy:before {
-            margin-right: 6px;
+            padding-left: 7px;
+            position: relative;
+            right: 6px;
             font-size: 12px;
         }
     }

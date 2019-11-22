@@ -46,22 +46,18 @@
                             prop="CHANNELNAME">
                     </el-table-column>
                     <el-table-column
-                            :formatter="formatVal"
                             label="累计收取担保费"
                             prop="SUMGETASSUREAMT">
                     </el-table-column>
                     <el-table-column
-                            :formatter="formatVal"
                             label="累计理赔担保费"
                             prop="SUMSETTLEASSUREAMT">
                     </el-table-column>
                     <el-table-column
-                            :formatter="formatVal"
                             label="累计支付通道费"
                             prop="SUMPAIDCHANNELAMT">
                     </el-table-column>
                     <el-table-column
-                            :formatter="formatVal"
                             label="当前剩余担保费"
                             prop="SUMREMAINASSUREAMT">
                     </el-table-column>
@@ -116,6 +112,7 @@
         },
         methods: {
             async assetList() { // 查询资产列表
+                debugger;
                 //发起ajax请求，更改数据
                 this.loading = true;
                 let res = await this.$api.configM.cpsDetail({
@@ -140,11 +137,6 @@
             },
             resetForm(formName) { // 重置表单
                 this.$refs[formName].resetFields();
-            },
-            formatVal(row, column, cellValue) {
-                if (!cellValue) {
-                    return 0;
-                }
             }
         }
     }

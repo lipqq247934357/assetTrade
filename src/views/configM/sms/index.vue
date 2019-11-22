@@ -72,8 +72,8 @@
                     </el-table-column>
                     <el-table-column
                             class-name="operate"
-                            min-width="150px"
-                            label="操作">
+                            label="操作"
+                            min-width="150px">
                         <template slot-scope="scope">
                             <el-button @click="update(scope.row)" size="small" type="primary">修改</el-button>
                             <el-button @click="detail(scope.row)" size="small" type="primary">查看</el-button>
@@ -96,78 +96,87 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+    // @ts-ignore
+    import {Component, Vue} from 'vue-property-decorator'
+    // @ts-ignore
+    import waves from '../../../directive/waves/index.js'; // 指令
+    import pagination from '../../../components/Pagination/index.vue';
+    import blockTitle from '../../../components/blockTitle/index.vue';
+    import collapse from '../../../components/collapse/index.vue';
+    // @ts-ignore
+    import formatter from '../../../components/mixins/formatter/index.js';
 
-    import waves from '@/directive/waves';
-    import pagination from '@/components/Pagination';
-    import blockTitle from '@/components/blockTitle';
-    import collapse from '@/components/collapse';
-    import formatter from '@/components/mixins/formatter';
-
-    export default {
-        name: 'channel',
-        components: {pagination, blockTitle, collapse},
-        directives: {waves},
-        mixins: [formatter],
-        data() {
-            return {
-                form: {
-                    channelNo: '', // 渠道编码
-                    channelName: '', // 渠道名称
-                },
-                pagInfo: { // 分页数据
-                    total: '',
-                    currentPage: 1,
-                    pageSize: 10
-                },
-                channelDicts: [], // 渠道字典
-                loading: false,
-                data: [], // 表格数据
-                trueVal: true
-            };
+    @Component({
+        directives: {
+            waves
         },
+        components: {
+            pagination,
+            blockTitle,
+            collapse
+        },
+        mixins: [formatter]
+    })
+
+    export default class Sms extends Vue {
+
+        form: { channelNo: string, channelName: string } = {channelNo: '', channelName: ''}; // 渠道编码，渠道名称
+        pagInfo: { total: number, currentPage: number, pageSize: number } = {total: 0, currentPage: 1, pageSize: 10}; // 分页数据
+        channelDicts: Array<object> = []; // 渠道字典
+        loading: boolean = false; // 加载状态
+        data: Array<object> = []; // 表格数据
+        trueVal: boolean = true;
+
         activated() {
             this.getDict();
             this.getChannel();// 每次进入页面获取数据
-        },
-        methods: {
-            async getChannel() { //发起ajax请求，更改数据
-                this.loading = true;
-                let data = await this.$api.configM.channelquery({
-                    channelNo: this.form.channelNo,
-                    channelName: this.form.channelName,
-                    pageNum: this.pagInfo.currentPage,
-                    pageSize: this.pagInfo.pageSize
-                });
-                if (data.data.resultCode === '0000') {
-                    data = data.data;
-                    this.data = data.data;
-                    this.pagInfo.total = data.dataCount;
-                }
-                this.loading = false;
-            },
-            search() { // 点击查询按钮
-                this.pagInfo.currentPage = 1;
-                this.getChannel();
-            },
-            async getDict() {
-                let data = await this.$api.configM.dictQuery({dictType: "channel"});
-                this.channelDicts = data.data.dicts;
-            },
-            resetForm(formName) { // 重置表单内容
-                this.$refs[formName].resetFields();
-            },
-            add() { //进入新增页面
-                this.$router.push({path: '/configm/updateSms'});
-            },
-            update(row) { // 进入修改页面
-                this.$router.push({path: "/configm/updateSms", query: {updateId: row.channelNo, disabled: 2}});
-            },
-            detail(row) {// 进入详情页面
-                this.$router.push({path: "/configm/updateSms", query: {updateId: row.channelNo, disabled: 1}});
+        }
+
+        async getChannel() { //发起ajax请求，更改数据
+            this.loading = true;
+            let data = await this.$api.configM.channelquery({
+                channelNo: this.form.channelNo,
+                channelName: this.form.channelName,
+                pageNum: this.pagInfo.currentPage,
+                pageSize: this.pagInfo.pageSize
+            });
+            if (data.data.resultCode === '0000') {
+                data = data.data;
+                this.data = data.data;
+                this.pagInfo.total = data.dataCount;
             }
+            this.loading = false;
+        }
+
+        search() { // 点击查询按钮
+            this.pagInfo.currentPage = 1;
+            this.getChannel();
+        }
+
+        async getDict() {
+            let data = await this.$api.configM.dictQuery({dictType: "channel"});
+            this.channelDicts = data.data.dicts;
+        }
+
+        resetForm(formName: string) { // 重置表单内容
+            //@ts-ignore
+            this.$refs[formName].resetFields();
+        }
+
+        add() { //进入新增页面
+            this.$router.push({path: '/configm/updateSms'});
+        }
+
+        update(row: any) { // 进入修改页面
+            this.$router.push({path: "/configm/updateSms", query: {updateId: row.channelNo, disabled: '2'}});
+        }
+
+        detail(row: any) {// 进入详情页面
+            this.$router.push({path: "/configm/updateSms", query: {updateId: row.channelNo, disabled: '1'}});
         }
     }
+
 </script>
 
 <style lang="scss" module>

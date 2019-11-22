@@ -7,7 +7,7 @@ import async from './asyncRouter'
 Vue.use(Router)
 
 /* Layout */
-import Layout from '../views/layout/Layout'
+import Layout from '../views/layout/Layout.vue'
 
 /**
  * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -22,8 +22,8 @@ import Layout from '../views/layout/Layout'
   }
  **/
 export const constantRouterMap = [
-    {path: '/403', component: () => import('@/views/403'), hidden: true},
-    {path: '/404', component: () => import('@/views/404'), hidden: true},
+    {path: '/403', component: () => import('@/views/403.vue'), hidden: true},
+    {path: '/404', component: () => import('@/views/404.vue'), hidden: true},
     {
         path: '',
         component: Layout,
@@ -32,14 +32,15 @@ export const constantRouterMap = [
         hidden: true,
         children: [{
             path: 'dashboard',
-            component: () => import('@/views/dashboard/index')
+            component: () => import('@/views/dashboard/index.vue')
         }]
     },
     ...async
 ]
 
+
+
 export default new Router({
     // mode: 'history', // require service support
-    scrollBehavior: () => ({y: 0}),
     routes: constantRouterMap
 })
