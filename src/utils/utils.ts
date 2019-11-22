@@ -9,17 +9,17 @@
 
 import _ from 'lodash';
 
-export const urlParse4Search = function () {
+export const urlParse4Search = function (): any {
     let url = window.location.search;
-    let obj = {};
+    let obj: { [index: string]: any } = {};
     let reg = /[?&][^?&]+=[^?&]+/g;
     let arr = url.match(reg);
     // ['?id=12345', '&a=b']
     if (arr) {
         arr.forEach((item) => {
             let tempArr = item.substring(1).split('=');
-            let key = decodeURIComponent(tempArr[0]);
-            let val = decodeURIComponent(tempArr[1]);
+            let key: string = decodeURIComponent(tempArr[0]) + '';
+            let val: string = decodeURIComponent(tempArr[1]);
             obj[key] = val;
         });
     }
@@ -28,7 +28,7 @@ export const urlParse4Search = function () {
 
 export const urlParse = function () {
     let url = window.location.hash;
-    let obj = {};
+    let obj: { [index: string]: any } = {};
     let reg = /[?&][^?&]+=[^?&]+/g;
     let arr = url.match(reg);
     // ['?id=12345', '&a=b']
@@ -53,7 +53,7 @@ export const urlParse = function () {
  * @returns {Array}
  */
 
-export const treeUtil = function (data) {
+export const treeUtil = function (data: any) {
 
     let i = 0;
     let tree = [];
@@ -67,7 +67,7 @@ export const treeUtil = function (data) {
             data.splice(i, 1);
         } else { // 子节点
             let parentId = item['parentMenuId'].trim();
-            let obj = pos[parentId]; // 获取父节点
+            let obj: any = pos[parentId]; // 获取父节点
             if (obj !== undefined) {
                 obj.children.push(item); // 给父亲增加自己
                 pos[item['menuId']] = obj.children[obj.children.length - 1]; // 将自己的引用放到对应一维数组中
@@ -82,8 +82,8 @@ export const treeUtil = function (data) {
         }
     }
 
-    function sort(obj) { // 根据menuOrder进行排序
-        obj.sort(function (a, b) {
+    function sort(obj: any) { // 根据menuOrder进行排序
+        obj.sort(function (a: any, b: any) {
             return a.menuOrder - b.menuOrder
         })
     }
@@ -97,7 +97,7 @@ export const treeUtil = function (data) {
  *
  */
 //js加法
-export const add = function (arg1, arg2) {
+export const add = function (arg1: number, arg2: number) {
     let r1, r2, m;
     try {
         r1 = arg1.toString().split(".")[1].length
@@ -113,7 +113,7 @@ export const add = function (arg1, arg2) {
     return (arg1 * m + arg2 * m) / m
 };
 //js减法
-export const sub = function (arg1, arg2) {
+export const sub = function (arg1: number, arg2: number) {
     let r1, r2, m, n;
     try {
         r1 = arg1.toString().split(".")[1].length
@@ -132,15 +132,17 @@ export const sub = function (arg1, arg2) {
     return ((arg1 * m - arg2 * m) / m).toFixed(n);
 };
 //js乘法
-export const mul = function (arg1, arg2) {
+export const mul = function (arg1: number, arg2: number) {
     let m = 0, s1 = arg1.toString(), s2 = arg2.toString();
     try {
         m += s1.split(".")[1].length
     } catch (e) {
+        console.log(e);
     }
     try {
         m += s2.split(".")[1].length
     } catch (e) {
+        console.log(e);
     }
     return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
 };
@@ -164,7 +166,7 @@ export const mul = function (arg1, arg2) {
  * @returns Object || undefined
  */
 
-function getObj(data, prop, val) {
+function getObj(data: Array<{ [index: string]: any }>, prop: string, val: any) {
     let len = data.length;
     for (let i = 0; i < len; i++) {
         if (data[i][prop] === val) {
@@ -182,7 +184,7 @@ function getObj(data, prop, val) {
  * @param needVal
  */
 
-export const getProp = function (data, prop, val, needVal) {
+export const getProp = function (data: Array<{ [index: string]: any }>, prop: string, val: any, needVal: string) {
 
     let obj = getObj(data, prop, val);
     if (obj) {
@@ -205,7 +207,7 @@ export const urlParams = function (url: string) {
         return {};
     }
     let windowHref = _url.split("&");
-    let obj = {};
+    let obj: { [index: string]: any } = {};
     for (let i = 0; i < windowHref.length; i++) {
         let arr = windowHref[i].split("=");
         obj[arr[0]] = arr[1]

@@ -1,7 +1,10 @@
+//@ts-ignore
 import {getToken} from '@/utils/auth';
+//@ts-ignore
 import store from '../../store';
+import {AxiosRequestConfig} from 'axios';
 
-export const requestConf = function (config) {
+export const requestConf = function (config: AxiosRequestConfig) {
     //设置systemId
     config.headers['systemId'] = 's000008';
     //通过cookie获取token并设置token

@@ -4,12 +4,12 @@ import {post} from "./config/getData";
 
 let common = {
     // 测试用
-    login(p: Object) {
+    login(p: object) {
         return post('/login', p);
     },
 
     // 测试用
-    getInfo(p: Object) {
+    getInfo(p: object) {
         return post('/userInfo', p);
     },
 
@@ -24,7 +24,7 @@ let common = {
      * buttonPrivList 按钮权限
      */
 
-    privilegeInfo(p: Object) {
+    privilegeInfo(p: object) {
         return post('/ucenter/service/validate/ticket', p);
     }
 };

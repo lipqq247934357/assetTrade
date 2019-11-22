@@ -1,5 +1,6 @@
-import axios from "axios";
+import axios, {AxiosRequestConfig} from "axios";
 import {Message} from 'element-ui';
+// @ts-ignore
 import router from '../../router';
 import {requestConf} from './requestConf';
 // axios 配置
@@ -11,8 +12,8 @@ if (process.env.NODE_ENV === 'development') {// 根据不同的环境使用不�
 }
 axios.defaults.headers['Content-Type'] = 'application/json; charset=utf-8';
 
-axios.interceptors.request.use(function (config) {
-    if (config.url.endsWith('/ucenter/service/validate/ticket')) {
+axios.interceptors.request.use(function (config: AxiosRequestConfig) {
+    if (config.url && config.url.endsWith('/ucenter/service/validate/ticket')) {
         config.baseURL = '';
         config.headers['Content-Type'] = 'text/plain;charset=UTF-8';
     }

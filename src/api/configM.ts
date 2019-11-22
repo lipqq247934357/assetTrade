@@ -2,7 +2,7 @@ import {post} from "./config/getData";
 
 let basePath = '/AssetWeb'; // 资产管理平台前缀
 
-let prefix = basePath + '/asset/pages/config';
+let prefix = basePath +'/asset/pages/config';
 const configM = {
 
 
@@ -14,19 +14,19 @@ const configM = {
      * 金融产品配置
      */
 
-    productquery(p: Object) {
+    productquery(p: object) {
         return post(prefix + '/finProduct/query', p);
     },
 
-    productqueryforUpdate(p: Object) {
+    productqueryforUpdate(p: object) {
         return post(prefix + '/finProduct/queryForUpdate', p);
     },
 
-    productadd(p: Object) {
+    productadd(p: object) {
         return post(prefix + '/finProduct/add', p);
     },
 
-    productupdate(p: Object) {
+    productupdate(p: object) {
         return post(prefix + '/finProduct/update', p);
     },
 
@@ -35,15 +35,15 @@ const configM = {
      * 渠道配置
      */
 
-    channelquery(p: Object) {
+    channelquery(p: object) {
         return post(prefix + '/channel/query', p);
     },
 
-    channeladd(p: Object) {
+    channeladd(p: object) {
         return post(prefix + '/channel/add', p);
     },
 
-    channelupdate(p: Object) {
+    channelupdate(p: object) {
         return post(prefix + '/channel/update', p);
     },
 
@@ -52,15 +52,15 @@ const configM = {
      * 资金方配置
      */
 
-    cashproviderquery(p: Object) {
+    cashproviderquery(p: object) {
         return post(prefix + '/contributive/query', p);
     },
 
-    cashprovideradd(p: Object) {
+    cashprovideradd(p: object) {
         return post(prefix + '/contributive/add', p);
     },
 
-    cashproviderupdate(p: Object) {
+    cashproviderupdate(p: object) {
         return post(prefix + '/contributive/update', p);
     },
 
@@ -68,15 +68,15 @@ const configM = {
      * 拆分规则配置
      */
 
-    splitRulesquery(p: Object) {
+    splitRulesquery(p: object) {
         return post(prefix + '/assetSplit/query', p);
     },
 
-    splitRulesadd(p: Object) {
+    splitRulesadd(p: object) {
         return post(prefix + '/assetSplit/add', p);
     },
 
-    splitRulesupdate(p: Object) {
+    splitRulesupdate(p: object) {
         return post(prefix + '/assetSplit/update', p);
     },
 
@@ -85,15 +85,15 @@ const configM = {
      * 资产输出模板配置
      */
 
-    outputquery(p: Object) {
+    outputquery(p: object) {
         return post(prefix + '/outputTem/query', p);
     },
 
-    outputadd(p: Object) {
+    outputadd(p: object) {
         return post(prefix + '/outputTem/add', p);
     },
 
-    outputupdate(p: Object) {
+    outputupdate(p: object) {
         return post(prefix + '/outputTem/update', p);
     },
 
@@ -102,15 +102,15 @@ const configM = {
      * 资产输出明细配置
      */
 
-    outdetailquery(p: Object) {
+    outdetailquery(p: object) {
         return post(prefix + '/outputFile/query', p);
     },
 
-    outdetailadd(p: Object) {
+    outdetailadd(p: object) {
         return post(prefix + '/outputFile/add', p);
     },
 
-    outdetailupdate(p: Object) {
+    outdetailupdate(p: object) {
         return post(prefix + '/outputFile/update', p);
     },
 
@@ -121,12 +121,12 @@ const configM = {
      * @returns {*}
      */
 
-    dictQuery(p: Object) {
+    dictQuery(p: object) {
         return post(prefix + '/dict/query', p);
     },
 
     //担保费汇总查询
-    cpsDetail(p: Object) {
+    cpsDetail(p: object) {
         return post(basePath + '/assure/assureSummaryQuery', p);
     }
 

@@ -13,7 +13,7 @@ const ucenterLoginUrl = process.env.VUE_APP_UCENTER_LOGIN_URL;
 const whiteList = ['/login', '/regist', '/403', '/404'];
 NProgress.configure({showSpinner: false})// NProgress Configuration
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to: { path: string; }, from: any, next: { (): void; (): void; (): void; }) => {
     NProgress.start();
     // 在免登录白名单，直接进入
     if (whiteList.some(item => {
@@ -22,7 +22,8 @@ router.beforeEach((to, from, next) => {
         NProgress.done();
         next();
     } else {
-        let ticket = urlParse4Search().ticket;
+        let seaRes = urlParse4Search();
+        let ticket = seaRes.ticket;
         let token = getToken();
         if (ticket) {
             setToken(ticket);
@@ -35,7 +36,7 @@ router.beforeEach((to, from, next) => {
                     ticket: token,
                     systemId: 's000008',
                     isReturn: 1
-                }).then(res => {
+                }).then((res: any) => {
                     let ticketStatus = res.data.ticketStatus;
                     if (ticketStatus !== '01') { // 无效票据
                         NProgress.done();
@@ -48,7 +49,7 @@ router.beforeEach((to, from, next) => {
                         NProgress.done();
                         next();
                     }
-                }).catch(function (error: Error) {
+                }).catch(function (error: any) {
                     NProgress.done();
                     Message.error({message: error.toLocaleString(), duration: 3 * 1000});
                     setTimeout(function () {
@@ -57,7 +58,7 @@ router.beforeEach((to, from, next) => {
                 });
             } else { // 如果用户已经有权限树和用户信息
                 // 通过请求路径设置menuId,btnArr
-                store.getters.tree.some(item => {
+                store.getters.tree.some((item: any) => {
                     if (item.menuUrl === to.path) {
                         store.commit('SET_MENUID', item.menuId);
                         for (let btn of store.getters.btn) {
