@@ -685,15 +685,24 @@
                     this.loadingBtn.declarationOne = false;
                 }
             },
-            compensationOneConfirm(row) {
-                this.$confirm(`是否单笔代偿?`, '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.compensationOne(row);
-                }).catch(() => {
-                });
+            async compensationOneConfirm(row) {
+                this.loadingBtn.compensationOne = true;
+                let res = await this.$api.grtCps.getAssureAmt({listIds: [row.LISTID]});
+                try {
+                    if (res.data.resultCode === '0000') {
+                        this.$confirm(`是否单笔代偿?`, '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            this.compensationOne(row);
+                        }).catch(() => {
+                        });
+                    }
+                    this.loadingBtn.compensationOne = false;
+                } catch (e) {
+                    this.loadingBtn.compensationOne = false;
+                }
             },
             async compensationOne(row) { // 代偿按钮
                 this.loadingBtn.compensationOne = true;
