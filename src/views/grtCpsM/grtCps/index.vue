@@ -441,7 +441,6 @@
         },
         methods: {
             async getData() { //发起ajax请求，更改数据
-                this.$refs && this.$refs.singleTable && this.$refs.singleTable.clearSelection(); // 清除选中元素
                 this.loadingBtn.search = true;
                 this.loading = true;
 
@@ -466,6 +465,7 @@
             getDataInfo() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
+                        this.$refs && this.$refs.singleTable && this.$refs.singleTable.clearSelection(); // 清除选中元素
                         this.getData();
                     } else {
                         return false;
