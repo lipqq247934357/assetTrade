@@ -209,6 +209,10 @@
                             prop="SCHANNELAMOUNT"
                     ></el-table-column>
                     <el-table-column
+                            label="实付通道费"
+                            prop="RCHANNELAMOUNT"
+                    ></el-table-column>
+                    <el-table-column
                             label="实收担保费"
                             prop="RASSUREAMOUNT"
                     ></el-table-column>
