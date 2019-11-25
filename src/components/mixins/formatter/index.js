@@ -71,8 +71,9 @@ export default {
                 p: '非应计',
                 '10': '正常结清',
                 '20': '提前结清',
-                '30': '逾期结清'
-            }
+                '30': '逾期结清',
+                '40': '代偿结清'
+            };
             return obj[cellValue.trim()];
         },
         formatRepayMethod(row, column, cellValue) { // 还款方式格式化
