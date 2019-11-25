@@ -209,7 +209,7 @@
                             prop="SCHANNELAMOUNT"
                     ></el-table-column>
                     <el-table-column
-                            label="实付通道费"
+                            label="实收通道费"
                             prop="RCHANNELAMOUNT"
                     ></el-table-column>
                     <el-table-column
