@@ -73,7 +73,7 @@ export default {
                 '20': '提前结清',
                 '30': '逾期结清'
             }
-            return obj[cellValue];
+            return obj[cellValue.trim()];
         },
         formatRepayMethod(row, column, cellValue) { // 还款方式格式化
             let obj = {
