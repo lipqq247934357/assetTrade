@@ -245,7 +245,7 @@
                 this.query(params.updateId);
             } else {
                 this.updateId = '';
-                this.form.inputUser = this.userInfo.username = 'YiGeDaShuaiBi';
+                this.form.inputUser = this.userInfo.username;
             }
             this.isSubmit = false;
         },
