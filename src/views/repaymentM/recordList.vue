@@ -55,12 +55,10 @@
 
 <script>
 
-    import waves from '@/directive/waves';
     import formatter from '@/components/mixins/formatter';
 
     export default {
         name: 'channel',
-        directives: {waves},
         mixins: [formatter],
         data() {
             return {

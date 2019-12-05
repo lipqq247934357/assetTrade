@@ -327,7 +327,6 @@
 
 <script>
 
-    import waves from '@/directive/waves';
     import pagination from '@/components/Pagination';
     import blockTitle from '@/components/blockTitle';
     import collapse from '@/components/collapse';
@@ -339,7 +338,6 @@
     export default {
         name: 'channel',
         components: {pagination, blockTitle, collapse},
-        directives: {waves},
         mixins: [formatter],
         data() {
             return {

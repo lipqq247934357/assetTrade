@@ -18,6 +18,11 @@ Vue.prototype.$api = $api;
 import '@/icons' // icon
 import '@/utils/beforeEach' // permission control
 
+// @ts-ignore
+import waves from '@/directive/waves/index.js'
+
+Vue.directive('waves', waves); // 注册全局指令
+
 /**
  * This project originally used easy-mock to simulate data,
  * but its official service is very unstable,

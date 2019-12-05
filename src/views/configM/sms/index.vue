@@ -99,8 +99,6 @@
 <script lang="ts">
     // @ts-ignore
     import {Component, Vue} from 'vue-property-decorator'
-    // @ts-ignore
-    import waves from '../../../directive/waves/index.js'; // 指令
     import pagination from '../../../components/Pagination/index.vue';
     import blockTitle from '../../../components/blockTitle/index.vue';
     import collapse from '../../../components/collapse/index.vue';
@@ -108,9 +106,6 @@
     import formatter from '../../../components/mixins/formatter/index.js';
 
     @Component({
-        directives: {
-            waves
-        },
         components: {
             pagination,
             blockTitle,
