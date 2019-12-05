@@ -1,6 +1,4 @@
-//@ts-ignore
 import {getToken} from '@/utils/auth';
-//@ts-ignore
 import store from '../../store';
 import {AxiosRequestConfig} from 'axios';
 

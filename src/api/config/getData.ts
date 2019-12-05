@@ -1,6 +1,5 @@
 import axios, {AxiosRequestConfig} from "axios";
 import {Message} from 'element-ui';
-// @ts-ignore
 import router from '../../router';
 import {requestConf} from './requestConf';
 // axios 配置
