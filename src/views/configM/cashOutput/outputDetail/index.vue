@@ -104,101 +104,120 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 
-    import pagination from '@/components/Pagination';
-    import blockTitle from '@/components/blockTitle';
-    import collapse from '@/components/collapse';
-    import formatter from '@/components/mixins/formatter';
-    import editOutputDetail from './editOutputDetail';
+    interface IpagInfo {
+        total: number; // 总条数
+        currentPage: number; // 当前是第几页
+        pageSize: number; // 每页几行
+    }
 
-    export default {
+    import {Component, Vue} from "vue-property-decorator";
+    import pagination from "@/components/Pagination/index.vue";
+    import blockTitle from "@/components/blockTitle/index.vue";
+    import collapse from "@/components/collapse/index.vue";
+    import editOutputDetail from "./editOutputDetail.vue";
+    import formatter from "@/components/mixins/formatter";
+
+    @Component({
         name: 'outputDetail',
         components: {pagination, blockTitle, collapse, editOutputDetail},
-        mixins: [formatter],
-        data() {
-            return {
-                form: {
-                    fileNo: '', // 文件编号
-                    fileName: '', // 文件名称
-                    outputTemNo: '' // 资产输出模板编号
-                },
-                pagInfo: {
-                    total: '',
-                    currentPage: 1,
-                    pageSize: 10
-                },
-                loading: false,
-                data: [],
-                trueVal: true,
-                detail: {
-                    show: false,
-                    type: '',
-                    updateId: ''
-                }
-            };
-        },
+        mixins: [formatter]
+    })
+    export default class extends Vue {
+        form: any = {
+            fileNo: '', // 文件编号
+            fileName: '', // 文件名称
+            outputTemNo: '' // 资产输出模板编号
+        }
+        pagInfo: IpagInfo = {
+            total: 0,
+            currentPage: 1,
+            pageSize: 10
+        }
+        loading: boolean = false
+        data: object[] = []
+        trueVal: boolean = true
+        detail: {
+            show: boolean,
+            type: string,
+            updateId: string
+        } = {
+            show: false,
+            type: '',
+            updateId: ''
+        }
+
         created() {
             // 获得资产输出模板编码
             this.form.outputTemNo = this.$route.query && this.$route.query.updateId;
             this.getoutDetail();
-        },
-        methods: {
-            async getoutDetail() { //发起ajax请求，更改数据
-                let mRex = /^[0-9]*$/;
-                if (!mRex.test(this.form.fileNo)) {
-                    this.$message.warning({message: '文件编号无效数字', duration: 2000});
-                    return;
-                }
-                this.loading = true;
-                let data = await this.$api.configM.outdetailquery({
-                    outputTemNo: this.form.outputTemNo,
-                    fileNo: this.form.fileNo,
-                    fileName: this.form.fileName,
-                    pageNum: this.pagInfo.currentPage,
-                    pageSize: this.pagInfo.pageSize
-                });
-                if (data.data.resultCode === '0000') {
-                    data = data.data;
-                    this.data = data.data;
-                    this.pagInfo.total = data.dataCount;
-                }
-                this.loading = false;
-            },
-            search() {
-                this.pagInfo.currentPage = 1;
-                this.getoutDetail();
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            },
-            back() { // 返回资产输出配置
-                this.$router.push({path: '/configm/cashoutput'});
-            },
-            outDetail(row) {
-                this.updateShow();
-                this.detail.type = 'detail';
-                this.detail.updateId = row.fileNo;
-            },
-            add() {
-                this.updateShow();
-                this.detail.type = 'add';
-                this.detail.updateId = '';
-            },
-            update(row) {
-                this.updateShow();
-                this.detail.type = 'update';
-                this.detail.updateId = row.fileNo;
-            },
-            updateData() {
-                this.getoutDetail();
-            },
-            updateShow() {
-                this.detail.show = !this.detail.show;
-            },
-            clearUpdateId() {
-                this.detail.updateId = '';
+        }
+
+        async getoutDetail() { //发起ajax请求，更改数据
+            let mRex = /^[0-9]*$/;
+            if (!mRex.test(this.form.fileNo)) {
+                this.$message.warning({message: '文件编号无效数字', duration: 2000});
+                return;
             }
+            this.loading = true;
+            let data = await this.$api.configM.outdetailquery({
+                outputTemNo: this.form.outputTemNo,
+                fileNo: this.form.fileNo,
+                fileName: this.form.fileName,
+                pageNum: this.pagInfo.currentPage,
+                pageSize: this.pagInfo.pageSize
+            });
+            if (data.data.resultCode === '0000') {
+                data = data.data;
+                this.data = data.data;
+                this.pagInfo.total = data.dataCount;
+            }
+            this.loading = false;
+        }
+
+        search() {
+            this.pagInfo.currentPage = 1;
+            this.getoutDetail();
+        }
+
+        resetForm(formName: string) {
+            //@ts-ignore
+            this.$refs[formName].resetFields();
+        }
+
+        back() { // 返回资产输出配置
+            this.$router.push({path: '/configm/cashoutput'});
+        }
+
+        outDetail(row: any) {
+            this.updateShow();
+            this.detail.type = 'detail';
+            this.detail.updateId = row.fileNo;
+        }
+
+        add() {
+            this.updateShow();
+            this.detail.type = 'add';
+            this.detail.updateId = '';
+        }
+
+        update(row: any) {
+            this.updateShow();
+            this.detail.type = 'update';
+            this.detail.updateId = row.fileNo;
+        }
+
+        updateData() {
+            this.getoutDetail();
+        }
+
+        updateShow() {
+            this.detail.show = !this.detail.show;
+        }
+
+        clearUpdateId() {
+            this.detail.updateId = '';
         }
     }
 </script>

@@ -96,67 +96,84 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+    interface IpagInfo {
+        total: number; // 总条数
+        currentPage: number; // 当前是第几页
+        pageSize: number; // 每页几行
+    }
 
-    import pagination from '@/components/Pagination';
-    import blockTitle from '@/components/blockTitle';
-    import collapse from '@/components/collapse';
-    import formatter from '@/components/mixins/formatter';
+    import {Component, Vue} from "vue-property-decorator";
+    import pagination from "@/components/Pagination/index.vue";
+    import blockTitle from "@/components/blockTitle/index.vue";
+    import collapse from "@/components/collapse/index.vue";
+    import formatter from "@/components/mixins/formatter";
 
-    export default {
-        name: 'cashOutput',
+    @Component({
+        name: "cashOutput",
         components: {pagination, blockTitle, collapse},
-        mixins: [formatter],
-        data() {
-            return {
-                form: {
-                    outputTemName: '', // 资产输出模板名称
-                },
-                pagInfo: {
-                    total: '',
-                    currentPage: 1,
-                    pageSize: 10
-                },
-                loading: false,
-                data: [],
-                trueVal: true
-            };
-        },
+        mixins: [formatter]
+    })
+    export default class extends Vue {
+        form: any = {
+            outputTemName: "" // 资产输出模板名称
+        };
+        pagInfo: IpagInfo = {
+            total: 0,
+            currentPage: 1,
+            pageSize: 10
+        };
+        loading: boolean = false;
+        data: object[] = [];
+        trueVal: boolean = true;
+
         activated() {
-            this.getoutput();// 获取数据
-        },
-        methods: {
-            async getoutput() {
-                //2.发起ajax请求，更改数据
-                this.loading = true;
-                let data = await this.$api.configM.outputquery({
-                    outputTemName: this.form.outputTemName,
-                    pageNum: this.pagInfo.currentPage,
-                    pageSize: this.pagInfo.pageSize
-                });
-                if (data.data.resultCode === '0000') {
-                    data = data.data;
-                    this.data = data.data;
-                    this.pagInfo.total = data.dataCount;
-                }
-                this.loading = false;
-            },
-            search() {
-                this.pagInfo.currentPage = 1;
-                this.getoutput();
-            },
-            add() { // 新增渠道
-                this.$router.push({path: '/configm/addcashoutput'});
-            },
-            update(row) {
-                this.$router.push({path: "/configm/updatecashoutput", query: {updateId: row.outputTemNo}});
-            },
-            configDetail(row) {
-                this.$router.push({path: "/configm/outputdetail", query: {updateId: row.outputTemNo}});
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            },
+            this.getoutput(); // 获取数据
+        }
+
+        async getoutput() {
+            //2.发起ajax请求，更改数据
+            this.loading = true;
+            let data = await this.$api.configM.outputquery({
+                outputTemName: this.form.outputTemName,
+                pageNum: this.pagInfo.currentPage,
+                pageSize: this.pagInfo.pageSize
+            });
+            if (data.data.resultCode === "0000") {
+                data = data.data;
+                this.data = data.data;
+                this.pagInfo.total = data.dataCount;
+            }
+            this.loading = false;
+        }
+
+        search() {
+            this.pagInfo.currentPage = 1;
+            this.getoutput();
+        }
+
+        add() {
+            // 新增渠道
+            this.$router.push({path: "/configm/addcashoutput"});
+        }
+
+        update(row: any) {
+            this.$router.push({
+                path: "/configm/updatecashoutput",
+                query: {updateId: row.outputTemNo}
+            });
+        }
+
+        configDetail(row: any) {
+            this.$router.push({
+                path: "/configm/outputdetail",
+                query: {updateId: row.outputTemNo}
+            });
+        }
+
+        resetForm(formName: string) {
+            //@ts-ignore
+            this.$refs[formName].resetFields();
         }
     }
 </script>

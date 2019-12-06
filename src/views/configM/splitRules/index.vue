@@ -114,85 +114,110 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+    interface IpagInfo {
+        total: number; // 总条数
+        currentPage: number; // 当前是第几页
+        pageSize: number; // 每页几行
+    }
 
-    import pagination from '@/components/Pagination';
-    import blockTitle from '@/components/blockTitle';
-    import collapse from '@/components/collapse';
-    import formatter from '@/components/mixins/formatter';
+    import {Component, Vue} from "vue-property-decorator";
+    import pagination from "@/components/Pagination/index.vue";
+    import blockTitle from "@/components/blockTitle/index.vue";
+    import collapse from "@/components/collapse/index.vue";
+    import formatter from "@/components/mixins/formatter";
 
-
-    export default {
-        name: 'splitRules',
+    @Component({
+        name: "splitRules",
         components: {pagination, blockTitle, collapse},
-        mixins: [formatter],
-        data() {
-            return {
-                form: {
-                    assetSplitWay: '' // 拆分方式
-                },
-                pagInfo: { // 分页数据
-                    total: '',
-                    currentPage: 1,
-                    pageSize: 10
-                },
-                loading: false,
-                assetSplitWayArray: [{value: '01', label: '按比例拆分'}, {value: '02', label: '按固定值拆分'}],
-                data: [],
-                trueVal: true,
-                chashProivderDicts: [] // 资金方字典 {code:xx,codeName:xx}
-            };
-        },
+        mixins: [formatter]
+    })
+    export default class extends Vue {
+        form: any = {
+            assetSplitWay: "" // 拆分方式
+        };
+        pagInfo: IpagInfo = {
+            // 分页数据
+            total: 0,
+            currentPage: 1,
+            pageSize: 10
+        };
+        loading: boolean = false;
+        assetSplitWayArray: object[] = [
+            {value: "01", label: "按比例拆分"},
+            {value: "02", label: "按固定值拆分"}
+        ];
+        data: object[] = [];
+        trueVal: boolean = true;
+        chashProivderDicts: object[] = []; // 资金方字典 {code:xx,codeName:xx}
+
         activated() {
-            this.getSplRules();// 获取数据
-        },
-        methods: {
-            async getSplRules() {
-                //发起ajax请求，更改数据
-                this.loading = true;
-                let data = await this.$api.configM.splitRulesquery({
-                    assetSplitWay: this.form.assetSplitWay,
-                    pageNum: this.pagInfo.currentPage,
-                    pageSize: this.pagInfo.pageSize
-                });
-                if (data.data.resultCode === '0000') {
-                    data = data.data;
-                    this.chashProivderDicts = data.dicts; // 字典
-                    this.data = data.data;
-                    this.pagInfo.total = data.dataCount;
-                }
-                this.loading = false;
-            },
-            search() {
-                this.pagInfo.currentPage = 1;
-                this.getSplRules();
-            },
-            getInfo() {
-                this.$refs.form.validate((valid) => { //1.校验参数是否合法
-                    if (valid) {
-                        this.getSplRules();
-                    }
-                });
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            },
-            add() {
-                this.$router.push({path: '/configm/addsplitrules'});
-            },
-            update(row) {
-                this.$router.push({path: "/configm/updatesplitrules", query: {updateId: row.assetSplitNo}});
-            },
-            formatterBelongs(row, column, cellValue) {
-                return this.getName(this.chashProivderDicts, cellValue)
-            },
-            formatterCashProvider(row, column, cellValue) {
-                let arr = [];
-                cellValue.split(',').forEach(item => {
-                    arr.push(this.getName(this.chashProivderDicts, item));
-                })
-                return arr.join(',')
+            this.getSplRules(); // 获取数据
+        }
+
+        async getSplRules() {
+            //发起ajax请求，更改数据
+            this.loading = true;
+            let data = await this.$api.configM.splitRulesquery({
+                assetSplitWay: this.form.assetSplitWay,
+                pageNum: this.pagInfo.currentPage,
+                pageSize: this.pagInfo.pageSize
+            });
+            if (data.data.resultCode === "0000") {
+                data = data.data;
+                this.chashProivderDicts = data.dicts; // 字典
+                this.data = data.data;
+                this.pagInfo.total = data.dataCount;
             }
+            this.loading = false;
+        }
+
+        search() {
+            this.pagInfo.currentPage = 1;
+            this.getSplRules();
+        }
+
+        getInfo() {
+            //@ts-ignore
+            this.$refs.form.validate(valid => {
+                //1.校验参数是否合法
+                if (valid) {
+                    this.getSplRules();
+                }
+            });
+        }
+
+        resetForm(formName: string) {
+            // 重置表单内容
+            //@ts-ignore
+            this.$refs[formName].resetFields();
+        }
+
+        add() {
+            this.$router.push({path: "/configm/addsplitrules"});
+        }
+
+        update(row: any) {
+            this.$router.push({
+                path: "/configm/updatesplitrules",
+                query: {updateId: row.assetSplitNo}
+            });
+        }
+
+        //@ts-ignore
+        formatterBelongs(row, column, cellValue) {
+            //@ts-ignore
+            return this.getName(this.chashProivderDicts, cellValue);
+        }
+
+        //@ts-ignore
+        formatterCashProvider(row, column, cellValue) {
+            let arr: any = [];
+            cellValue.split(",").forEach((item: any) => {
+                //@ts-ignore
+                arr.push(this.getName(this.chashProivderDicts, item));
+            });
+            return arr.join(",");
         }
     }
 </script>

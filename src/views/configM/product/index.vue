@@ -118,91 +118,111 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+    interface IpagInfo {
+        total: number; // 总条数
+        currentPage: number; // 当前是第几页
+        pageSize: number; // 每页几行
+    }
 
-    import pagination from '@/components/Pagination';
-    import blockTitle from '@/components/blockTitle';
-    import collapse from '@/components/collapse';
-    import formatter from '@/components/mixins/formatter';
+    import {Component, Vue} from "vue-property-decorator";
+    import pagination from "@/components/Pagination/index.vue";
+    import blockTitle from "@/components/blockTitle/index.vue";
+    import collapse from "@/components/collapse/index.vue";
+    import formatter from "@/components/mixins/formatter";
 
-    export default {
-        name: 'product',
+    @Component({
+        name: "product",
         components: {pagination, blockTitle, collapse},
-        mixins: [formatter],
-        data() {
-            return {
-                form: {
-                    channelNo: '', // 渠道编号
-                    prodName: '', // 金融产品名称
-                },
-                pagInfo: { // 分页数据
-                    total: '',
-                    currentPage: 1,
-                    pageSize: 10
-                },
-                loading: false,
-                data: [], // 表格数据
-                trueVal: true, // 可以被优化，暂时没动
-                channelDicts: [], // 渠道字典 {code:xx,codeName:xx}
-                channeSelect: [], // 渠道列表
-                firstIncome: true
-            };
-        },
+        mixins: [formatter]
+    })
+    export default class extends Vue {
+        form: any = {
+            channelNo: "", // 渠道编号
+            prodName: "" // 金融产品名称
+        };
+        pagInfo: IpagInfo = {
+            // 分页数据
+            total: 0,
+            currentPage: 1,
+            pageSize: 10
+        };
+        loading: boolean = false;
+        data: object[] = []; // 表格数据
+        trueVal: boolean = true; // 可以被优化，暂时没动
+        channelDicts: object[] = []; // 渠道字典 {code:xx,codeName:xx}
+        channeSelect: object[] = []; // 渠道列表
+        firstIncome: boolean = true;
+
         activated() {
             this.firstIncome = true;
             this.getProduct();
-        },
-        methods: {
-            async getProduct() {
-                //发起ajax请求，更改数据
-                this.loading = true;
-                let data = await this.$api.configM.productquery({
-                    channelNo: this.form.channelNo,
-                    prodName: this.form.prodName,
-                    pageNum: this.pagInfo.currentPage,
-                    pageSize: this.pagInfo.pageSize
-                });
-                if (data.data.resultCode === '0000') {
-                    data = data.data;
-                    this.data = data.data;
-                    this.channelDicts = data.dicts; // 字典
-                    if (this.firstIncome === true) {
-                        this.firstIncome = false;
-                        this.channelList(this.channelDicts);
-                    }
-                    this.pagInfo.total = data.dataCount;
-                }
-                this.loading = false;
-            },
+        }
 
-            search() {
-                this.pagInfo.currentPage = 1;
-                this.getProduct();
-            },
-            getInfo() {
-                this.getProduct();
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            },
-            add() {// 新增
-                this.$router.push({path: '/configm/addproduct'});
-            },
-            update(row) { //修改
-                this.$router.push({path: "/configm/updateproduct", query: {updateId: row.prodNo}});
-            },
-            formatterChannelName(row, column, cellValue) {
-                return this.getName(this.channelDicts, cellValue)
-            },
-            channelList(channelDicts) {
-                this.channeSelect = [];
-                for (let item of channelDicts) {
-                    let obj = {};
-                    obj.value = item.code;
-                    obj.label = item.codeName;
-                    this.channeSelect.push(obj);
+        async getProduct() {
+            //发起ajax请求，更改数据
+            this.loading = true;
+            let data = await this.$api.configM.productquery({
+                channelNo: this.form.channelNo,
+                prodName: this.form.prodName,
+                pageNum: this.pagInfo.currentPage,
+                pageSize: this.pagInfo.pageSize
+            });
+            if (data.data.resultCode === "0000") {
+                data = data.data;
+                this.data = data.data;
+                this.channelDicts = data.dicts; // 字典
+                if (this.firstIncome === true) {
+                    this.firstIncome = false;
+                    //@ts-ignore
+                    this.channelList(this.channelDicts);
                 }
-            },
+                this.pagInfo.total = data.dataCount;
+            }
+            this.loading = false;
+        }
+
+        search() {
+            this.pagInfo.currentPage = 1;
+            this.getProduct();
+        }
+
+        getInfo() {
+            this.getProduct();
+        }
+
+        resetForm(formName: string) {
+            //@ts-ignore
+            this.$refs[formName].resetFields();
+        }
+
+        add() {
+            // 新增
+            this.$router.push({path: "/configm/addproduct"});
+        }
+
+        update(row: any) {
+            //修改
+            this.$router.push({
+                path: "/configm/updateproduct",
+                query: {updateId: row.prodNo}
+            });
+        }
+
+        //@ts-ignore
+        formatterChannelName(row, column, cellValue) {
+            //@ts-ignore
+            return this.getName(this.channelDicts, cellValue);
+        }
+
+        channelList(channelDicts: { code: any, codeName: string }[]) {
+            this.channeSelect = [];
+            for (let item of channelDicts) {
+                let obj: { value: any, label: string } = {value: '', label: ''};
+                obj.value = item.code;
+                obj.label = item.codeName;
+                this.channeSelect.push(obj);
+            }
         }
     }
 </script>

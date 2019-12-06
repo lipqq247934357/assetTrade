@@ -97,80 +97,92 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+interface IpagInfo {
+  total: number; // 总条数
+  currentPage: number; // 当前是第几页
+  pageSize: number; // 每页几行
+}
 
-    import pagination from '@/components/Pagination';
-    import blockTitle from '@/components/blockTitle';
-    import collapse from '@/components/collapse';
-    import formatter from '@/components/mixins/formatter';
+import { Component, Vue } from "vue-property-decorator";
+import pagination from "@/components/Pagination/index.vue";
+import blockTitle from "@/components/blockTitle/index.vue";
+import collapse from "@/components/collapse/index.vue";
+import formatter from "@/components/mixins/formatter";
 
-    export default {
-        name: 'cashProivder',
-        components: {pagination, blockTitle, collapse},
-        mixins: [formatter],
-        data() {
-            return {
-                form: {
-                    contributiveName: '' // 资金提供方名称
-                },
-                pagInfo: {
-                    total: '',
-                    currentPage: 1,
-                    pageSize: 10
-                },
-                loading: false,
-                data: [],
-                trueVal: true,
-                outputTempDicts: [] // 输出模板字典 {code:xx,codeName:xx}
-            };
-        },
-        activated() {
-            this.getProvider();// 获取数据
-        },
-        methods: {
-            async getProvider() {
-                //发起ajax请求，更改数据
-                this.loading = true;
-                let data = await this.$api.configM.cashproviderquery({
-                    contributiveName: this.form.contributiveName,
-                    pageNum: this.pagInfo.currentPage,
-                    pageSize: this.pagInfo.pageSize
-                });
-                if (data.data.resultCode === '0000') {
-                    data = data.data;
-                    this.data = data.data;
-                    this.outputTempDicts = data.dicts; // 字典
-                    this.pagInfo.total = data.dataCount;
-                }
-                this.loading = false;
-            },
-            search() {
-                this.pagInfo.currentPage = 1;
-                this.getProvider();
-            },
-            getInfo() {
-                this.$refs.form.validate((valid) => { //1.校验参数是否合法
-                    if (valid) {
-                        this.getProvider();
-                    }
-                });
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            },
-            add() {
-                // 新增渠道
-                this.$router.push({path: '/configm/addprovider'});
-            },
-            update(row) {
-                // 修改渠道
-                this.$router.push({path: "/configm/addprovider", query: {updateId: row.contributiveNo}});
-            },
-            formatterOutputTemp(row, column, cellValue) {
-                return this.getName(this.outputTempDicts, cellValue)
-            }
-        }
+@Component({
+  name: "cashProivder",
+  components: { pagination, blockTitle, collapse },
+  mixins: [formatter]
+})
+export default class extends Vue {
+  form: any = {
+    contributiveName: "" // 资金提供方名称
+  };
+  pagInfo: IpagInfo = {
+    total: 0,
+    currentPage: 1,
+    pageSize: 10
+  };
+  loading: boolean = false;
+  data: object[] = [];
+  trueVal: boolean = true;
+  outputTempDicts: object[] = []; // 输出模板字典 {code:xx,codeName:xx}
+  activated() {
+    this.getProvider(); // 获取数据
+  }
+  async getProvider() {
+    //发起ajax请求，更改数据
+    this.loading = true;
+    let data = await this.$api.configM.cashproviderquery({
+      contributiveName: this.form.contributiveName,
+      pageNum: this.pagInfo.currentPage,
+      pageSize: this.pagInfo.pageSize
+    });
+    if (data.data.resultCode === "0000") {
+      data = data.data;
+      this.data = data.data;
+      this.outputTempDicts = data.dicts; // 字典
+      this.pagInfo.total = data.dataCount;
     }
+    this.loading = false;
+  }
+  search() {
+    this.pagInfo.currentPage = 1;
+    this.getProvider();
+  }
+  getInfo() {
+    //@ts-ignore
+    this.$refs.form.validate(valid => {
+      //1.校验参数是否合法
+      if (valid) {
+        this.getProvider();
+      }
+    });
+  }
+
+  resetForm(formName: string) {
+    // 重置表单内容
+    //@ts-ignore
+    this.$refs[formName].resetFields();
+  }
+  add() {
+    // 新增渠道
+    this.$router.push({ path: "/configm/addprovider" });
+  }
+  update(row: any) {
+    // 修改渠道
+    this.$router.push({
+      path: "/configm/addprovider",
+      query: { updateId: row.contributiveNo }
+    });
+  }
+  //@ts-ignore
+  formatterOutputTemp(row, column, cellValue) {
+    //@ts-ignore
+    return this.getName(this.outputTempDicts, cellValue);
+  }
+}
 </script>
 
 <style lang="scss" module>
