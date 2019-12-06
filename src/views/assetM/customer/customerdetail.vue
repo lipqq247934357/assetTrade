@@ -134,36 +134,36 @@
                     <span style="font-size: 14px;">返&nbsp;回</span>
                 </el-button>
             </div>
-
         </div>
     </div>
 </template>
 
-<script>
-    export default {
-        name: "customerDetail",
-        data() {
-            return {
-                info: {}
-            };
-        },
+<script lang="ts">
+    import {Component, Vue} from "vue-property-decorator";
+
+    @Component({
+        name: "customerDetail"
+    })
+    export default class extends Vue {
+        info: object = {};
+
         activated() {
             this.getInfo();
-        },
-        methods: {
-            async getInfo() {
-                let data = await this.$api.assetM.customerDetail({
-                    body: {
-                        custId: this.$route.query.updateId // 获取updateId,然后查找内容
-                    }
-                });
-                this.info = data.data.detail;
-            },
-            back() {
-                this.$router.go(-1);
-            }
         }
-    };
+
+        async getInfo() {
+            let data = await this.$api.assetM.customerDetail({
+                body: {
+                    custId: this.$route.query.updateId // 获取updateId,然后查找内容
+                }
+            });
+            this.info = data.data.detail;
+        }
+
+        back() {
+            this.$router.go(-1);
+        }
+    }
 </script>
 
 <style lang="scss" module>

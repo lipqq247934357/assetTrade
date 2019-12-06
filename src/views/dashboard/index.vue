@@ -6,15 +6,13 @@
 
 <script>
 
-    export default {
-        name: 'Dashboard',
-        data() {
-            return {}
-        },
-        created() {
-        },
-        methods: {}
-    }
+import { Vue } from "vue-property-decorator";
+
+export default class extends Vue {
+
+}
+
+
 </script>
 
 <style lang="scss" module>

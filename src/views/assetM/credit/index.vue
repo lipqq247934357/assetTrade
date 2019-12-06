@@ -134,65 +134,76 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+    interface IpagInfo {
+        total: number; // 总条数
+        currentPage: number; // 当前是第几页
+        pageSize: number; // 每页几行
+    }
 
-    import pagination from '@/components/Pagination';
-    import blockTitle from '@/components/blockTitle';
-    import collapse from '@/components/collapse';
-    import formatter from '@/components/mixins/formatter';
+    import {Component, Vue} from "vue-property-decorator";
+    import pagination from "@/components/Pagination/index.vue";
+    import blockTitle from "@/components/blockTitle/index.vue";
+    import collapse from "@/components/collapse/index.vue";
+    import formatter from "@/components/mixins/formatter";
 
-    export default {
-        name: 'credit',
+    @Component({
+        name: "credit",
         components: {pagination, blockTitle, collapse},
-        mixins: [formatter],
-        data() {
-            return {
-                form: {
-                    custName: '', // 借款人姓名
-                    idNo: '', // 身份证号
-                    channelName: '', // 渠道名称
-                    startDate: '', // 申请开始时间
-                    endDate: '' // 申请结束时间
+        mixins: [formatter]
+    })
+    export default class extends Vue {
+        form: object = {
+            custName: "", // 借款人姓名
+            idNo: "", // 身份证号
+            channelName: "", // 渠道名称
+            startDate: "", // 申请开始时间
+            endDate: "" // 申请结束时间
+        };
+        pagInfo: IpagInfo = {
+            // 分页数据
+            total: 0, // 总条数
+            currentPage: 1, // 当夜是第几页
+            pageSize: 10 // 每页的大小
+        };
+        loading: boolean = false;
+        list: object[] = []; // 列表数据
+        trueVal: boolean = true;
+        emptyText: string = " "; // 没有数据的时候展示的文案
+
+        async getData() {
+            //发起ajax请求，更改数据
+            this.loading = true;
+            let data = await this.$api.assetM.creditList({
+                pager: {
+                    pageNo: this.pagInfo.currentPage,
+                    recordNum: this.pagInfo.pageSize
                 },
-                pagInfo: { // 分页数据
-                    total: '', // 总条数
-                    currentPage: 1, // 当夜是第几页
-                    pageSize: 10 // 每页的大小
-                },
-                loading: false,
-                list: [], // 列表数据
-                trueVal: true,
-                emptyText: ' '// 没有数据的时候展示的文案
-            };
-        },
-        methods: {
-            async getData() {
-                //发起ajax请求，更改数据
-                this.loading = true;
-                let data = await this.$api.assetM.creditList({
-                    pager: {
-                        pageNo: this.pagInfo.currentPage,
-                        recordNum: this.pagInfo.pageSize
-                    },
-                    body: this.form
-                });
-                this.list = data.data.list;
-                this.pagInfo.total = Number(data.data.pager ? data.data.pager.totalNum : 0);
-                if (!this.list || this.list.length === 0) {
-                    this.emptyText = '无数据'
-                }
-                this.loading = false;
-            },
-            search() {
-                this.pagInfo.currentPage = 1;
-                this.getData();
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            },
-            detail(row) {
-                this.$router.push({path: '/assetmanage/creditdetail', query: {updateId: row.applyId}});                // 新增渠道,跳转存储默认值
+                body: this.form
+            });
+            this.list = data.data.list;
+            this.pagInfo.total = Number(data.data.pager ? data.data.pager.totalNum : 0);
+            if (!this.list || this.list.length === 0) {
+                this.emptyText = "无数据";
             }
+            this.loading = false;
+        }
+
+        search() {
+            this.pagInfo.currentPage = 1;
+            this.getData();
+        }
+
+        resetForm(formName: string) {
+            //@ts-ignore
+            this.$refs[formName].resetFields();
+        }
+
+        detail(row: any) {
+            this.$router.push({
+                path: "/assetmanage/creditdetail",
+                query: {updateId: row.applyId}
+            }); // 新增渠道,跳转存储默认值
         }
     }
 </script>

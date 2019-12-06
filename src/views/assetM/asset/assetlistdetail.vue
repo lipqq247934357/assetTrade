@@ -106,33 +106,32 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+    import {Component, Vue} from "vue-property-decorator";
+    import formatter from "@/components/mixins/formatter";
 
-    import formatter from '@/components/mixins/formatter';
-
-    export default {
-        name: 'assetDetail',
-        mixins: [formatter],
-        data() {
-            return {
-                info: {}// 列表详情数据
-            }
-        },
+    @Component({
+        name: "assetDetail",
+        mixins: [formatter]
+    })
+    export default class extends Vue {
+        info: object = {}; // 列表详情数据
         activated() {
             this.getInfo();
-        },
-        methods: {
-            async getInfo() { // 根据id获取数据
-                let data = await this.$api.assetM.assetDetail({
-                    body: {
-                        listId: this.$route.query.updateId // 获取updateId,然后查找内容
-                    }
-                });
-                this.info = data.data.detail;
-            },
-            back() {
-                this.$router.go(-1);
-            }
+        }
+
+        async getInfo() {
+            // 根据id获取数据
+            let data = await this.$api.assetM.assetDetail({
+                body: {
+                    listId: this.$route.query.updateId // 获取updateId,然后查找内容
+                }
+            });
+            this.info = data.data.detail;
+        }
+
+        back() {
+            this.$router.go(-1);
         }
     }
 

@@ -78,38 +78,34 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+    import {Component, Vue} from "vue-property-decorator";
+    import formatter from "@/components/mixins/formatter";
 
+    @Component({
+        name: "creditDetail",
+        mixins: [formatter]
+    })
+    export default class extends Vue {
+        info: object = {};
 
-    import formatter from '@/components/mixins/formatter';
-
-    export default {
-        name: 'creditDetail',
-        mixins: [formatter],
-        data() {
-            return {
-                info: {}
-            }
-        },
         activated() {
             this.getInfo();
-        },
-        methods: {
-            async getInfo() {
-                let data = await this.$api.assetM.creditDetail({
-                    body: {
-                        applyId: this.$route.query.updateId // 获取updateId,然后查找内容
-                    }
-                });
-                this.info = data.data.detail;
-            },
-            back() {
-                this.$router.go(-1);
-            }
+        }
+
+        async getInfo() {
+            let data = await this.$api.assetM.creditDetail({
+                body: {
+                    applyId: this.$route.query.updateId // 获取updateId,然后查找内容
+                }
+            });
+            this.info = data.data.detail;
+        }
+
+        back() {
+            this.$router.go(-1);
         }
     }
-
-
 </script>
 
 <style lang="scss" module>

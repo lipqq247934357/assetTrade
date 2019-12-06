@@ -110,62 +110,70 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+    interface IpagInfo {
+        total: number; // 总条数
+        currentPage: number; // 当前是第几页
+        pageSize: number; // 每页几行
+    }
 
-    import pagination from '@/components/Pagination';
-    import blockTitle from '@/components/blockTitle';
-    import collapse from '@/components/collapse';
-    import formatter from '@/components/mixins/formatter';
+    import {Component, Vue} from "vue-property-decorator";
+    import pagination from "@/components/Pagination/index.vue";
+    import blockTitle from "@/components/blockTitle/index.vue";
+    import collapse from "@/components/collapse/index.vue";
+    import formatter from "@/components/mixins/formatter";
 
-    export default {
-        name: 'customer',
+    @Component({
+        name: "customer",
         components: {pagination, blockTitle, collapse},
-        mixins: [formatter],
-        data() {
-            return {
-                form: {
-                    idNo: '', // 用户编号
-                    custName: '' // 用户姓名
+        mixins: [formatter]
+    })
+    export default class extends Vue {
+        form: object = {
+            idNo: "", // 用户编号
+            custName: "" // 用户姓名
+        };
+        pagInfo: IpagInfo = {
+            // 分页数据
+            total: 0,
+            currentPage: 1,
+            pageSize: 10
+        };
+        loading: boolean = false;
+        list: object[] = []; // 表格内容
+        trueVal: boolean = true;
+        emptyText: string = " "; // 没有数据的时候展示的文案
+        async customerList() {
+            //发起ajax请求，更改数据
+            this.loading = true;
+            let data = await this.$api.assetM.customerList({
+                pager: {
+                    pageNo: this.pagInfo.currentPage,
+                    recordNum: this.pagInfo.pageSize
                 },
-                pagInfo: { // 分页数据
-                    total: '',
-                    currentPage: 1,
-                    pageSize: 10
-                },
-                loading: false,
-                list: [], // 表格内容
-                trueVal: true,
-                emptyText: ' ' // 没有数据的时候展示的文案
-            };
-        },
-        created() {
-        },
-        methods: {
-            async customerList() {
-                //发起ajax请求，更改数据
-                this.loading = true;
-                let data = await this.$api.assetM.customerList({
-                    pager: {
-                        pageNo: this.pagInfo.currentPage,
-                        recordNum: this.pagInfo.pageSize
-                    },
-                    body: this.form
-                });
-                this.list = data.data.list || [];
-                this.pagInfo.total = Number(data.data.pager ? data.data.pager.totalNum : 0);
-                this.list.length === 0 && (this.emptyText = '无数据');
-                this.loading = false;
-            },
-            search() {
-                this.pagInfo.currentPage = 1;
-                this.customerList();
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            },
-            detail(row) {
-                this.$router.push({path: '/assetmanage/customerdetail', query: {updateId: row.custId}});
-            }
+                body: this.form
+            });
+            this.list = data.data.list || [];
+            this.pagInfo.total = Number(data.data.pager ? data.data.pager.totalNum : 0);
+            this.list.length === 0 && (this.emptyText = "无数据");
+            this.loading = false;
+        }
+
+        search() {
+            this.pagInfo.currentPage = 1;
+            this.customerList();
+        }
+
+        resetForm(formName: string) {
+            //@ts-ignore
+            this.$refs[formName].resetFields();
+        }
+
+        detail(row: any) {
+            this.$router.push({
+                path: "/assetmanage/customerdetail",
+                query: {updateId: row.custId}
+            });
         }
     }
 </script>
