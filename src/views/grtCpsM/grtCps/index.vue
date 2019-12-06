@@ -163,6 +163,11 @@
                             type="selection"
                     ></el-table-column>
                     <el-table-column
+                            label="借据号"
+                            prop="LISTID"
+                            min-width="238px"
+                    ></el-table-column>
+                    <el-table-column
                             label="渠道名称"
                             prop="CHANNELNAME"
                     ></el-table-column>
