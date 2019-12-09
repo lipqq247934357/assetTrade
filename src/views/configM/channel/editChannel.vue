@@ -71,143 +71,170 @@
     </div>
 </template>
 
-<script>
-    import {mapGetters} from 'vuex'
+<script lang="ts">
+
+    interface Iform {
+        channelNo: string, // 渠道编码
+        channelName: string, // 渠道名称
+        channelType: string, // 渠道类型
+        channelSymbol: string, // 渠道标识
+        useYn: string, //是否启用
+        inputUser: string, // 创建用户
+        updateUser: string // 创建时间
+    }
+
+    import {Component, Vue} from "vue-property-decorator";
+    // @ts-ignore
     import schema from 'async-validator';
     import alert from '../../../components/mixins/alert';
 
-    export default {
+
+    @Component({
         name: 'editChannel',
-        mixins: [alert],
-        data() {
-            return {
-                form: {
-                    channelNo: '', // 渠道编码
-                    channelName: '', // 渠道名称
-                    channelType: '', // 渠道类型
-                    channelSymbol: '', // 渠道标识
-                    useYn: '', //是否启用
-                    inputUser: '', // 创建用户
-                    updateUser: '' // 创建时间
-                },
-                rules: { // 校验规则
-                    channelNo: [{required: true, message: '请输入渠道编码'}],
-                    channelName: [{required: true, message: '请输入渠道名称'}],
-                    channelType: [{required: true, message: '请选择渠道类型'}],
-                    channelSymbol: [{required: true, message: '请输入渠道标识'}],
-                    useYn: [{required: true, message: '请选择是否启用'}],
-                },
-                "channelTypeList": [{
-                    value: "1",
-                    label: '自营'
-                }, {
-                    value: "2",
-                    label: '三方'
-                }],
-                "useYnList": [{
-                    value: "Y",
-                    label: '启用'
-                }, {
-                    value: "N",
-                    label: '禁用'
-                }],
-                trueVal: true,
-                updateId: '', // 如果是更新数据，这里放置更新id
-                isSubmit: false // 是否正在提交，防止多次提交
-            }
-        },
-        computed: {
-            ...mapGetters(['userInfo'])
-        },
+        mixins: [alert]
+    })
+
+    export default class extends Vue {
+
+
+        form: Iform = {
+            channelNo: '', // 渠道编码
+            channelName: '', // 渠道名称
+            channelType: '', // 渠道类型
+            channelSymbol: '', // 渠道标识
+            useYn: '', //是否启用
+            inputUser: '', // 创建用户
+            updateUser: '' // 创建时间
+        }
+        rules: object = { // 校验规则
+            channelNo: [{required: true, message: '请输入渠道编码'}],
+            channelName: [{required: true, message: '请输入渠道名称'}],
+            channelType: [{required: true, message: '请选择渠道类型'}],
+            channelSymbol: [{required: true, message: '请输入渠道标识'}],
+            useYn: [{required: true, message: '请选择是否启用'}],
+        }
+        "channelTypeList": object[] = [{
+            value: "1",
+            label: '自营'
+        }, {
+            value: "2",
+            label: '三方'
+        }]
+        useYnList:object[] = [{
+            value: "Y",
+            label: '启用'
+        }, {
+            value: "N",
+            label: '禁用'
+        }]
+        trueVal: boolean = true
+        updateId: string = '' // 如果是更新数据，这里放置更新id
+        isSubmit: boolean = false // 是否正在提交，防止多次提交
+        userInfo: { username: string } = this.$store.state.user.userInfo || {username: ''};
+
         activated() {
-            this.form = {}; // 每次进入页面重置表单内容
+            this.form = {
+                channelNo: '', // 渠道编码
+                channelName: '', // 渠道名称
+                channelType: '', // 渠道类型
+                channelSymbol: '', // 渠道标识
+                useYn: '', //是否启用
+                inputUser: '', // 创建用户
+                updateUser: '' // 创建时间
+            }; // 每次进入页面重置表单内容
             // 获取updateId
             let params = this.$route.query;
             // 主键查询 设置内容，没有对数据为空情况的处理
             if (params.updateId) {
-                this.updateId = params.updateId; //设置更新id，判断是新增还是修改
-                this.query(params.updateId);
+                this.updateId = (params.updateId || '') + ''; //设置更新id，判断是新增还是修改
+                this.query(this.updateId);
             } else { // 当没有数据的时候说明该页面是新增，从vuex中取数据
                 this.updateId = '';
                 this.form.inputUser = this.userInfo.username;
             }
             this.isSubmit = false;
-        },
-        methods: {
-            async query(channelNo) { // 查询
-                let data = await this.$api.configM.channelquery({ //发起ajax请求，更改数据
-                    channelNo: channelNo,
-                    pageNum: 1,
-                    pageSize: 10
-                });
-                if (data.data.resultCode === '0000') {
-                    data = data.data;
-                    if (data.data.length === 0) {
-                        this.alertParamterError();
+        }
+
+
+        async query(channelNo: string) { // 查询
+            let data = await this.$api.configM.channelquery({ //发起ajax请求，更改数据
+                channelNo: channelNo,
+                pageNum: 1,
+                pageSize: 10
+            });
+            if (data.data.resultCode === '0000') {
+                data = data.data;
+                if (data.data.length === 0) {
+                    // @ts-ignore
+                    this.alertParamterError();
+                } else {
+                    this.form = data.data[0];
+                }
+            }
+        }
+
+        back() { // 返回上一级
+            this.$router.go(-1);
+        }
+
+        submit() { // 提交表单
+            let validator = new schema(this.rules);
+            validator.validate(this.form, (errors: { message: string }[]) => {
+                if (errors) {
+                    this.$message.warning({message: errors[0].message, duration: 2000});
+                } else {
+                    if (this.updateId) { //如果updateId不为空，是更新，否则是新增
+                        this.confirmSubmit();
                     } else {
-                        this.form = data.data[0];
+                        this.add();
                     }
                 }
-            },
-            back() { // 返回上一级
+            })
+        }
+
+        confirmSubmit() {
+            this.$confirm('是否确认修改?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.update();
+            }).catch(() => {
+            });
+        }
+
+        async add() { // 新增数据
+            if (this.isSubmit) {
+                return;
+            }
+            this.isSubmit = true;
+            let form = this.form;
+            let data = await this.$api.configM.channeladd({
+                channelNo: form.channelNo,
+                channelName: form.channelName,
+                channelType: form.channelType,
+                channelSymbol: form.channelSymbol,
+                useYn: form.useYn,
+                inputUser: this.form.inputUser
+            });
+            if (data.data.resultCode === '0000') {
                 this.$router.go(-1);
-            },
-            submit() { // 提交表单
-                let validator = new schema(this.rules);
-                validator.validate(this.form, (errors) => {
-                    if (errors) {
-                        this.$message.warning({message: errors[0].message, duration: 2000});
-                    } else {
-                        if (this.updateId) { //如果updateId不为空，是更新，否则是新增
-                            this.confirmSubmit();
-                        } else {
-                            this.add();
-                        }
-                    }
-                })
-            },
-            confirmSubmit() {
-                this.$confirm('是否确认修改?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.update();
-                }).catch(() => {
-                });
-            },
-            async add() { // 新增数据
-                if (this.isSubmit) {
-                    return;
-                }
-                this.isSubmit = true;
-                let form = this.form;
-                let data = await this.$api.configM.channeladd({
-                    channelNo: form.channelNo,
-                    channelName: form.channelName,
-                    channelType: form.channelType,
-                    channelSymbol: form.channelSymbol,
-                    useYn: form.useYn,
-                    inputUser: this.form.inputUser
-                });
-                if (data.data.resultCode === '0000') {
-                    this.$router.go(-1);
-                }
-                this.isSubmit = false;
-            },
-            async update() { // 修改数据
-                let form = this.form;
-                let data = await this.$api.configM.channelupdate({
-                    channelNo: form.channelNo,
-                    channelName: form.channelName,
-                    channelType: form.channelType,
-                    channelSymbol: form.channelSymbol,
-                    useYn: form.useYn,
-                    updateUser: this.userInfo.username
-                });
-                if (data.data.resultCode === '0000') {
-                    this.$router.go(-1);
-                }
+            }
+            this.isSubmit = false;
+        }
+
+        async update() { // 修改数据
+            let form = this.form;
+            let data = await this.$api.configM.channelupdate({
+                channelNo: form.channelNo,
+                channelName: form.channelName,
+                channelType: form.channelType,
+                channelSymbol: form.channelSymbol,
+                useYn: form.useYn,
+                updateUser: this.userInfo.username
+            });
+            if (data.data.resultCode === '0000') {
+                this.$router.go(-1);
             }
         }
     }

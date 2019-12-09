@@ -44,44 +44,54 @@
     </div>
 </template>
 
-<script>
-    import {mapGetters} from 'vuex';
+<script lang="ts">
+
+    interface Iform {
+        outputTemName: string, // 资产输出模板名称
+        useYn: string,
+        inputUser: string
+    }
+
+    import {Component, Vue} from "vue-property-decorator";
+    //@ts-ignore
     import schema from 'async-validator';
     import alert from '../../../components/mixins/alert';
 
-    export default {
+    @Component({
         name: 'editCashOutput',
-        mixins: [alert],
-        data() {
-            return {
-                form: {
-                    outputTemName: '', // 资产输出模板名称
-                    useYn: '',
-                    inputUser: ''
-                },
-                rules: {
-                    outputTemName: [{required: true, message: '请输入模板名称'}],
-                    useYn: [{required: true, message: '请选择是否启用'}]
-                },
-                "channelType": [{
-                    value: 1,
-                    label: '自营'
-                }, {
-                    value: 2,
-                    label: '三方'
-                }],
-                "useStatus": [{
-                    value: "Y",
-                    label: '启用'
-                }, {
-                    value: "N",
-                    label: '禁用'
-                }],
-                trueVal: true,
-                updateId: '', // 如果有值就是更新
-                isSubmit: false // 是否正在提交，防止多次提交
-            }
-        },
+        mixins: [alert]
+    })
+
+    export default class extends Vue {
+
+        form: Iform = {
+            outputTemName: '', // 资产输出模板名称
+            useYn: '',
+            inputUser: ''
+        }
+        rules: object = {
+            outputTemName: [{required: true, message: '请输入模板名称'}],
+            useYn: [{required: true, message: '请选择是否启用'}]
+        }
+        "channelType": object[] = [{
+            value: 1,
+            label: '自营'
+        }, {
+            value: 2,
+            label: '三方'
+        }]
+        "useStatus": object[] = [{
+            value: "Y",
+            label: '启用'
+        }, {
+            value: "N",
+            label: '禁用'
+        }]
+        trueVal: boolean = true
+        updateId: string = '' // 如果有值就是更新
+        isSubmit: boolean = false // 是否正在提交，防止多次提交
+        userInfo: { username: string } = this.$store.state.user.userInfo || {username: ''};
+
         activated() {
             this.form = {
                 outputTemName: '',
@@ -91,91 +101,94 @@
             // 获取updateId,如果有值说明是更新
             let params = this.$route.query;
             // 主键查询，有值是修改，将主键保存，否则设置增加人为自己
-            this.updateId = params.updateId;
+            this.updateId = (params.updateId || '') + '';
             if (this.updateId) {
-                this.query(params.updateId);
+                this.query(this.updateId);
             } else {
                 this.updateId = '';
                 this.form.inputUser = this.userInfo.username;
             }
             this.isSubmit = false;
-        },
-        computed: {
-            ...mapGetters(['userInfo'])
-        },
-        methods: {
-            async query(params) { // 查询用户信息
-                //发起ajax请求，更改数据
-                let data = await this.$api.configM.outputquery({
-                    outputTemNo: params,
-                    pageNum: 1,
-                    pageSize: 10
-                });
-                if (data.data.resultCode === '0000') {
-                    data = data.data;
-                    if (data.data.length === 0) {
-                        this.alertParamterError();
+        }
+
+        async query(params: any) { // 查询用户信息
+            //发起ajax请求，更改数据
+            let data = await this.$api.configM.outputquery({
+                outputTemNo: params,
+                pageNum: 1,
+                pageSize: 10
+            });
+            if (data.data.resultCode === '0000') {
+                data = data.data;
+                if (data.data.length === 0) {
+                    //@ts-ignore
+                    this.alertParamterError();
+                } else {
+                    this.form = data.data[0];
+                }
+            }
+        }
+
+        back() {
+            this.$router.go(-1);
+        }
+
+        submit() {
+            let validator = new schema(this.rules);
+            validator.validate(this.form, (errors: { message: string }[]) => {
+                if (errors) {
+                    this.$message.warning({message: errors[0].message, duration: 2000});
+                } else {
+                    if (this.updateId) { //如果updateId不为空，是更新，否则是新增
+                        this.confirmSubmit();
                     } else {
-                        this.form = data.data[0];
+                        this.add();
                     }
                 }
-            },
-            back() {
+            })
+        }
+
+        confirmSubmit() {
+            this.$confirm('是否确认修改?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.update();
+            }).catch(() => {
+            });
+        }
+
+        async add() {
+            if (this.isSubmit) {
+                return;
+            }
+            this.isSubmit = true;
+            let data = await this.$api.configM.outputadd({
+                outputTemName: this.form.outputTemName,
+                useYn: this.form.useYn,
+                inputUser: this.form.inputUser // 这个值是当前用户
+            });
+            if (data.data.resultCode === '0000') {
                 this.$router.go(-1);
-            },
-            submit() {
-                let validator = new schema(this.rules);
-                validator.validate(this.form, (errors) => {
-                    if (errors) {
-                        this.$message.warning({message: errors[0].message, duration: 2000});
-                    } else {
-                        if (this.updateId) { //如果updateId不为空，是更新，否则是新增
-                            this.confirmSubmit();
-                        } else {
-                            this.add();
-                        }
-                    }
-                })
-            },
-            confirmSubmit() {
-                this.$confirm('是否确认修改?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.update();
-                }).catch(() => {
-                });
-            },
-            async add() {
-                if (this.isSubmit) {
-                    return;
-                }
-                this.isSubmit = true;
-                let data = await this.$api.configM.outputadd({
-                    outputTemName: this.form.outputTemName,
-                    useYn: this.form.useYn,
-                    inputUser: this.form.inputUser // 这个值是当前用户
-                });
-                if (data.data.resultCode === '0000') {
-                    this.$router.go(-1);
-                }
-                this.isSubmit = false;
-            },
-            async update() {
-                let data = await this.$api.configM.outputupdate({
-                    outputTemNo: this.updateId,
-                    outputTemName: this.form.outputTemName,
-                    useYn: this.form.useYn,
-                    updateUser: this.userInfo.username
-                });
-                if (data.data.resultCode === '0000') {
-                    this.$router.go(-1);
-                }
-            },
-            configDetail() {
-                this.$router.push({path: "/configm/outputdetail", query: {updateId: this.updateId}});
-            },
+            }
+            this.isSubmit = false;
+        }
+
+        async update() {
+            let data = await this.$api.configM.outputupdate({
+                outputTemNo: this.updateId,
+                outputTemName: this.form.outputTemName,
+                useYn: this.form.useYn,
+                updateUser: this.userInfo.username
+            });
+            if (data.data.resultCode === '0000') {
+                this.$router.go(-1);
+            }
+        }
+
+        configDetail() {
+            this.$router.push({path: "/configm/outputdetail", query: {updateId: this.updateId}});
         }
     }
 

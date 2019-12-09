@@ -181,191 +181,243 @@
     </div>
 </template>
 
-<script>
-    import {mapGetters} from 'vuex'
+<script lang="ts">
+
+
+    interface Iform {
+        channelNo: string, // 渠道编号
+        prodNo: string, // 金融产品编号
+        prodName: string, // 金融产品名称
+        fileType: string, // 文件类型
+        prodDesc: string, // 产品描述
+        useYn: string,
+        isSubmitPCI: string, // 是否报送
+        inputUser: string, // 创建人
+        guarFeeRate: string, // 担保费率
+        startDate: string, // 担保开始时间
+        endDate: string // 担保结束时间
+    }
+
+    import {Component, Vue} from "vue-property-decorator";
+    // @ts-ignore
     import schema from 'async-validator';
     import alert from '../../../components/mixins/alert';
     import {getProp} from '@/utils/utils'
 
-    export default {
+    @Component({
         name: 'editProduct',
-        mixins: [alert],
-        data() {
-            return {
-                form: {
-                    channelNo: '', // 渠道编号
-                    prodNo: '', // 金融产品编号
-                    prodName: '', // 金融产品名称
-                    fileType: '', // 文件类型
-                    prodDesc: '', // 产品描述
-                    useYn: '',
-                    isSubmitPCI: '', // 是否报送
-                    inputUser: '', // 创建人
-                    guarFeeRate: '', // 担保费率
-                    startDate: '', // 担保开始时间
-                    endDate: '' // 担保结束时间
-                },
-                data: [], // 操作历史
-                rules: { // 校验规则
-                    channelNo: [{required: true, message: '请选择渠道'}],
-                    prodNo: [{required: true, message: '请输入金融产品编号'}],
-                    prodName: [{required: true, message: '请输入金融产品名称'}],
-                    fileType: [{required: true, message: '请输入文件类型'}],
-                    useYn: [{required: true, message: '请选择是否启用'}],
-                },
-                "useYnList": [{
-                    value: "Y",
-                    label: '启用'
-                }, {
-                    value: "N",
-                    label: '禁用'
-                }],
-                "isSubmitPCIList": [{
-                    value: "1",
-                    label: '是'
-                }, {
-                    value: "0",
-                    label: '否'
-                }],
-                channelList: [], // 渠道列表
-                trueVal: true,
-                updateId: '', //如果是要更新，这里放到更新id
-                isSubmit: false // 是否正在提交
-            }
-        },
+        mixins: [alert]
+    })
+
+    export default class extends Vue {
+
+
+        form: Iform = {
+            channelNo: '', // 渠道编号
+            prodNo: '', // 金融产品编号
+            prodName: '', // 金融产品名称
+            fileType: '', // 文件类型
+            prodDesc: '', // 产品描述
+            useYn: '',
+            isSubmitPCI: '', // 是否报送
+            inputUser: '', // 创建人
+            guarFeeRate: '', // 担保费率
+            startDate: '', // 担保开始时间
+            endDate: '' // 担保结束时间
+        }
+        data: object[] = [] // 操作历史
+        rules: object = { // 校验规则
+            channelNo: [{required: true, message: '请选择渠道'}],
+            prodNo: [{required: true, message: '请输入金融产品编号'}],
+            prodName: [{required: true, message: '请输入金融产品名称'}],
+            fileType: [{required: true, message: '请输入文件类型'}],
+            useYn: [{required: true, message: '请选择是否启用'}],
+        }
+        "useYnList": object[] = [{
+            value: "Y",
+            label: '启用'
+        }, {
+            value: "N",
+            label: '禁用'
+        }]
+        "isSubmitPCIList": object[] = [{
+            value: "1",
+            label: '是'
+        }, {
+            value: "0",
+            label: '否'
+        }]
+        channelList: object[] = [] // 渠道列表
+        trueVal: boolean = true
+        updateId: string = '' //如果是要更新，这里放到更新id
+        isSubmit: boolean = false // 是否正在提交
+        userInfo: { username: string } = this.$store.state.user.userInfo || {username: ''};
+
         activated() {
-            this.form = {};
+            this.form = {
+                channelNo: '', // 渠道编号
+                prodNo: '', // 金融产品编号
+                prodName: '', // 金融产品名称
+                fileType: '', // 文件类型
+                prodDesc: '', // 产品描述
+                useYn: '',
+                isSubmitPCI: '', // 是否报送
+                inputUser: '', // 创建人
+                guarFeeRate: '', // 担保费率
+                startDate: '', // 担保开始时间
+                endDate: '' // 担保结束时间
+            };
             this.channelList = [];
             this.getDict();
             // 获取updateId,如果有值说明是更新
             let params = this.$route.query;
             // 主键查询，有值是修改，将主键保存，否则console.log提示
             if (params.updateId) {
-                this.updateId = params.updateId;
-                this.query(params.updateId);
+                this.updateId = (params.updateId || '') + '';
+                this.query(this.updateId);
             } else {
                 this.updateId = '';
                 this.form.inputUser = this.userInfo.username;
             }
             this.isSubmit = false;
-        },
-        computed: {
-            ...mapGetters(['userInfo'])
-        },
-        methods: {
-            async query(productNo) { // 查询用户信息
-                //发起ajax请求，更改数据
-                let data = await this.$api.configM.productqueryforUpdate({
-                    prodNo: productNo,
-                    pageNum: 1,
-                    pageSize: 10
-                });
-                if (data.data.resultCode === '0000') {
-                    data = data.data;
-                    if (data.data.length === 0) {
-                        this.alertParamterError();
-                    } else {
-                        console.log(data.data);
-                        let propData = {};
-                        propData.channelNo = data.data.prodData[0].CHANNELNO;
-                        propData.prodNo = data.data.prodData[0].PRODNO;
-                        propData.prodName = data.data.prodData[0].PRODNAME;
-                        propData.useYn = data.data.prodData[0].USEYN;
-                        propData.isSubmitPCI = data.data.prodData[0].ISSUBMITPCT;
-                        propData.fileType = data.data.prodData[0].FILETYPE;
-                        propData.prodDesc = data.data.prodData[0].PRODDESC;
-                        propData.inputUser = data.data.prodData[0].INPUTUSER;
-                        propData.guarFeeRate = data.data.prodData[0].GUARFEERATE;
-                        propData.startDate = data.data.prodData[0].STARTDATE;
-                        propData.endDate = data.data.prodData[0].ENDDATE;
+        }
 
-                        this.form = propData;
-                        this.data = data.data.prodHisData;
-                    }
+
+        async query(productNo: string) { // 查询用户信息
+            //发起ajax请求，更改数据
+            let data = await this.$api.configM.productqueryforUpdate({
+                prodNo: productNo,
+                pageNum: 1,
+                pageSize: 10
+            });
+            if (data.data.resultCode === '0000') {
+                data = data.data;
+                if (data.data.length === 0) {
+                    // @ts-ignore
+                    this.alertParamterError();
+                } else {
+                    console.log(data.data);
+                    let propData: Iform = {
+                        channelNo: '', // 渠道编号
+                        prodNo: '', // 金融产品编号
+                        prodName: '', // 金融产品名称
+                        fileType: '', // 文件类型
+                        prodDesc: '', // 产品描述
+                        useYn: '',
+                        isSubmitPCI: '', // 是否报送
+                        inputUser: '', // 创建人
+                        guarFeeRate: '', // 担保费率
+                        startDate: '', // 担保开始时间
+                        endDate: '' // 担保结束时间
+                    };
+                    propData.channelNo = data.data.prodData[0].CHANNELNO;
+                    propData.prodNo = data.data.prodData[0].PRODNO;
+                    propData.prodName = data.data.prodData[0].PRODNAME;
+                    propData.useYn = data.data.prodData[0].USEYN;
+                    propData.isSubmitPCI = data.data.prodData[0].ISSUBMITPCT;
+                    propData.fileType = data.data.prodData[0].FILETYPE;
+                    propData.prodDesc = data.data.prodData[0].PRODDESC;
+                    propData.inputUser = data.data.prodData[0].INPUTUSER;
+                    propData.guarFeeRate = data.data.prodData[0].GUARFEERATE;
+                    propData.startDate = data.data.prodData[0].STARTDATE;
+                    propData.endDate = data.data.prodData[0].ENDDATE;
+
+                    this.form = propData;
+                    this.data = data.data.prodHisData;
                 }
-            },
-            async getDict() {
-                let data = await this.$api.configM.dictQuery({dictType: "channel"});
-                for (let item of data.data.dicts) {
-                    let obj = {};
-                    obj.value = item.code;
-                    obj.label = item.codeName;
-                    this.channelList.push(obj);
-                }
-            },
-            back() {
-                this.$router.go(-1);
-            },
-            submit() {
-                let validator = new schema(this.rules);
-                validator.validate(this.form, (errors) => {
-                    if (errors) {
-                        this.$message.warning({message: errors[0].message, duration: 2000});
-                    } else {
-                        if (this.updateId) { //如果updateId不为空，是更新，否则是新增
-                            this.confirmSubmit();
-                        } else {
-                            this.add();
-                        }
-                    }
-                })
-            },
-            confirmSubmit() {
-                this.$confirm('是否确认修改?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.update();
-                }).catch(() => {
-                });
-            },
-            async add() {
-                if (this.isSubmit) {
-                    return;
-                }
-                this.isSubmit = true;
-                let form = this.form;
-                let data = await this.$api.configM.productadd({
-                    channelNo: form.channelNo,
-                    prodNo: form.prodNo,
-                    prodName: form.prodName,
-                    fileType: form.fileType,
-                    prodDesc: form.prodDesc,
-                    isSubmitPCI: form.isSubmitPCI,
-                    useYn: form.useYn,
-                    inputUser: form.inputUser,
-                    guarFeeRate: form.guarFeeRate,
-                    startDate: form.startDate,
-                    endDate: form.endDate
-                });
-                if (data.data.resultCode === '0000') {
-                    this.$router.go(-1);
-                }
-                this.isSubmit = false;
-            },
-            async update() {
-                let form = this.form;
-                let data = await this.$api.configM.productupdate({
-                    channelNo: form.channelNo,
-                    prodNo: form.prodNo,
-                    prodName: form.prodName,
-                    fileType: form.fileType,
-                    prodDesc: form.prodDesc,
-                    isSubmitPCI: form.isSubmitPCI,
-                    useYn: form.useYn,
-                    updateUser: this.userInfo.username,
-                    guarFeeRate: form.guarFeeRate,
-                    startDate: form.startDate,
-                    endDate: form.endDate
-                });
-                if (data.data.resultCode === '0000') {
-                    this.$router.go(-1);
-                }
-            },
-            foramtChannel(row, column, cellValue) {
-                return getProp(this.channelList, 'value', cellValue, 'label');
             }
+        }
+
+        async getDict() {
+            let data = await this.$api.configM.dictQuery({dictType: "channel"});
+            for (let item of data.data.dicts) {
+                let obj: { value: any, label: any } = {value: '', label: ''};
+                obj.value = item.code;
+                obj.label = item.codeName;
+                this.channelList.push(obj);
+            }
+        }
+
+        back() {
+            this.$router.go(-1);
+        }
+
+        submit() {
+            let validator = new schema(this.rules);
+            validator.validate(this.form, (errors: any) => {
+                if (errors) {
+                    this.$message.warning({message: errors[0].message, duration: 2000});
+                } else {
+                    if (this.updateId) { //如果updateId不为空，是更新，否则是新增
+                        this.confirmSubmit();
+                    } else {
+                        this.add();
+                    }
+                }
+            })
+        }
+
+
+        confirmSubmit() {
+            this.$confirm('是否确认修改?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.update();
+            }).catch(() => {
+            });
+        }
+
+
+        async add() {
+            if (this.isSubmit) {
+                return;
+            }
+            this.isSubmit = true;
+            let form = this.form;
+            let data = await this.$api.configM.productadd({
+                channelNo: form.channelNo,
+                prodNo: form.prodNo,
+                prodName: form.prodName,
+                fileType: form.fileType,
+                prodDesc: form.prodDesc,
+                isSubmitPCI: form.isSubmitPCI,
+                useYn: form.useYn,
+                inputUser: form.inputUser,
+                guarFeeRate: form.guarFeeRate,
+                startDate: form.startDate,
+                endDate: form.endDate
+            });
+            if (data.data.resultCode === '0000') {
+                this.$router.go(-1);
+            }
+            this.isSubmit = false;
+        }
+
+
+        async update() {
+            let form = this.form;
+            let data = await this.$api.configM.productupdate({
+                channelNo: form.channelNo,
+                prodNo: form.prodNo,
+                prodName: form.prodName,
+                fileType: form.fileType,
+                prodDesc: form.prodDesc,
+                isSubmitPCI: form.isSubmitPCI,
+                useYn: form.useYn,
+                updateUser: this.userInfo.username,
+                guarFeeRate: form.guarFeeRate,
+                startDate: form.startDate,
+                endDate: form.endDate
+            });
+            if (data.data.resultCode === '0000') {
+                this.$router.go(-1);
+            }
+        }
+
+        foramtChannel(row: any, column: any, cellValue: any) {
+            return getProp(this.channelList, 'value', cellValue, 'label');
         }
     }
 

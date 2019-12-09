@@ -27,7 +27,8 @@
                         <div :class="$style['name']" class="must-choose">文件字符编码</div>
                         <div :class="[$style['content'],$style['last-box']]">
                             <el-form-item prop="fileWordCode">
-                                <el-select :disabled="type === 'detail'" placeholder="请选择" size="max" v-model="form.fileWordCode">
+                                <el-select :disabled="type === 'detail'" placeholder="请选择" size="max"
+                                           v-model="form.fileWordCode">
                                     <el-option
                                             :key="item.value"
                                             :label="item.label"
@@ -43,7 +44,8 @@
                         <div :class="[$style['name'],$style['sql-name']]" class="must-choose">SQL语句</div>
                         <div :class="[$style['content'],$style['sql-content'],$style['last-box']]">
                             <el-form-item :class="$style['sql-textarea']" prop="sqlSentence">
-                                <el-input :disabled="type === 'detail'" rows="5" type="textarea" v-model="form.sqlSentence"></el-input>
+                                <el-input :disabled="type === 'detail'" rows="5" type="textarea"
+                                          v-model="form.sqlSentence"></el-input>
                             </el-form-item>
                         </div>
                     </div>
@@ -77,137 +79,158 @@
     </div>
 </template>
 
-<script>
-    import {mapGetters} from 'vuex';
+<script lang="ts">
+
+    interface Iform {
+        "outputTemNo": string, // 输出模板编号
+        "fileName": string, // 文件名称
+        "fileDesc": string, // 文件描述
+        "fileWordCode": string, // 文件字符编码
+        "colSplitSymbol": string, // SQL语句
+        "sqlSentence": string, // 列分隔符
+        "inputUser": string
+    }
+
+
+    import {Component, Prop, Watch, Vue} from "vue-property-decorator";
+    //@ts-ingore
     import schema from 'async-validator';
 
-    export default {
+    @Component({
         name: 'editOutDetail',
-        data() {
-            return {
-                form: {
-                    "outputTemNo": this.outputTemNo, // 输出模板编号
-                    "fileName": '', // 文件名称
-                    "fileDesc": '', // 文件描述
-                    "fileWordCode": '', // 文件字符编码
-                    "colSplitSymbol": '', // SQL语句
-                    "sqlSentence": '', // 列分隔符
-                    "inputUser": ''
-                },
-                rules: {
-                    outputTemNo: [{required: true, message: '请输入输出模板编号'}],
-                    fileName: [{required: true, message: '请输入文件名称'}],
-                    fileWordCode: [{required: true, message: '请选择文件字符编码'}],
-                    colSplitSymbol: [{required: true, message: '请输入列分隔符'}],
-                    sqlSentence: [{required: true, message: '请输入SQL语句'}],
-                },
-                fileWordCode: [{
-                    value: "utf-8",
-                    label: 'utf-8'
-                }, {
-                    value: "gbk",
-                    label: 'gbk'
-                }, {
-                    value: "gb2312",
-                    label: 'gb2312'
-                }],
-                trueVal: true,
+    })
+
+    export default class extends Vue {
+
+        @Prop({required: true}) outputTemNo!: string
+        @Prop({required: true}) show!: string
+        @Prop({required: true}) type!: string
+        @Prop({required: true}) updateId!: string
+
+        @Watch('updateId')
+        async function(val: string) {
+            if (val) {
+                let data = await this.$api.configM.outdetailquery({
+                    fileNo: val,
+                    pageNum: 1,
+                    pageSize: 10
+                });
+                if (data.data.resultCode === '0000') {
+                    data = data.data;
+                    this.form = data.data[0];
+                }
             }
-        },
-        props: ['show', 'type', 'updateId', 'outputTemNo']
-        ,
-        computed: {
-            ...mapGetters(['userInfo'])
-        },
+        }
+
+        form: Iform = {
+            "outputTemNo": this.outputTemNo, // 输出模板编号
+            "fileName": '', // 文件名称
+            "fileDesc": '', // 文件描述
+            "fileWordCode": '', // 文件字符编码
+            "colSplitSymbol": '', // SQL语句
+            "sqlSentence": '', // 列分隔符
+            "inputUser": ''
+        }
+        rules: object = {
+            outputTemNo: [{required: true, message: '请输入输出模板编号'}],
+            fileName: [{required: true, message: '请输入文件名称'}],
+            fileWordCode: [{required: true, message: '请选择文件字符编码'}],
+            colSplitSymbol: [{required: true, message: '请输入列分隔符'}],
+            sqlSentence: [{required: true, message: '请输入SQL语句'}],
+        }
+        fileWordCode: object[] = [{
+            value: "utf-8",
+            label: 'utf-8'
+        }, {
+            value: "gbk",
+            label: 'gbk'
+        }, {
+            value: "gb2312",
+            label: 'gb2312'
+        }]
+        trueVal: boolean = true
+
+        userInfo: { username: string } = this.$store.state.user.userInfo || {username: ''};
+
+
         created() {
             this.form.inputUser = this.userInfo.username;
-        },
-        watch: {
-            updateId: async function (val) {
-                if (val) {
-                    let data = await this.$api.configM.outdetailquery({
-                        fileNo: val,
-                        pageNum: 1,
-                        pageSize: 10
-                    });
-                    if (data.data.resultCode === '0000') {
-                        data = data.data;
-                        this.form = data.data[0];
-                    }
-                }
-            }
-        },
-        methods: {
-            back() {
-                this.updateShow();
-            },
-            submit() {
-                let validator = new schema(this.rules);
-                validator.validate(this.form, (errors) => {
-                    if (errors) {
-                        this.$message.warning({message: errors[0].message, duration: 2000});
+        }
+
+        back() {
+            this.updateShow();
+        }
+
+        submit() {
+            let validator = new schema(this.rules);
+            validator.validate(this.form, (errors: { message: string }[]) => {
+                if (errors) {
+                    this.$message.warning({message: errors[0].message, duration: 2000});
+                } else {
+                    if (this.updateId) { //如果updateId不为空，是更新，否则是新增
+                        this.confirmSubmit();
                     } else {
-                        if (this.updateId) { //如果updateId不为空，是更新，否则是新增
-                            this.confirmSubmit();
-                        } else {
-                            this.add();
-                        }
+                        this.add();
                     }
-                })
-            },
-            confirmSubmit() {
-                this.$confirm('是否确认修改?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.update();
-                }).catch(() => {
-                });
-            },
-            async add() {
-                let data = await this.$api.configM.outdetailadd({
-                    outputTemNo: this.form.outputTemNo,
-                    fileName: this.form.fileName,
-                    fileDesc: this.form.fileDesc,
-                    fileWordCode: this.form.fileWordCode,
-                    colSplitSymbol: this.form.colSplitSymbol,
-                    sqlSentence: this.form.sqlSentence,
-                    inputUser: this.form.inputUser // 当前用户
-                });
-                if (data.data.resultCode === '0000') {
-                    this.$emit('updateData');
-                    this.updateShow();
                 }
-            },
-            async update() {
-                let data = await this.$api.configM.outdetailupdate({
-                    fileNo: this.updateId,
-                    outputTemNo: this.form.outputTemNo,
-                    fileName: this.form.fileName,
-                    fileDesc: this.form.fileDesc,
-                    fileWordCode: this.form.fileWordCode,
-                    colSplitSymbol: this.form.colSplitSymbol,
-                    sqlSentence: this.form.sqlSentence,
-                    updateUser: this.userInfo.username
-                });
-                if (data.data.resultCode === '0000') {
-                    this.$emit('updateData');
-                    this.updateShow();
-                }
-            },
-            updateShow() {
-                this.$emit('update:show', !this.show);
-                this.$emit('clearUpdateId');
-                this.form = {
-                    outputTemNo: this.outputTemNo, // 输出模板编号
-                    fileName: '', // 文件名称
-                    fileDesc: '', // 文件描述
-                    fileWordCode: '', // 文件字符编码
-                    colSplitSymbol: '', // 列分隔符
-                    sqlSentence: '', // sql语句
-                    inputUser: this.userInfo.username
-                }
+            })
+        }
+
+        confirmSubmit() {
+            this.$confirm('是否确认修改?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.update();
+            }).catch(() => {
+            });
+        }
+
+        async add() {
+            let data = await this.$api.configM.outdetailadd({
+                outputTemNo: this.form.outputTemNo,
+                fileName: this.form.fileName,
+                fileDesc: this.form.fileDesc,
+                fileWordCode: this.form.fileWordCode,
+                colSplitSymbol: this.form.colSplitSymbol,
+                sqlSentence: this.form.sqlSentence,
+                inputUser: this.form.inputUser // 当前用户
+            });
+            if (data.data.resultCode === '0000') {
+                this.$emit('updateData');
+                this.updateShow();
+            }
+        }
+
+        async update() {
+            let data = await this.$api.configM.outdetailupdate({
+                fileNo: this.updateId,
+                outputTemNo: this.form.outputTemNo,
+                fileName: this.form.fileName,
+                fileDesc: this.form.fileDesc,
+                fileWordCode: this.form.fileWordCode,
+                colSplitSymbol: this.form.colSplitSymbol,
+                sqlSentence: this.form.sqlSentence,
+                updateUser: this.userInfo.username
+            });
+            if (data.data.resultCode === '0000') {
+                this.$emit('updateData');
+                this.updateShow();
+            }
+        }
+
+        updateShow() {
+            this.$emit('update:show', !this.show);
+            this.$emit('clearUpdateId');
+            this.form = {
+                outputTemNo: this.outputTemNo, // 输出模板编号
+                fileName: '', // 文件名称
+                fileDesc: '', // 文件描述
+                fileWordCode: '', // 文件字符编码
+                colSplitSymbol: '', // 列分隔符
+                sqlSentence: '', // sql语句
+                inputUser: this.userInfo.username
             }
         }
     }

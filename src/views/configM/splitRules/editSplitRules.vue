@@ -85,52 +85,69 @@
     </div>
 </template>
 
-<script>
-    import {mapGetters} from 'vuex'
+<script lang="ts">
+
+    interface Iform {
+        assetSplitWay: string, // 拆分方式
+        assetSplitValue: string, // 拆分值
+        contributiveNo: object[], // 资金方编码
+        pennyDifferenceBelongs: string, // 尾差归属方
+        useYn: string,
+        inputUser: string,
+        updateUser: string
+    }
+
+    import {Component, Vue} from "vue-property-decorator";
     import schema from 'async-validator';
     import alert from '../../../components/mixins/alert';
 
-    export default {
+    @Component({
         name: 'editSplitRules',
-        mixins: [alert],
-        data() {
-            return {
-                form: {
-                    assetSplitWay: '', // 拆分方式
-                    assetSplitValue: '', // 拆分值
-                    contributiveNo: [], // 资金方编码
-                    pennyDifferenceBelongs: '', // 尾差归属方
-                    useYn: '',
-                    inputUser: '',
-                    updateUser: ''
-                },
-                rules: {
-                    assetSplitWay: [{required: true, message: '请选择拆分方式'}],
-                    assetSplitValue: [{required: true, message: '请输入拆分值'}],
-                    contributiveNo: [{required: true, message: '请选择资金方编码'}],
-                    pennyDifferenceBelongs: [{required: true, message: '请选择尾差归属方'}],
-                    useYn: [{required: true, message: '请选择是否启用'}],
-                },
-                "useYnList": [{
-                    value: "Y",
-                    label: '启用'
-                }, {
-                    value: "N",
-                    label: '禁用'
-                }],
-                "splitWay": [{
-                    value: "01",
-                    label: '按比例拆分'
-                }, {
-                    value: "02",
-                    label: '按固定值拆分'
-                }],
-                assetProvider: [], // 资金方数组
-                trueVal: true,
-                updateId: '', // 如果有值就是更新操作
-                isSubmit: false
-            }
-        },
+        mixins: [alert]
+    })
+
+    export default class extends Vue {
+
+
+        form: Iform = {
+            assetSplitWay: '', // 拆分方式
+            assetSplitValue: '', // 拆分值
+            contributiveNo: [], // 资金方编码
+            pennyDifferenceBelongs: '', // 尾差归属方
+            useYn: '',
+            inputUser: '',
+            updateUser: ''
+        }
+        rules: object = {
+            assetSplitWay: [{required: true, message: '请选择拆分方式'}],
+            assetSplitValue: [{required: true, message: '请输入拆分值'}],
+            contributiveNo: [{required: true, message: '请选择资金方编码'}],
+            pennyDifferenceBelongs: [{required: true, message: '请选择尾差归属方'}],
+            useYn: [{required: true, message: '请选择是否启用'}],
+        }
+        "useYnList": object[] = [{
+            value: "Y",
+            label: '启用'
+        }, {
+            value: "N",
+            label: '禁用'
+        }]
+        "splitWay": object[] = [{
+            value: "01",
+            label: '按比例拆分'
+        }, {
+            value: "02",
+            label: '按固定值拆分'
+        }]
+        assetProvider: object[] = []
+        // 资金方数组
+        trueVal: boolean = true
+        updateId: string = ''
+        // 如果有值就是更新操作
+        isSubmit: boolean = false
+
+        userInfo: { username: string } = this.$store.state.user.userInfo || {username: ''};
+
         activated() {
             this.assetProvider = [];
             this.getDict();
@@ -138,8 +155,8 @@
             let params = this.$route.query;
             // 主键查询，有值是修改，将主键保存，否则设置增加人为自己
             if (params.updateId) {
-                this.updateId = params.updateId;
-                this.query(params.updateId);
+                this.updateId = (params.updateId || '') + '';
+                this.query(this.updateId);
             } else {
                 this.updateId = '';
                 this.form.assetSplitWay = '';
@@ -151,97 +168,101 @@
                 this.form.updateUser = ''
             }
             this.isSubmit = false;
-        },
-        computed: {
-            ...mapGetters(['userInfo'])
-        },
-        methods: {
-            async query(assetSplitNo) { // 查询用户信息
-                //发起ajax请求，更改数据
-                let data = await this.$api.configM.splitRulesquery({
-                    assetSplitNo: assetSplitNo,
-                    pageNum: 1,
-                    pageSize: 10
-                });
-                if (data.data.resultCode === '0000') {
-                    data = data.data;
-                    if (data.data.length === 0) {
-                        this.alertParamterError();
+        }
+
+
+        async query(assetSplitNo: string) { // 查询用户信息
+            //发起ajax请求，更改数据
+            let data = await this.$api.configM.splitRulesquery({
+                assetSplitNo: assetSplitNo,
+                pageNum: 1,
+                pageSize: 10
+            });
+            if (data.data.resultCode === '0000') {
+                data = data.data;
+                if (data.data.length === 0) {
+                    // @ts-ignore
+                    this.alertParamterError();
+                } else {
+                    let item = data.data[0];
+                    item.contributiveNo = item.contributiveNo.split(',');
+                    Object.assign(this.form, data.data[0]);
+                }
+            }
+        }
+
+        async getDict() {
+            let data = await this.$api.configM.dictQuery({dictType: "contributive"});
+            for (let item of data.data.dicts) {
+                let obj: { value: string, label: string } = {value: '', label: ''};
+                obj.value = item.code;
+                obj.label = item.codeName;
+                this.assetProvider.push(obj);
+            }
+        }
+
+        back() {
+            this.$router.go(-1);
+        }
+
+        submit() {
+            let validator = new schema(this.rules);
+            validator.validate(this.form, (errors: { message: string }[]) => {
+                if (errors) {
+                    this.$message.warning({message: errors[0].message, duration: 2000});
+                } else {
+                    if (this.updateId) { //如果updateId不为空，是更新，否则是新增
+                        this.confirmSubmit();
                     } else {
-                        let item = data.data[0];
-                        item.contributiveNo = item.contributiveNo.split(',');
-                        Object.assign(this.form, data.data[0]);
+                        this.add();
                     }
                 }
-            },
-            async getDict() {
-                let data = await this.$api.configM.dictQuery({dictType: "contributive"});
-                for (let item of data.data.dicts) {
-                    let obj = {};
-                    obj.value = item.code;
-                    obj.label = item.codeName;
-                    this.assetProvider.push(obj);
-                }
-            },
-            back() {
+            })
+        }
+
+        confirmSubmit() {
+            this.$confirm('是否确认修改?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.update();
+            }).catch(() => {
+            });
+        }
+
+        async add() {
+            if (this.isSubmit) {
+                return;
+            }
+            this.isSubmit = true;
+            let data = await this.$api.configM.splitRulesadd({
+                assetSplitWay: this.form.assetSplitWay, //
+                assetSplitValue: this.form.assetSplitValue,
+                contributiveNo: this.form.contributiveNo.join(','),
+                pennyDifferenceBelongs: this.form.pennyDifferenceBelongs,
+                inputUser: this.form.inputUser,
+                useYn: this.form.useYn
+            });
+            if (data.data.resultCode === '0000') {
                 this.$router.go(-1);
-            },
-            submit() {
-                let validator = new schema(this.rules);
-                validator.validate(this.form, (errors) => {
-                    if (errors) {
-                        this.$message.warning({message: errors[0].message, duration: 2000});
-                    } else {
-                        if (this.updateId) { //如果updateId不为空，是更新，否则是新增
-                            this.confirmSubmit();
-                        } else {
-                            this.add();
-                        }
-                    }
-                })
-            },
-            confirmSubmit() {
-                this.$confirm('是否确认修改?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.update();
-                }).catch(() => {
-                });
-            },
-            async add() {
-                if (this.isSubmit) {
-                    return;
-                }
-                this.isSubmit = true;
-                let data = await this.$api.configM.splitRulesadd({
+            }
+            this.isSubmit = false;
+        }
+
+        async update() {
+            let data = await this.$api.configM.splitRulesupdate({
+                    assetSplitNo: this.updateId,
                     assetSplitWay: this.form.assetSplitWay, //
                     assetSplitValue: this.form.assetSplitValue,
                     contributiveNo: this.form.contributiveNo.join(','),
                     pennyDifferenceBelongs: this.form.pennyDifferenceBelongs,
-                    inputUser: this.form.inputUser,
+                    updateUser: this.userInfo.username,
                     useYn: this.form.useYn
-                });
-                if (data.data.resultCode === '0000') {
-                    this.$router.go(-1);
                 }
-                this.isSubmit = false;
-            },
-            async update() {
-                let data = await this.$api.configM.splitRulesupdate({
-                        assetSplitNo: this.updateId,
-                        assetSplitWay: this.form.assetSplitWay, //
-                        assetSplitValue: this.form.assetSplitValue,
-                        contributiveNo: this.form.contributiveNo.join(','),
-                        pennyDifferenceBelongs: this.form.pennyDifferenceBelongs,
-                        updateUser: this.userInfo.username,
-                        useYn: this.form.useYn
-                    }
-                );
-                if (data.data.resultCode === '0000') {
-                    this.$router.go(-1);
-                }
+            );
+            if (data.data.resultCode === '0000') {
+                this.$router.go(-1);
             }
         }
     }
@@ -258,6 +279,7 @@
                 overflow: hidden;
                 display: block;
                 text-align: left;
+
                 > span {
                     > span {
                         display: inline;
