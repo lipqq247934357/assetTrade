@@ -32,6 +32,8 @@
                     </el-table-column>
                     <el-table-column label="实收担保费" prop="RASSUREAMT">
                     </el-table-column>
+                    <el-table-column :formatter="formatOverFlag" label="账单状态" prop="OVERFLAG">
+                    </el-table-column>
                 </el-table>
             </div>
 
@@ -75,6 +77,9 @@
             },
             back() {
                 this.$router.go(-1);
+            },
+            formatOverFlag(row, column, val) {
+                return val + '' === '0' ? '正常' : '逾期';
             }
         }
     }
