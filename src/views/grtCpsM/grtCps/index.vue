@@ -693,7 +693,9 @@
                 let res = await this.$api.grtCps.getAssureAmt({listIds: [row.LISTID]});
                 try {
                     if (res.data.resultCode === '0000') {
-                        this.$confirm(`是否单笔代偿?`, '提示', {
+                        let leftsAmt = res.data.leftsAmt; // 待赔付金额
+                        let leftGuarFee = res.data.leftGuarFee; // 剩余担保费
+                        this.$confirm(`剩余担保费${leftGuarFee},待赔付金额${leftsAmt},是否确认代偿?`, '提示', {
                             confirmButtonText: '确定',
                             cancelButtonText: '取消',
                             type: 'warning'
