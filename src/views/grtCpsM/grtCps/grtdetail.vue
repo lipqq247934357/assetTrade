@@ -30,6 +30,10 @@
                     </el-table-column>
                     <el-table-column label="实还利息" prop="RINTE">
                     </el-table-column>
+                    <el-table-column label="应还罚息" prop="SAFINE">
+                    </el-table-column>
+                    <el-table-column label="实还罚息" prop="RAFINE">
+                    </el-table-column>
                     <el-table-column label="实收担保费" prop="RASSUREAMT">
                     </el-table-column>
                     <el-table-column :formatter="formatOverFlag" label="账单状态" prop="OVERFLAG">
@@ -79,7 +83,7 @@
                 this.$router.go(-1);
             },
             formatOverFlag(row, column, val) {
-                return val + '' === '0' ? '正常' : '逾期';
+                return val + '' === '0' ? '结清' : '未结清';
             }
         }
     }

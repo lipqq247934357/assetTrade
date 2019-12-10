@@ -164,8 +164,8 @@
                     ></el-table-column>
                     <el-table-column
                             label="借据号"
-                            prop="LISTID"
                             min-width="238px"
+                            prop="LISTID"
                     ></el-table-column>
                     <el-table-column
                             label="渠道名称"
@@ -211,10 +211,6 @@
                     ></el-table-column>
                     <el-table-column
                             label="应付通道费"
-                            prop="SCHANNELAMOUNT"
-                    ></el-table-column>
-                    <el-table-column
-                            label="实收通道费"
                             prop="RCHANNELAMOUNT"
                     ></el-table-column>
                     <el-table-column
@@ -517,8 +513,8 @@
 
                 this.loadingBtn.export = true;
                 import('@/vendor/Export2Excel').then(async excel => {
-                    const tHeader = ['借据号', '渠道名称', '产品名称', '姓名', '证件号码', '借款金额', '借款期限', '放款日期', '担保费率', '借款费率（年）', '应收担保费', '应付通道费', '实收担保费', '应还日期', '逾期天数', '逾期利息', '实还总金额', '实还本金', '实还利息', '实还罚息', '实还违约金', '贷款余额', '待赔付金额', '应收理赔本金', '应收理赔利息', '实收理赔本金', '实收理赔利息', '借据状态', '担保状态', '申报日期', '代偿日期'];
-                    const filterVal = ['LISTID', 'CHANNELNAME', 'PRODNAME', 'CUSTNAME', 'IDNO', 'LOANAMOUNT', 'LOANTERM', 'BEGINDATE', 'GUARFEERATE', 'INTERESTRATE', 'SASSUREAMOUNT', 'SCHANNELAMOUNT', 'RASSUREAMOUNT', 'SDATE', 'OVERDAYS', 'BINTE', 'RAMOUNT', 'RCAPI', 'RINTE', 'RFINE', 'RFOUL', 'BAL', 'SPAIDAMOUNT', 'SSETTLEBAL', 'SSETTLEINTE', 'RSETTLEBAL', 'RSETTLEINTE', 'ACFLAG', 'ASSURESTATUS', 'DECLAREDATE', 'COMPENSATEDATE']
+                    const tHeader = ['借据号', '渠道名称', '产品名称', '姓名', '证件号码', '借款金额', '借款期限', '放款日期', '担保费率', '借款费率（年）', '应收担保费','应付通道费', '实收担保费', '应还日期', '逾期天数', '逾期利息', '实还总金额', '实还本金', '实还利息', '实还罚息', '实还违约金', '贷款余额', '待赔付金额', '应收理赔本金', '应收理赔利息', '实收理赔本金', '实收理赔利息', '借据状态', '担保状态', '申报日期', '代偿日期'];
+                    const filterVal = ['LISTID', 'CHANNELNAME', 'PRODNAME', 'CUSTNAME', 'IDNO', 'LOANAMOUNT', 'LOANTERM', 'BEGINDATE', 'GUARFEERATE', 'INTERESTRATE', 'SASSUREAMOUNT', 'RCHANNELAMOUNT', 'RASSUREAMOUNT', 'SDATE', 'OVERDAYS', 'BINTE', 'RAMOUNT', 'RCAPI', 'RINTE', 'RFINE', 'RFOUL', 'BAL', 'SPAIDAMOUNT', 'SSETTLEBAL', 'SSETTLEINTE', 'RSETTLEBAL', 'RSETTLEINTE', 'ACFLAG', 'ASSURESTATUS', 'DECLAREDATE', 'COMPENSATEDATE']
                     let data = await this.$api.grtCps.exportExcel({...this.form, listIds: list});
                     data = data.data.data;
                     for (let item of data) {
