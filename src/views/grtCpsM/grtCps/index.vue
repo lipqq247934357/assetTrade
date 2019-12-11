@@ -639,6 +639,15 @@
                         }).catch(() => {
                             this.loadingBtn.compensation = false;
                         });
+                    } else if (res.data.resultCode === '0001') { // 更新成功，刷新数据
+                        let leftsAmt = res.data.leftsAmt; // 待赔付金额
+                        let leftGuarFee = res.data.leftGuarFee; // 剩余担保费
+                        this.$alert(`剩余担保费${leftGuarFee},待赔付金额${leftsAmt}，剩余担保费小于待赔付金额，无法代偿！`, '提示', {
+                            confirmButtonText: '确定',
+                            callback: action => {
+                            }
+                        });
+                        this.loadingBtn.compensation = false;
                     }
                     this.loadingBtn.compensation = false;
                 } catch (e) {
@@ -699,6 +708,15 @@
                             this.compensationOne(row);
                         }).catch(() => {
                         });
+                    } else if (res.data.resultCode === '0001') { // 更新成功，刷新数据
+                        let leftsAmt = res.data.leftsAmt; // 待赔付金额
+                        let leftGuarFee = res.data.leftGuarFee; // 剩余担保费
+                        this.$alert(`剩余担保费${leftGuarFee},待赔付金额${leftsAmt}，剩余担保费小于待赔付金额，无法代偿！`, '提示', {
+                            confirmButtonText: '确定',
+                            callback: action => {
+                            }
+                        });
+                        this.loadingBtn.compensation = false;
                     }
                     this.loadingBtn.compensationOne = false;
                 } catch (e) {
