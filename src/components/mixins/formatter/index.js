@@ -65,16 +65,16 @@ export default {
         },
         formatAcFlag4Detail(row, column, cellValue) { // 借据状态格式化，和上面有些不同
 
-            let obj = {
-                a: '正常',
-                e: '逾期',
-                p: '非应计',
-                '10': '正常结清',
-                '20': '提前结清',
-                '30': '逾期结清',
-                '40': '代偿结清'
-            };
-            return obj[cellValue.trim()];
+            // let obj = {
+            //     a: '正常',
+            //     e: '逾期',
+            //     p: '非应计',
+            //     '10': '正常结清',
+            //     '20': '提前结清',
+            //     '30': '逾期结清',
+            //     '40': '代偿结清'
+            // };
+            return ['10', '20', '30'].indexOf(cellValue.trim()) !== -1 ? '已结清' : '未结清';
         },
         formatRepayMethod(row, column, cellValue) { // 还款方式格式化
             let obj = {
