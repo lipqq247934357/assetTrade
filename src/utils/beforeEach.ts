@@ -22,6 +22,10 @@ router.beforeEach((to: { path: string; }, from: any, next: { (): void; (): void;
         NProgress.done();
         next();
     } else {
+        // 由于目前已经没有接口可以被调用了，所以后面的接口也都直接return了
+        NProgress.done();
+        next();
+        return;
         let seaRes = urlParse4Search();
         let ticket = seaRes.ticket;
         let token = getToken();
