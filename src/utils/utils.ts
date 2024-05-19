@@ -55,39 +55,39 @@ export const urlParse = function () {
 
 export const treeUtil = function (data: any) {
 
-    let i = 0;
-    let tree = [];
-    let pos = [];
-    while (data.length !== 0) {
+    const tree = []; // 树
+    const pos = {}; // 一维数组
+
+    // 将数组转化为对象 便于查找
+    for (let i = 0; i < data.length; i++) {
+        // @ts-ignore
+        pos[data[i].menuId] = data[i];
+    }
+    // 遍历数组建立树
+    for (let i = 0; i < data.length; i++) {
         let item = data[i];
-        item.children = [];
         if (item.menuLevel === '1') { //一级菜单
             tree.push(item);// 树的一级菜单
-            pos[item['menuId']] = tree[tree.length - 1];
-            data.splice(i, 1);
         } else { // 子节点
             let parentId = item['parentMenuId'].trim();
-            let obj: any = pos[parentId]; // 获取父节点
-            if (obj !== undefined) {
-                obj.children.push(item); // 给父亲增加自己
-                pos[item['menuId']] = obj.children[obj.children.length - 1]; // 将自己的引用放到对应一维数组中
-                sort(obj.children);
-                data.splice(i, 1);
-            } else { // 父节点没有设置，下一轮就可以找到父节点
-                i++;
+            // @ts-ignore
+            let parentMenu = pos[parentId]; // 获取父节点
+            pushItem(parentMenu.children || (parentMenu.children = []), item); // 给父亲增加自己
+        }
+    }
+
+    // @ts-ignore
+    function pushItem(children, item) { // 根据menuOrder进行排序
+        if (children) {
+            let i = 0;
+            for (; i < children.length; i++) {
+                if (item.menuOrder < children[i].menuOrder) {
+                    break;
+                }
             }
-        }
-        if (i > data.length - 1) { // 一轮遍历完成
-            i = 0;
+            children.splice(i, 0, item);
         }
     }
-
-    function sort(obj: any) { // 根据menuOrder进行排序
-        obj.sort(function (a: any, b: any) {
-            return a.menuOrder - b.menuOrder
-        })
-    }
-
     return tree;
 };
 
